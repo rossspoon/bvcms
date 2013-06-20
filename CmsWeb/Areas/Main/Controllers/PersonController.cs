@@ -595,6 +595,17 @@ namespace CmsWeb.Areas.Main.Controllers
 			return Content("ok");
 		}
 		[HttpPost]
+		public ActionResult AddOptout(int id, string email)
+		{
+			var oo = DbUtil.Db.EmailOptOuts.SingleOrDefault(o => o.FromEmail == email && o.ToPeopleId == id);
+		    if (oo == null)
+		    {
+                DbUtil.Db.EmailOptOuts.InsertOnSubmit(new EmailOptOut { FromEmail = email, ToPeopleId = id, DateX = DateTime.Now });
+		        DbUtil.Db.SubmitChanges();
+		    }
+		    return Content("ok");
+		}
+		[HttpPost]
 		public ActionResult VolunteerDisplay(int id)
 		{
 		    var m = new Models.Other.VolunteerModel(id);

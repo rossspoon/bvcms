@@ -231,7 +231,7 @@
     <Field Name="MemberStatusId" Title="Church Member Status" Type="Code" DisplayAs="ChurchMemberStatus" DataSource="MemberStatusCodes" DataValueField="IdCode">
       Codes for church membership status: Previous, Pending, Member, Non-member
     </Field>
-    <Field Name="StatusFlag" Title="Status Flag" Type="Code" DataSource="StatusFlags" DataValueField="IdCode">
+    <Field Name="StatusFlag" Title="Status Flag" Type="Code" DataSource="StatusFlags" DataValueField="Code">
       Search for Status Flags (computed in nightly batch from saved searches)
     </Field>
     <Field Name="CampusId" Title="Campus" Type="NullCode" DataSource="AllCampuses0" DataValueField="IdCode">

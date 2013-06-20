@@ -1,12 +1,22 @@
 @{
     var newlook = DbUtil.Db.UserPreference("newlook3", "false").ToBool();
-    var NewQuickSearch = DbUtil.Db.UserPreference("NewQuickSearch", "true").ToBool();
     var imgsrc = newlook ? "/Content/img/calendar.png" : "/images/calendar.gif";
 }
 <script type="text/javascript">
     $(function () {
+        $.validator.methods.number = function(value, element) {
+            return this.optional(element) || /@Util.jQueryNumberValidation/.test(value);
+        };
+        $.validator.methods.date = function (value, element) {
+            try {
+                $.datepicker.parseDate( '@Util.jQueryDateFormat', value);
+                return true;
+            }
+            catch(e) {
+                return false;
+            }
+        };
         $.dateFormat = '@Util.jQueryDateFormat';
-        $.NewQuickSearch = '@NewQuickSearch' === 'True';
         $.datepicker.setDefaults({
             dateFormat: $.dateFormat,
             changeMonth: true,

@@ -52,9 +52,6 @@
         }
     });
     $.SetValidation = function() {
-        $.validator.methods.number = function(value, element) {
-            return this.optional(element) || /^-?(?:\d+)?(?:\.\d+)?$/.test(value);
-        };
         $("#bundleform").validate({
             rules: {
                 "Bundle.ContributionDate": { date: true, required: true },

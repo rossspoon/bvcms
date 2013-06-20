@@ -60,7 +60,7 @@
         <td></td>*@
         <th class="right" colspan="3"> Status Flags: </th>
         <td>
-            @Html.DropDownList("statusflags", new SelectList(QueryBuilderClause.StatusFlags(DbUtil.Db), "Value", "Text"), new { multiple="multiple" })
+            @Html.DropDownList("statusflags", new SelectList(QueryBuilderClause.StatusFlags(DbUtil.Db), "Tag", "Text"), new { multiple="multiple" })
         </td>
     </tr>
     }

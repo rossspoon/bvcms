@@ -63,7 +63,7 @@ namespace CmsWeb
                 r.End();
             }
             foreach (var mi in q)
-                r.Write(string.Format("{0},{1},{2},{3},{4},{5},{6}\r\n",
+                r.Write(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",{5},{6}\r\n",
                     mi.LabelName, mi.Address, mi.Address2, mi.City, mi.State, mi.Zip.FmtZip(), mi.PeopleId));
 
         }

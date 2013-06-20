@@ -187,15 +187,6 @@ namespace CmsWeb.Controllers
             return Redirect("/");
         }
 
-        public ActionResult NewQuickSearch(string id)
-        {
-            var b = id.ToBool();
-            DbUtil.Db.SetUserPreference("NewQuickSearch", b ? "false" : "true");
-            DbUtil.Db.SubmitChanges();
-            if (Request.UrlReferrer != null)
-                return Redirect(Request.UrlReferrer.OriginalString);
-            return Redirect("/");
-        }
         public ActionResult Names(string term)
         {
             var q = HomeModel.Names(term).ToList();

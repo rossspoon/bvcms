@@ -23,6 +23,13 @@
             $('iframe', this).attr("src", "");
         }
     });
+    $("#addoptoutemail").live('click', function(ev) {
+        ev.preventDefault();
+        $.post($(this).attr("href"), { email: $("#optoutemail").val() }, function() {
+            $.getTable($("#optouts-tab form"));
+        });
+        return false;
+    });
     $("#clipaddr").live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {

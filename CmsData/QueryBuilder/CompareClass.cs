@@ -647,7 +647,7 @@ namespace CmsData
                 case QueryType.StatusFlag:
                     return Expressions.StatusFlag(parm,
                                CompType,
-                               c.CodeIntIds);
+                               c.CodeValues);
 
                 // U ----------------------
                 case QueryType.UserRole:

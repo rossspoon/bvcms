@@ -386,84 +386,67 @@ String.prototype.addCommas = function () {
 $(document).ready(function () {
     $("a.trigger-dropdown").dropdown();
 
-    if ($.NewQuickSearch) {
-        $('#SearchText').each(function () {
-            var searchterm = "";
-            $(this).autocomplete({
-                appendTo: "#SearchResults",
-                position: { my: "right top", at: "right bottom", of: $("#SearchText") },
-                minLength: 3,
-                autoFocus: true,
-                open: function () {
-                    $("#SearchResults > ul").css("z-index", 1002);
-                },
-                close: function(event) {
-                    var thisval = $(this).val();
-                    if (searchterm !== thisval && thisval !== "") {
-                        return $("#SearchText").autocomplete("search");
-                    }
-                    $("#SearchText").val('');
-                },
-                source: function (request, response) {
-                    if (request.term === '---')
-                        response([
-                            { id: -1, line1: "People Search" },
-                            { id: -2, line1: "Advanced Search" },
-                            { id: -3, line1: "Organization Search" }
-                        ]);
-                    else {
-                        searchterm = request.term;
-                        $.post("/Home/Names", request, function (ret) {
-                            response(ret.slice(0, 15));
-                        }, "json");
-                    }
-                },
-                select: function (event, ui) {
-                    var thisval = $(this).val();
-                    if (searchterm !== thisval && thisval !== "") {
-                        return false;
-                    }
-                    if (ui.item.id === -1)
-                        window.location = "/PeopleSearch?name=" + searchterm;
-                    else if (ui.item.id === -2)
-                        window.location = "/QueryBuilder/Main";
-                    else if (ui.item.id === -3)
-                        window.location = "/OrgSearch";
-                    else
-                        window.location = (ui.item.isOrg ? "/Organization/Index/" : "/Person/Index/") + ui.item.id;
-                    return true;
-                }, 
-                focus: function (ev) {
-                    ev.preventDefault(); 
+    $('#SearchText').each(function () {
+        var searchterm = "";
+        $(this).autocomplete({
+            appendTo: "#SearchResults",
+            position: { my: "right top", at: "right bottom", of: $("#SearchText") },
+            minLength: 3,
+            autoFocus: true,
+            open: function () {
+                $("#SearchResults > ul").css("z-index", 1002);
+            },
+            close: function (event) {
+                var thisval = $(this).val();
+                if (searchterm !== thisval && thisval !== "") {
+                    return $("#SearchText").autocomplete("search");
                 }
-            }).data("uiAutocomplete")._renderItem = function (ul, item) {
-                if (item.id === 0)
-                    return $("<li>").append("<hr/>").appendTo(ul);
-                var li = "<a><b>" + (item.isOrg ? "Org: " : "") + item.line1 + "</b>";
-                if (item.id > 0)
-                    li += "<br>" + (item.isOrg ? "Div: " : "") + item.line2;
-                li += "</a>";
-                return $("<li>")
-                    .append(li)
-                    .appendTo(ul);
-            };
-        });
-    }
-    else {
-        $('#SearchText').keypress(function (e) {
-            if ((e.keyCode || e.which) === 13) {
-                e.preventDefault();
-                var s = $('#SearchText').val();
-                if (s !== "") {
-                    s = s.replace(/^\s+/g, "");
-                    s = s.replace(/\s+$/g, " ");
-                    var u = '/QuickSearch/Index?q=' + escape(s);
-                    window.location = u;
+                $("#SearchText").val('');
+            },
+            source: function (request, response) {
+                if (request.term === '---')
+                    response([
+                        { id: -1, line1: "People Search" },
+                        { id: -2, line1: "Advanced Search" },
+                        { id: -3, line1: "Organization Search" }
+                    ]);
+                else {
+                    searchterm = request.term;
+                    $.post("/Home/Names", request, function (ret) {
+                        response(ret.slice(0, 15));
+                    }, "json");
                 }
+            },
+            select: function (event, ui) {
+                var thisval = $(this).val();
+                if (searchterm !== thisval && thisval !== "") {
+                    return false;
+                }
+                if (ui.item.id === -1)
+                    window.location = "/PeopleSearch?name=" + searchterm;
+                else if (ui.item.id === -2)
+                    window.location = "/QueryBuilder/Main";
+                else if (ui.item.id === -3)
+                    window.location = "/OrgSearch";
+                else
+                    window.location = (ui.item.isOrg ? "/Organization/Index/" : "/Person/Index/") + ui.item.id;
+                return true;
+            },
+            focus: function (ev) {
+                ev.preventDefault();
             }
-            return true;
-        });
-    }
+        }).data("uiAutocomplete")._renderItem = function (ul, item) {
+            if (item.id === 0)
+                return $("<li>").append("<hr/>").appendTo(ul);
+            var li = "<a><b>" + (item.isOrg ? "Org: " : "") + item.line1 + "</b>";
+            if (item.id > 0)
+                li += "<br>" + (item.isOrg ? "Div: " : "") + item.line2;
+            li += "</a>";
+            return $("<li>")
+                .append(li)
+                .appendTo(ul);
+        };
+    });
 
     $("a.tutorial").click(function (ev) {
         ev.preventDefault();
@@ -514,8 +497,7 @@ $(document).ready(function () {
             if (this.value === '' || this.value === $(this).attr('default')) {
                 this.value = '';
                 $(this).removeClass('text-label');
-                if ($.NewQuickSearch)
-                    $(this).autocomplete("search", "---");
+                $(this).autocomplete("search", "---");
             }
         });
         $(this).blur(function () {
