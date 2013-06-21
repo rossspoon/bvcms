@@ -333,6 +333,7 @@
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
     <Compile Include="Areas\Org\Controllers\VolunteersController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchAddController.cs" />
+    <Compile Include="Areas\People\Models\Person\PendingEnrollments.cs" />
     <Compile Include="Areas\People\Models\Person\OrgMemberInfo.cs" />
     <Compile Include="Areas\People\Models\Person\PreviousEnrollments.cs" />
     <Compile Include="Areas\People\Models\Person\PictureResult.cs" />
@@ -944,6 +945,7 @@
     <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
     <Content Include="Areas\Main\Views\Reports\WeeklyDecisions.cshtml" />
     <Content Include="Areas\Main\Views\Reports\Decisions.cshtml" />
+    <Content Include="Areas\People\Views\Person\PendingEnrollments.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
