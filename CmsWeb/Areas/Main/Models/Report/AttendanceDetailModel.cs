@@ -11,11 +11,12 @@ namespace CmsWeb.Areas.Main.Models.Report
         DateTime dt1;
         DateTime? dt2;
         string name;
+        int? progid;
         int? divid;
         int? schedid;
         int? campusid;
 
-        public AttendanceDetailModel(DateTime dt1, DateTime? dt2, string name, int? divid, int? schedid, int? campusid)
+        public AttendanceDetailModel(DateTime dt1, DateTime? dt2, string name, int? progid, int? divid, int? schedid, int? campusid)
         {
             if (dt2.HasValue)
             {
@@ -27,6 +28,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             this.dt1 = dt1;
             this.dt2 = dt2;
             this.name = name;
+            this.progid = progid;
             this.divid = divid;
             this.schedid = schedid;
             this.campusid = campusid;
@@ -34,13 +36,13 @@ namespace CmsWeb.Areas.Main.Models.Report
         public IEnumerable<MeetingRow> FetchMeetings()
         {
             var q = from m in DbUtil.Db.Meetings
-                     let sc = m.Organization.OrgSchedules.FirstOrDefault() // SCHED
+                     where m.Organization.DivOrgs.Any(dd => dd.Division.ProgId == progid || progid == 0)
                      where m.Organization.DivOrgs.Any(dd => dd.DivId == divid || divid == 0)
                      where m.MeetingDate >= dt1
                      where m.MeetingDate < dt2
-                     where campusid == null || campusid == 0 || m.Organization.CampusId == campusid
-                     where schedid == null || schedid == 0 || sc.ScheduleId == schedid
-                     where name == null || name == "" || m.Organization.OrganizationName.Contains(name)
+                     where (campusid ?? 0) == 0 || m.Organization.CampusId == campusid
+                     where (schedid ?? 0) == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == schedid)
+                     where (name ?? "") == "" || m.Organization.OrganizationName.Contains(name)
                      orderby m.Organization.OrganizationName, m.OrganizationId, m.MeetingDate descending
                      select new
                      {

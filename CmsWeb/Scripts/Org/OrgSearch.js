@@ -268,8 +268,8 @@
     $('#attdetail2').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
-        var did = $('#DivisionId').val();
-        var args = "?divid=" + did +
+        var args = "?progid=" + $('#ProgramId').val() +
+               "&divid=" + $('#DivisionId').val() +
                "&schedid=" + $('#ScheduleId').val() +
                "&name=" + $('#Name').val() +
                "&dt1=" + $('#MeetingDate1').val() +

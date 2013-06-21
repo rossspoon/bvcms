@@ -1,4 +1,4 @@
-﻿onload = function() {
+﻿onload = function () {
     var e = document.getElementById("refreshed");
     if (e.value == "no")
         e.value = "yes";
@@ -273,7 +273,7 @@ $(function () {
             $('#selectquestions').dialog("close");
             $('html, body').animate({ scrollTop: $("body").height() }, 800);
             var newli = $("#QuestionList").append(ret);
-            $("#QuestionList > li:last").effect("highlight", { }, 3000);
+            $("#QuestionList > li:last").effect("highlight", {}, 3000);
             $(".tip", newli).tooltip({ opacity: 0, showBody: "|" });
             $.updateQuestionList();
         });
@@ -304,7 +304,7 @@ $(function () {
         "AskInstruction",
         "AskMenu"
     ];
-    $.updateQuestionList = function() {
+    $.updateQuestionList = function () {
         $("#selectquestions li").each(function () {
             var type = this.className;
             var text = $(this).text();
@@ -327,7 +327,7 @@ $(function () {
             if (ret.startsWith("error:")) {
                 $("div.formerror", f).html(ret.substring(6));
             } else {
-                $(f).html(ret).ready(function() {
+                $(f).html(ret).ready(function () {
                     $(".submitbutton,.bt").button();
                     $.regsettingeditclick(f);
                     $.showHideRegTypes();
@@ -419,29 +419,29 @@ $(function () {
             title: "Filter by Name, Small Groups",
             width: "300px",
             buttons: [{
-                    "text": 'Cancel',
-                    "class": 'bt',
-                    "click": function() {
-                        $("#FilterGroups").dialog("close");
-                    }
-                }, {
-                    "text": 'Clear',
-                    "class": 'bt green',
-                    "click": function() {
-                        $("#namefilter").val('');
-                        $("#sgprefix").val('');
-                        $("#smallgrouplist").val(null);
-                        $.getTable(f);
-                        $("#FilterGroups").dialog("close");
-                    }
-                }, {
-                    "text": 'Ok',
-                    "class": 'blue bt',
-                    "click": function() {
-                        $.getTable(f);
-                        $("#FilterGroups").dialog("close");
-                    }
+                "text": 'Cancel',
+                "class": 'bt',
+                "click": function () {
+                    $("#FilterGroups").dialog("close");
                 }
+            }, {
+                "text": 'Clear',
+                "class": 'bt green',
+                "click": function () {
+                    $("#namefilter").val('');
+                    $("#sgprefix").val('');
+                    $("#smallgrouplist").val(null);
+                    $.getTable(f);
+                    $("#FilterGroups").dialog("close");
+                }
+            }, {
+                "text": 'Ok',
+                "class": 'blue bt',
+                "click": function () {
+                    $.getTable(f);
+                    $("#FilterGroups").dialog("close");
+                }
+            }
             ]
         });
         return false;
@@ -453,22 +453,29 @@ $(function () {
             buttons = d.dialog('option', 'buttons');
             buttons[2].click();
         }
-		return true;
-	});
-    $("body").on("click", '#addsch', function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        $.post("/Organization/NewSchedule", null, function (ret) {
-            $("#schedules", f).append(ret).ready(function () {
-                $.renumberListItems();
-                $.initDatePicker(f);
-            });
-        });
+        return true;
     });
-    $("body").on("click", 'a.deleteschedule', function (ev) {
+    $("#addsch").live("click", function (ev) {
         ev.preventDefault();
-        $(this).parent().remove();
-        $.renumberListItems();
+        var href = $(this).attr("href");
+        if (href) {
+            var f = $(this).closest('form');
+            $.post(href, null, function (ret) {
+                $("#schedules", f).append(ret).ready(function () {
+                    $.renumberListItems();
+                    $.initDatePicker(f);
+                });
+            });
+        }
+        return false;
+    });
+    $("a.deleteschedule").live("click", function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        if (href) {
+            $(this).parent().remove();
+            $.renumberListItems();
+        }
     });
     $.renumberListItems = function () {
         var i = 1;

@@ -128,7 +128,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var staff = Staff[0];
 
                 var summary = m.Summary(this);
-                var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"), ignoreCase:true);
+                var text = Util.PickFirst(m.setting.Body, "confirmation email body not found");
+                text = text.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"), ignoreCase:true);
                 text = text.Replace("{name}", m.Person.Name, ignoreCase:true);
                 text = text.Replace("{date}", DateTime.Now.ToString("d"), ignoreCase:true);
                 text = text.Replace("{email}", m.Person.EmailAddress, ignoreCase:true);
