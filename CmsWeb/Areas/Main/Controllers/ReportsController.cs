@@ -276,7 +276,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new ChurchAttendance2Model(dt1, dt2, skipweeks);
             return View(m);
         }
-        public ActionResult AttendanceDetail(string Dt1, string Dt2, string name, int? divid, int? schedid, int? campusid)
+        public ActionResult AttendanceDetail(string Dt1, string Dt2, string name, int? progid, int? divid, int? schedid, int? campusid)
         {
             var dt1 = Dt1.ToDate();
             if (!dt1.HasValue)

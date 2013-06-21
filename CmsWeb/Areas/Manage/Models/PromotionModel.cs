@@ -133,7 +133,7 @@ namespace CmsWeb.Models
             var q = from om in DbUtil.Db.OrganizationMembers
                     let sc = om.Organization.OrgSchedules.FirstOrDefault() // SCHED
                     where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
-                    where sc.ScheduleId == ScheduleId || ScheduleId == 0
+                    where ScheduleId == 0 || om.Organization.OrgSchedules.Any(os => os.ScheduleId == ScheduleId)
                     where (om.Pending ?? false) == false
                     where !NormalMembersOnly || om.MemberTypeId == MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
@@ -238,11 +238,10 @@ namespace CmsWeb.Models
             {
                 var a = i.Split(',');
                 var q = from om in DbUtil.Db.OrganizationMembers
-                        let sc = om.Organization.OrgSchedules.FirstOrDefault() // SCHED
                         where om.Pending == true
                         where om.PeopleId == a[0].ToInt()
                         where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
-                        where sc.ScheduleId == ScheduleId || ScheduleId == 0
+                        where ScheduleId == 0 || om.Organization.OrgSchedules.Any(os => os.ScheduleId == ScheduleId)
                         select om;
                 // get them out of the class they will be going to first
                 foreach (var pc in q)
