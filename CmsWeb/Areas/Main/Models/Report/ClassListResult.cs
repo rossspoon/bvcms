@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -25,16 +26,26 @@ namespace CmsWeb.Areas.Main.Models.Report
 {
     public class ClassListResult : ActionResult
     {
-        public int? div, schedule, meetingid, orgid;
-        public string name;
+        public int? orgid;
+        private OrgSearchModel model;
+
+        public ClassListResult()
+        {
+            
+        }
+
+        public ClassListResult(OrgSearchModel m)
+        {
+            model = m;
+        }
 
         public override void ExecuteResult(ControllerContext context)
         {
             var Response = context.HttpContext.Response;
 
-            var list1 = ReportList(orgid, div, schedule, name);
+            var list1 = ReportList().ToList();
 
-            if (list1.Count() == 0)
+            if (!list1.Any())
             {
                 Response.Write("no data found");
                 return;
@@ -153,16 +164,14 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Teacher { get; set; }
             public string Location { get; set; }
         }
-        private IEnumerable<OrgInfo> ReportList(int? orgid, int? divid, int? schedule, string name)
+
+        private IEnumerable<OrgInfo> ReportList()
         {
+            var orgs = model.FetchOrgs();
         	var roles = DbUtil.Db.CurrentRoles();
-            var q = from o in DbUtil.Db.Organizations
+            var q = from o in orgs
         	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
-                    where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-                    where o.OrganizationStatusId == OrgStatusCode.Active
-                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,

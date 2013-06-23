@@ -37,16 +37,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             var doc = new Document(PageSize.LETTER, 36, 36, 36, 42);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
 
-            string divtext = "", subdivtext = "";
-            divtext = DbUtil.Db.Programs.Single(p => p.Id == model.prog).Name;
-            subdivtext = DbUtil.Db.Divisions.Where(p => p.Id == model.div).Select(p => p.Name).SingleOrDefault();
-
             string scheduletext = String.Empty;
-            var sdt = CmsData.Organization.GetDateFromScheduleId(model.schedule);
+            var sdt = CmsData.Organization.GetDateFromScheduleId(model.ScheduleId ?? 0);
             if (sdt.HasValue)
                 scheduletext = sdt.Value.ToString("dddd h:mm tt");
 
-            var headtext = "Enrollment Control for {0}:{1} {2}".Fmt(divtext, subdivtext, scheduletext);
+            var headtext = "Enrollment Control Report {0}".Fmt(scheduletext);
             w.PageEvent = new HeadFoot(headtext);
 
 

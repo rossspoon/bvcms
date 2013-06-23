@@ -13,6 +13,7 @@ using CmsData;
 using System.IO;
 using CmsWeb.Areas.Manage.Controllers;
 using CmsWeb.Code;
+using CmsWeb.Models;
 using Dapper;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -59,27 +60,25 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new ContactsResult(id.Value, sortAddress);
         }
-        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight)
+
+        public ActionResult Rollsheet(int? id, string org, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight, OrgSearchModel m)
         {
             var dt2 = dt.ToDate();
-
             return new RollsheetResult
             {
                 qid = id,
                 orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
                 groups = org == "curr" ? Util2.CurrentGroups : new int[] { 0 },
-                pid = pid,
-                div = div,
-                name = name,
-                schedule = schedule,
                 meetingid = meetingid,
                 bygroup = bygroup.HasValue,
                 sgprefix = sgprefix,
                 dt = dt2,
                 altnames = altnames,
                 highlightsg = highlight,
+                Model = m
             };
         }
+
         public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
         {
             var dt2 = dt.ToDate();
@@ -100,40 +99,26 @@ namespace CmsWeb.Areas.Main.Controllers
                 altnames = altnames,
             };
         }
-        public ActionResult OrgLeaders(string org, int? div, int? schedule, string name)
+        public ActionResult OrgLeaders(string org, OrgSearchModel m)
         {
-            return new OrgLeadersResult
-            {
-                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
-                div = div,
-                name = name,
-                schedule = schedule,
-            };
+            return new OrgLeadersResult(m) {orgid = org == "curr" ? (int?) Util2.CurrentOrgId : null};
         }
-        public ActionResult ClassList(string org, int? div, int? schedule, string name)
+        public ActionResult ClassList(string org, OrgSearchModel m)
         {
-            return new ClassListResult
-            {
-                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
-                div = div,
-                name = name,
-                schedule = schedule,
-            };
+            return new ClassListResult(m) { orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null };
         }
         public class ShirtSizeInfo
         {
             public string Size { get; set; }
             public int Count { get; set; }
         }
-        public ActionResult ShirtSizes(string org, int? div, int? schedule, string name)
+        public ActionResult ShirtSizes(string org, OrgSearchModel m)
         {
             var orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null;
+            var orgs = m.FetchOrgs();
             var q = from om in DbUtil.Db.OrganizationMembers
-                    let o = om.Organization
-                    where o.OrganizationName.Contains(name) || name.Length == 0
-                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
-                    where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
-                    where om.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
+                    join o in orgs on om.OrganizationId equals o.OrganizationId
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
                     group 1 by om.ShirtSize into g
                     select new ShirtSizeInfo
                     {
@@ -142,26 +127,17 @@ namespace CmsWeb.Areas.Main.Controllers
                     };
             return View(q);
         }
-        public ActionResult Roster1(int? queryid, int? org, int? div, int? schedule, string name, string tm)
+        public ActionResult Roster1(int? id, int? oid)
         {
             return new RosterResult
             {
-                qid = queryid,
-                org = org,
-                div = div,
-                schedule = schedule,
-                tm = tm,
+                qid = id,
+                org = oid,
             };
         }
-        public ActionResult Roster(int? org, int? div, int? schedule, string name)
+        public ActionResult Roster(OrgSearchModel m)
         {
-            return new RosterListResult
-            {
-                orgid = org,
-                div = div,
-                schedule = schedule,
-                name = name,
-            };
+            return new RosterListResult(m);
         }
         public ActionResult Avery(int? id)
         {
@@ -276,7 +252,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new ChurchAttendance2Model(dt1, dt2, skipweeks);
             return View(m);
         }
-        public ActionResult AttendanceDetail(string Dt1, string Dt2, string name, int? progid, int? divid, int? schedid, int? campusid)
+        public ActionResult AttendanceDetail(string Dt1, string Dt2, OrgSearchModel m)
         {
             var dt1 = Dt1.ToDate();
             if (!dt1.HasValue)
@@ -284,21 +260,41 @@ namespace CmsWeb.Areas.Main.Controllers
             var dt2 = Dt2.ToDate();
             if (!dt2.HasValue)
                 dt2 = dt1.Value.AddDays(1);
-            var m = new AttendanceDetailModel(dt1.Value, dt2, name, divid, schedid, campusid);
-            return View(m);
+            var m2 = new AttendanceDetailModel(dt1.Value, dt2, m);
+            return View(m2);
         }
-        public ActionResult RecentAbsents(int? id, int? divid, int? days)
+        public ActionResult RecentAbsents1(int? id)
         {
-            var ca = DbUtil.Db.ConsecutiveAbsents(id, divid, days).AsEnumerable();
+            var ca = DbUtil.Db.ConsecutiveAbsents(id, null, null).AsEnumerable();
+            return Content("ok");
+        }
 
+        [HttpPost]
+        public ActionResult RecentAbsents(OrgSearchModel m)
+        {
             var cn = new SqlConnection(Util.ConnectionString);
             cn.Open();
-            var q = cn.Query("RecentAbsentsSP", new { orgid = id, divid = divid, days = days ?? 36 },
-                commandType: CommandType.StoredProcedure, commandTimeout: 600);
+            var q = cn.Query("RecentAbsentsSP2", new {
+                name = m.Name,
+                prog = m.ProgramId,
+                div = m.DivisionId,
+                type = m.TypeId,
+                campus = m.CampusId,
+                sched = m.ScheduleId,
+                status = m.StatusId,
+                onlinereg = m.OnlineReg,
+                mainfellowship = m.MainFellowship,
+                parentorg = m.ParentOrg
+             }, commandType: CommandType.StoredProcedure, commandTimeout: 600);
             return View(q);
         }
+
         public ActionResult Meetings(MeetingsModel m)
         {
+            if (m.FromOrgSearch)
+                m.Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
+            if(!m.Dt2.HasValue)
+                m.Dt2 = m.Dt1.Value.AddDays(1);
             return View(m);
         }
         public ActionResult Test()
@@ -459,65 +455,48 @@ namespace CmsWeb.Areas.Main.Controllers
                 Response.Write("</table>");
             }
         }
-        public ActionResult EnrollmentControl(int pid, int? div, int? schedule, string name, bool? usecurrenttag, bool? excel)
+        public ActionResult EnrollmentControl(bool? excel, EnrollmentControlModel m)
         {
-            var m = new EnrollmentControlModel()
-            {
-                prog = pid,
-                div = div ?? 0,
-                schedule = schedule ?? 0,
-                usecurrenttag = usecurrenttag ?? false
-            };
+            if (excel != true)
+                return new EnrollmentControlResult {model = m};
 
-            if (excel == true)
+            var d = from p in m.list()
+                    orderby p.Name
+                    select p;
+            var workbook = new HSSFWorkbook(); // todo: Convert all Excel exports to this approach
+            var sheet = workbook.CreateSheet("EnrollmentControl");
+            var rowIndex = 0;
+            var row = sheet.CreateRow(rowIndex);
+            row.CreateCell(0).SetCellValue("PeopleId");
+            row.CreateCell(1).SetCellValue("Name");
+            row.CreateCell(2).SetCellValue("Organization");
+            row.CreateCell(3).SetCellValue("Location");
+            row.CreateCell(4).SetCellValue("MemberType");
+            rowIndex++;
+            sheet.DisplayRowColHeadings = true;
+
+            foreach (var i in d)
             {
-                var d = from p in m.list()
-                        orderby p.Name
-                        select p;
-                var workbook = new HSSFWorkbook();
-                var sheet = workbook.CreateSheet("EnrollmentControl");
-                var rowIndex = 0;
-                var row = sheet.CreateRow(rowIndex);
-                row.CreateCell(0).SetCellValue("PeopleId");
-                row.CreateCell(1).SetCellValue("Name");
-                row.CreateCell(2).SetCellValue("Organization");
-                row.CreateCell(3).SetCellValue("Location");
-                row.CreateCell(4).SetCellValue("MemberType");
+                row = sheet.CreateRow(rowIndex);
+                row.CreateCell(0).SetCellValue(i.Id);
+                row.CreateCell(1).SetCellValue(i.Name);
+                row.CreateCell(2).SetCellValue(i.Organization);
+                row.CreateCell(3).SetCellValue(i.Location);
+                row.CreateCell(4).SetCellValue(i.MemberType);
                 rowIndex++;
-                sheet.DisplayRowColHeadings = true;
-
-                foreach (var i in d)
-                {
-                    row = sheet.CreateRow(rowIndex);
-                    row.CreateCell(0).SetCellValue(i.Id);
-                    row.CreateCell(1).SetCellValue(i.Name);
-                    row.CreateCell(2).SetCellValue(i.Organization);
-                    row.CreateCell(3).SetCellValue(i.Location);
-                    row.CreateCell(4).SetCellValue(i.MemberType);
-                    rowIndex++;
-                }
-                sheet.AutoSizeColumn(0);
-                sheet.AutoSizeColumn(1);
-                sheet.AutoSizeColumn(2);
-                sheet.AutoSizeColumn(3);
-                sheet.AutoSizeColumn(4);
-                string saveAsFileName = string.Format("EnrollmentControl-{0:d}.xls", DateTime.Now);
-                var ms = new MemoryStream(); 
-                workbook.Write(ms); 
-                return File(ms.ToArray(), "application/vnd.ms-excel", "attachment;filename=" + saveAsFileName);
             }
-            else
-                return new EnrollmentControlResult { model = m };
+            sheet.AutoSizeColumn(0);
+            sheet.AutoSizeColumn(1);
+            sheet.AutoSizeColumn(2);
+            sheet.AutoSizeColumn(3);
+            sheet.AutoSizeColumn(4);
+            string saveAsFileName = string.Format("EnrollmentControl-{0:d}.xls", DateTime.Now);
+            var ms = new MemoryStream(); 
+            workbook.Write(ms); 
+            return File(ms.ToArray(), "application/vnd.ms-excel", "attachment;filename=" + saveAsFileName);
         }
-        public ActionResult EnrollmentControl2(int pid, int? div, int? schedule, string name, bool? usecurrenttag)
+        public ActionResult EnrollmentControl2(EnrollmentControlModel m)
         {
-            var m = new EnrollmentControlModel()
-            {
-                prog = pid,
-                div = div ?? 0,
-                schedule = schedule ?? 0,
-                usecurrenttag = usecurrenttag ?? false
-            };
             return View(m);
         }
     }

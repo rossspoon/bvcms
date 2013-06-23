@@ -10,19 +10,29 @@
     <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/Meeting/meetings.js")"></script>
 }
 <h2>Meetings</h2>
-<form>
-Meeting Dates:
-    Start: <input type="text" id="Dt1" name="Dt1" value="@Model.Dt1.ToString2("g")" style="width: 100px; font-size: 110%" class="datepicker" />
-    End: <input type="text" id="Dt2" name="Dt2" value="@Model.Dt2.ToString2("g")" style="width: 100px; font-size: 110%" disabled="disabled" />
-No Zero Meetings: @Html.CheckBox("NoZero")
-@Html.Hidden("Name")
-@Html.Hidden("StatusId")
-@Html.Hidden("ProgId")
-@Html.Hidden("DivId")
-@Html.Hidden("SchedId")
-@Html.Hidden("CampusId")
-@Html.Hidden("Sort")
-@Html.Hidden("Dir")
+<form id="meetingsform" action="/Reports/Meetings" method="POST">
+    Meeting Dates:
+    @if (!Model.FromWeekAtAGlance)
+    {
+        @:Start: <input type = "text" id = "Dt1" name = "Dt1" value = "@Model.Dt1.ToString2("g")" style = "width: 200px; font-size: 110%" class="datepicker" />
+        @:End: <input type = "text" id = "Dt2" name = "Dt2" value="@Model.Dt2.ToString2("g")" style = "width: 200px; font-size: 110%" class="datepicker" />
+    }
+    else
+    {
+        @:Start: @Model.Dt1.FormatDateTm()
+        @:End: @Model.Dt2.FormatDateTm()
+        @Html.HiddenFor(m => m.Dt1)
+        @Html.HiddenFor(m => m.Dt2)
+    }
+    @Html.HiddenFor(m => m.FromWeekAtAGlance)
+    @Html.HiddenFor(m => m.Name)
+    @Html.HiddenFor(m => m.StatusId)
+    @Html.HiddenFor(m => m.ProgramId)
+    @Html.HiddenFor(m => m.DivisionId)
+    @Html.HiddenFor(m => m.ScheduleId)
+    @Html.HiddenFor(m => m.CampusId)
+    @Html.HiddenFor(m => m.Sort)
+    @Html.HiddenFor(m => m.Direction)
 </form>
 <hr />
 <table class="grid" cellspacing="3">

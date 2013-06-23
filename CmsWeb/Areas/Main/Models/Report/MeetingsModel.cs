@@ -8,36 +8,18 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
-    public class MeetingsModel
+    public class MeetingsModel : OrgSearchModel
     {
-        internal DateTime? _Dt1;
-        public DateTime? Dt1
-        {
-            get
-            {
-                if (!_Dt1.HasValue)
-                    _Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
-                return _Dt1;
-            }
-            set
-            {
-                _Dt1 = value;
-            }
-        }
+        public DateTime? Dt1 { get; set; }
         public DateTime? Dt2 { get; set; }
-        public string Name { get; set; }
-        public int? StatusId { get; set; }
-        public int? ProgId { get; set; }
-        public int? DivId { get; set; }
-        public int? SchedId { get; set; }
-        public int? CampusId { get; set; }
-        public string Sort { get; set; }
-        public string Dir { get; set; }
+
         public bool NoZero { get; set; }
+        public bool FromWeekAtAGlance { get; set; }
 
         public MeetingsModel()
         {
-            Dir = "asc";
+            StatusId = CmsData.Codes.OrgStatusCode.Active;
+            Direction = "asc";
             Sort = "Time";
         }
 
@@ -46,59 +28,12 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int OtherAttends { get; set; }
         public int TotalPeople { get; set; }
 
-        private IQueryable<CmsData.Organization> ApplySearch(IQueryable<CmsData.Organization> query)
-        {
-            if (Name.HasValue())
-            {
-                if (Name.AllDigits())
-                    query = from o in query
-                            where o.OrganizationId == Name.ToInt()
-                            select o;
-                else
-                    query = from o in query
-                            where o.OrganizationName.Contains(Name)
-                                || o.LeaderName.Contains(Name)
-                                || o.Location.Contains(Name)
-                                || o.DivOrgs.Any(t => t.Division.Name.Contains(Name))
-                            select o;
-            }
-            if (DivId > 0)
-                query = from o in query
-                        where o.DivOrgs.Any(t => t.DivId == DivId)
-                        select o;
-            else if (ProgId > 0)
-                query = from o in query
-                        where o.DivOrgs.Any(t => t.Division.ProgId == ProgId)
-                        select o;
-
-            if (SchedId > 0)
-                query = from o in query
-                        where o.OrgSchedules.Any(os => os.ScheduleId == SchedId)
-                        select o;
-
-            if (StatusId > 0)
-                query = from o in query
-                        where o.OrganizationStatusId == StatusId
-                        select o;
-
-            if (CampusId > 0)
-                query = from o in query
-                        where o.CampusId == CampusId
-                        select o;
-
-            return query;
-        }
         public IEnumerable<MeetingInfo> MeetingsForDate()
         {
-            var name = HttpContext.Current.Server.UrlDecode(Name);
-            var q = DbUtil.Db.Organizations.Select(o => o);
-            q = ApplySearch(q);
-            var tdt2 = Dt2;
-            if (!tdt2.HasValue)
-                tdt2 = Dt1.Value.AddHours(24);
+            var q = FetchOrgs();
             var q2 = from o in q
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
-                     from m in mr.Where(m => m.MeetingDate >= Dt1 && m.MeetingDate < tdt2).DefaultIfEmpty()
+                     from m in mr.Where(m => m.MeetingDate >= Dt1 && m.MeetingDate <= Dt2).DefaultIfEmpty()
                      where !(o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Inactive && (m == null || m.NumPresent == 0))
                      where (m != null && m.NumPresent > 0) || NoZero == false
                      let div = o.Division
@@ -117,7 +52,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                          OtherAttends = m.NumOtherAttends,
                          Inactive = o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Inactive
                      };
-            switch (Dir)
+            switch (Direction)
             {
                 case "asc":
                     switch (Sort)
@@ -162,12 +97,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
             var list = q2.ToList();
 
-            MeetingsCount = list.Where(a => a.Attended > 0).Count();
+            MeetingsCount = list.Count(a => a.Attended > 0);
             TotalAttends = list.Sum(m => m.Attended ?? 0);
             OtherAttends = list.Sum(m => m.OtherAttends ?? 0);
             var q3 = from o in q
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
-                     from m in mr.Where(m => m.MeetingDate >= Dt1 && m.MeetingDate < tdt2)
+                     from m in mr.Where(m => m.MeetingDate >= Dt1 && m.MeetingDate <= Dt2)
                      let div = o.Division
                      from a in m.Attends
                      where a.AttendanceFlag == true

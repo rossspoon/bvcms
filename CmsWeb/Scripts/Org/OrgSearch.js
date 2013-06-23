@@ -189,15 +189,15 @@
         ev.preventDefault();
         hideDropdowns();
         var did = $('#DivisionId').val();
-        if (did == '0') {
-            $.growlUI("error", 'must choose division');
-            return false;
-        }
-        if (!confirm("This will send email notices to leaders, continue?"))
+//        if (did == '0') {
+//            $.growlUI("error", 'must choose division');
+//            return false;
+//        }
+        if (!confirm("This will send email notices to leaders based on your filters, continue?"))
             return false;
         $.block();
         var q = $("#orgsearchform").serialize();
-        $.post("/OrgSearch/EmailAttendanceNotices/" + did, q, function () {
+        $.post("/OrgSearch/EmailAttendanceNotices", q, function () {
             $.unblock();
             $.growlUI("complete", "Email Notices Sent");
         });
@@ -214,79 +214,59 @@
         ev.preventDefault();
         hideDropdowns();
         $('div.dialog').dialog('close');
-        var pid = $('#ProgramId').val();
-        var did = $('#DivisionId').val();
-        if (pid == '0') {
-            $.growlUI("error", 'must choose program');
-            return false;
-        }
-        var args = "?div=" + did + "&pid=" + pid +
-               "&schedule=" + $('#ScheduleId').val() +
-               "&name=" + $('#Name').val() +
-               "&dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
+        var args = "?dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
         if ($('#altnames').is(":checked"))
             args += "&altnames=true";
+
         if ($('#rallymode').is(":checked"))
-            window.open("/Reports/RallyRollsheet/" + args);
+            $("#orgsearchform").attr("action", "/Reports/RallyRollsheet" + args);
         else
-            window.open("/Reports/Rollsheet/" + args);
+            $("#orgsearchform").attr("action", "/Reports/Rollsheet" + args);
+        $("#orgsearchform").submit();
         return false;
     });
     $('#ExportExcel').click(function (ev) {
         ev.preventDefault();
-        $('div.dialog').dialog('close');
-        var args = "?prog=" + $('#ProgramId').val() +
-               "&div=" + $('#DivisionId').val() +
-               "&schedule=" + $('#ScheduleId').val() +
-               "&status=" + $('#StatusId').val() +
-               "&campus=" + $('#CampusId').val() +
-               "&name=" + $('#Name').val();
-        window.open("/OrgSearch/ExportExcel/" + args);
+        hideDropdowns();
+        $("#orgsearchform").attr("action", "/OrgSearch/ExportExcel");
+        $("#orgsearchform").submit();
         return false;
     });
     $('#Meetings').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
-        var args = "?progid=" + $('#ProgramId').val() +
-               "&divid=" + $('#DivisionId').val() +
-               "&schedid=" + $('#ScheduleId').val() +
-               "&campusid=" + $('#CampusId').val() +
-               "&statusid=" + $('#StatusId').val() +
-               "&name=" + $('#Name').val();
-        window.open("/Reports/Meetings" + args);
+        hideDropdowns();
+        $("#orgsearchform").attr("action", "/Reports/Meetings");
+        $("#orgsearchform").submit();
+        return false;
+    });
+    $('#Structure').click(function (ev) {
+        ev.preventDefault();
+        hideDropdowns();
+        $("#orgsearchform").attr("action", "/OrgSearch/OrganizationStructure");
+        $("#orgsearchform").submit();
         return false;
     });
     $('#RecentAbsents').click(function (ev) {
         ev.preventDefault();
         hideDropdowns();
-        var loc = "/Reports/RecentAbsents";
-        if ($('#DivisionId').val() > 0)
-            loc = loc.appendQuery("divid=" + $('#DivisionId').val());
-        window.open(loc);
+        $("#orgsearchform").attr("action", "/Reports/RecentAbsents");
+        $("#orgsearchform").submit();
         return false;
     });
     $('#attdetail2').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
-        var args = "?progid=" + $('#ProgramId').val() +
-               "&divid=" + $('#DivisionId').val() +
-               "&schedid=" + $('#ScheduleId').val() +
-               "&name=" + $('#Name').val() +
-               "&dt1=" + $('#MeetingDate1').val() +
-               "&dt2=" + $('#MeetingDate2').val();
-        window.open("/Reports/AttendanceDetail" + args);
+        var args = "?dt1=" + $('#MeetingDate1').val() + "&dt2=" + $('#MeetingDate2').val();
+        $("#orgsearchform").attr("action", "/Reports/AttendanceDetail" + args);
+        $("#orgsearchform").submit();
         return false;
     });
     $('#Roster').click(function (ev) {
         ev.preventDefault();
         hideDropdowns();
-        var did = $('#DivisionId').val();
-        if (did == '0') {
-            $.growlUI("error", 'must choose division');
-            return false;
-        }
-        var args = "?div=" + did + "&schedule=" + $('#ScheduleId').val();
-        window.open("/Reports/Roster/" + args);
+        $("#orgsearchform").attr("action", "/Reports/Roster");
+        $("#orgsearchform").submit();
         return false;
     });
     $('#PasteSettings').click(function (ev) {
@@ -316,15 +296,14 @@
     $('a.ViewReport').click(function (ev) {
         ev.preventDefault();
         hideDropdowns();
-        var did = $('#DivisionId').val();
-        if (did == '0') {
-            $.growlUI("error", 'must choose division');
-            return false;
-        }
-        var args = "?div=" + did +
-            "&schedule=" + $('#ScheduleId').val() +
-            "&name=" + $('#Name').val();
-        window.open($(this).attr("href") + args);
+//        var did = $('#DivisionId').val();
+//        if (did == '0') {
+//            $.growlUI("error", 'must choose division');
+//            return false;
+//        }
+        var href = $(this).attr("href");
+        $("#orgsearchform").attr("action", href);
+        $("#orgsearchform").submit();
         return false;
     });
     $('body').on('click', 'a.taguntag', function (ev) {
@@ -367,36 +346,33 @@
         ev.preventDefault();
         hideDropdowns();
         $('div.dialog').dialog('close');
-        var pid = $('#ProgramId').val();
-        var did = $('#DivisionId').val();
-        if (pid == '0') {
-            $.growlUI("error", 'must choose program');
-            return false;
-        }
-        var args = "?div=" + did + "&pid=" + pid +
-            "&schedule=" + $('#ScheduleId').val() +
-            "&name=" + $('#Name').val();
+//        var pid = $('#ProgramId').val();
+//        var did = $('#DivisionId').val();
+//        if (pid == '0') {
+//            $.growlUI("error", 'must choose program');
+//            return false;
+//        }
+        var url = "/Reports/EnrollmentControl";
         if ($('#enrcontrolfiltertag').is(":checked"))
-            args += "&usecurrenttag=true";
+            url = url.appendQuery("usecurrenttag=true");
         if ($('#enrcontrolexcel').is(":checked"))
-            args += "&excel=true";
-        window.open("/Reports/EnrollmentControl/" + args);
+            url = url.appendQuery("excel=true");
+        $("#orgsearchform").attr("action", url);
+        $("#orgsearchform").submit();
         return false;
     });
     $('#enrollmentcontrol2i').click(function (ev) {
         ev.preventDefault();
         hideDropdowns();
         $('div.dialog').dialog('close');
-        var pid = $('#ProgramId').val();
-        var did = $('#DivisionId').val();
-        if (pid == '0') {
-            $.growlUI("error", 'must choose program');
-            return false;
-        }
-        var args = "?div=" + did + "&pid=" + pid +
-            "&schedule=" + $('#ScheduleId').val() +
-            "&name=" + $('#Name').val();
-        window.open("/Reports/EnrollmentControl2/" + args);
+//        var pid = $('#ProgramId').val();
+//        var did = $('#DivisionId').val();
+//        if (pid == '0') {
+//            $.growlUI("error", 'must choose program');
+//            return false;
+//        }
+        $("#orgsearchform").attr("action", "/Reports/EnrollmentControl2");
+        $("#orgsearchform").submit();
         return false;
     });
 });

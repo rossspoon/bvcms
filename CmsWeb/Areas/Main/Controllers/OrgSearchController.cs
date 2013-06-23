@@ -113,17 +113,9 @@ namespace CmsWeb.Areas.Main.Controllers
             var dt = OrgSearchModel.DefaultMeetingDate(id);
             return Json(new { date = dt.Date.ToShortDateString(), time = dt.ToShortTimeString() });
         }
-        public ActionResult ExportExcel(int prog, int div, int schedule, int status, int campus, string name)
+        [HttpPost]
+        public ActionResult ExportExcel(OrgSearchModel m)
         {
-            var m = new OrgSearchModel
-            {
-                ProgramId = prog,
-                DivisionId = div,
-                ScheduleId = schedule,
-                StatusId = status,
-                CampusId = campus,
-                Name = name
-            };
             return new OrgExcelResult(m);
         }
         private void SaveToSession(OrgSearchModel m)
@@ -194,18 +186,15 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult PasteSettings(OrgSearchModel m)
         {
             var frorg = (int)Session["OrgCopySettings"];
-            foreach (var o in m.OrganizationList())
-            {
-                var toorg = DbUtil.Db.LoadOrganizationById(o.Id);
-                toorg.CopySettings(DbUtil.Db, frorg);
-            }
+            foreach (var o in m.FetchOrgs())
+                o.CopySettings(DbUtil.Db, frorg);
             return new EmptyResult();
         }
         [HttpPost]
         public ActionResult RepairTransactions(OrgSearchModel m)
         {
-            foreach (var o in m.OrganizationList())
-                DbUtil.Db.PopulateComputedEnrollmentTransactions(o.Id);
+            foreach (var o in m.FetchOrgs())
+                DbUtil.Db.PopulateComputedEnrollmentTransactions(o.OrganizationId);
             return new EmptyResult();
         }
         [HttpPost]
@@ -263,15 +252,12 @@ namespace CmsWeb.Areas.Main.Controllers
             m.SendNotices(this);
             return Content("ok");
         }
-        [HttpGet]
-        public ActionResult OrganizationStructure(bool? active)
+        public ActionResult OrganizationStructure(bool? active, OrgSearchModel m)
         {
-            var q = from o in DbUtil.Db.ViewOrganizationStructures
-                    select o;
-            if (active == true)
-                q = q.Where(o => o.OrgStatus == "Active");
-            else if (active == false)
-                q = q.Where(o => o.OrgStatus != "Active");
+            var orgs = m.FetchOrgs();
+            var q = from os in DbUtil.Db.ViewOrganizationStructures
+                    join o in orgs on os.OrgId equals o.OrganizationId
+                    select os;
             return View(q.OrderBy(oo => oo.Program).ThenBy(oo => oo.Division).ThenBy(oo => oo.Organization));
         }
 

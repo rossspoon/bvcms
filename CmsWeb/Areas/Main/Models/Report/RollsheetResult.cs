@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -35,11 +36,13 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string NameParent2 { get; set; }
             public string VisitorType { get; set; }
         }
-        public int? qid, pid, div, schedule, meetingid, orgid;
+
+        public OrgSearchModel Model;
+        public int? qid, meetingid, orgid;
         public int[] groups;
         public bool? bygroup;
         public bool? altnames;
-        public string name, sgprefix, highlightsg;
+        public string sgprefix, highlightsg;
         public DateTime? dt;
         bool pageSetStarted;
         private bool hasRows;
@@ -56,11 +59,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 orgid = meeting.OrganizationId;
             }
 
-            IEnumerable<OrgInfo> list1;
-            if (bygroup == true)
-                list1 = ReportList2(orgid, pid, div, schedule, name, sgprefix);
-            else
-                list1 = ReportList(orgid, groups, pid, div, schedule, name);
+            var list1 = bygroup == true ? ReportList2().ToList() : ReportList().ToList();
 
             if (!list1.Any())
             {
@@ -86,8 +85,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             box.CellEvent = new CellEvent();
             List<PdfPTable> list = null;
 
+            OrgInfo lasto = null;
             foreach (var o in list1)
             {
+                lasto = o;
                 list = new List<PdfPTable>();
                 if (meeting != null)
                 {
@@ -104,7 +105,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                                at.PeopleId,
                                                at.Person.DOB,
                                            };
-                        if (q.Count() > 0)
+                        if (q.Any())
                             StartPageSet(o);
                         foreach (var a in q)
                             list.Add(AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font));
@@ -129,7 +130,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                                at.PeopleId,
                                                at.Person.DOB,
                                            };
-                        if (q.Count() > 0)
+                        if (q.Any())
                             StartPageSet(o);
                         foreach (var a in q)
                             list.Add(AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font));
@@ -163,7 +164,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                 ch,
                                 highlight = om.OrgMemMemTags.Any(mm => mm.MemberTag.Name == highlightsg) ? highlightsg : ""
                             };
-                    if (q.Count() > 0)
+                    if (q.Any())
                         StartPageSet(o);
                     foreach (var m in q)
                         list.Add(AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.highlight, m.ch ? china : font));
@@ -213,16 +214,14 @@ namespace CmsWeb.Areas.Main.Models.Report
                     status = ct.Go();
                 }
             }
-            if(!hasRows)
+            if (!hasRows)
+            {
+                if (!pageSetStarted)
+                    StartPageSet(lasto);
                 doc.Add(new Paragraph("no members as of this meeting date and time to show on rollsheet"));
+            }
             doc.Close();
         }
-        private static int[] VisitAttendTypes = new int[] 
-        { 
-            AttendTypeCode.VisitingMember,
-            AttendTypeCode.RecentVisitor, 
-            AttendTypeCode.NewVisitor 
-        };
 
         public class MemberInfo
         {
@@ -304,17 +303,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Location { get; set; }
             public int[] Groups { get; set; }
         }
-        private IEnumerable<OrgInfo> ReportList(int? orgid, int[] groups, int? progid, int? divid, int? schedule, string name)
+        private IEnumerable<OrgInfo> ReportList()
         {
             var roles = DbUtil.Db.CurrentRoles();
-            var q = from o in DbUtil.Db.Organizations
+            var q = from o in Model.FetchOrgs()
                     where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
-                    where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
-                    where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-                    where o.OrganizationStatusId == OrgStatusCode.Active
-                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || o.Location.Contains(name) || name == "" || name == null
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
                     orderby o.Division.Name, o.OrganizationName
                     select new OrgInfo
                     {
@@ -327,19 +321,14 @@ namespace CmsWeb.Areas.Main.Models.Report
                     };
             return q;
         }
-        private IEnumerable<OrgInfo> ReportList2(int? orgid, int? progid, int? divid, int? schedule, string name, string sgprefix)
+        private IEnumerable<OrgInfo> ReportList2()
         {
             var roles = DbUtil.Db.CurrentRoles();
-            var q = from o in DbUtil.Db.Organizations
+            var q = from o in Model.FetchOrgs()
                     where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     from sg in o.MemberTags
-                    where sgprefix == null || sgprefix == "" || sg.Name.StartsWith(sgprefix)
-                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
-                    where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
-                    where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-                    where o.OrganizationStatusId == OrgStatusCode.Active
-                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
+                    where (sgprefix ?? "") == "" || sg.Name.StartsWith(sgprefix)
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,

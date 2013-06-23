@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -23,10 +24,8 @@ using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
-    public class EnrollmentControlModel
+    public class EnrollmentControlModel : OrgSearchModel
     {
-        public int prog, div, schedule;
-        public string name;
         public bool usecurrenttag;
 
         public class MemberInfo
@@ -39,15 +38,9 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         public IEnumerable<MemberInfo> list()
         {
+            var orgs = FetchOrgs();
             var q = from m in DbUtil.Db.OrganizationMembers
-                    where m.Organization.DivOrgs.Any(t => t.Division.ProgId == prog)
-                    where m.Organization.DivOrgs.Any(t => t.DivId == div) || div == 0
-                    where m.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0
-                    where m.Organization.OrganizationStatusId == OrgStatusCode.Active
-                    select m;
-            if(name.HasValue())
-                q = from m in q
-                    where m.Organization.OrganizationName.Contains(name)
+                    join o in orgs on m.OrganizationId equals o.OrganizationId
                     select m;
             if (usecurrenttag)
             {
