@@ -265,12 +265,16 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult RecentAbsents1(int? id)
         {
-            var ca = DbUtil.Db.ConsecutiveAbsents(id, null, null).AsEnumerable();
-            return Content("ok");
+            int? divid = null;
+            var cn = new SqlConnection(Util.ConnectionString);
+            cn.Open();
+            var q = cn.Query("RecentAbsentsSP", new { orgid = id, divid = divid, days = 36 },
+                            commandType: CommandType.StoredProcedure, commandTimeout: 600);
+            return View("RecentAbsents", q); 
         }
 
         [HttpPost]
-        public ActionResult RecentAbsents(OrgSearchModel m)
+        public ActionResult RecentAbsents(int? id, OrgSearchModel m)
         {
             var cn = new SqlConnection(Util.ConnectionString);
             cn.Open();
