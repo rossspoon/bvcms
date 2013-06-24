@@ -25,8 +25,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 {
     public class RosterResult : ActionResult
     {
-        public int? qid, org, div, schedule;
-        public string tm;
+        public int? qid, org;
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -43,10 +42,11 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             if (qid.HasValue)
             {
-                var o = list(org, null, null).First();
+                var o = list(org).First();
                 StartPageSet(o);
                 var q = DbUtil.Db.PeopleQuery(qid.Value);
                 var q2 = from p in q
+                         let rr = p.GetRecReg()
                          join m in RollsheetModel.FetchOrgMembers(o.OrgId, null) on p.PeopleId equals m.PeopleId into j
                          from m in j.DefaultIfEmpty()
                          orderby p.Name2
@@ -55,16 +55,17 @@ namespace CmsWeb.Areas.Main.Models.Report
                              p.Name,
                              MembertypeCode = (m == null ? "V" : m.MemberTypeCode),
                              p.PeopleId,
+                             rr.MedicalDescription
                          };
                 foreach (var i in q2)
-                    AddRow(i.MembertypeCode, i.Name, i.PeopleId, font);
+                    AddRow(i.MembertypeCode, i.Name, i.MedicalDescription, i.PeopleId, font);
                 if (t.Rows.Count > 1)
                     doc.Add(t);
                 else
                     doc.Add(new Phrase("no data"));
             }
             else
-                foreach (var o in list(org, div, schedule))
+                foreach (var o in list(org))
                 {
                     var q = from m in RollsheetModel.FetchOrgMembers(o.OrgId, null)
                             orderby m.Name2
@@ -74,7 +75,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                 m.MemberType,
                                 m.PeopleId,
                             };
-                    if (q.Count() == 0)
+                    if (!q.Any())
                         continue;
                     StartPageSet(o);
                     foreach (var i in q)
@@ -128,12 +129,11 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.AddCell(new Phrase("Medical", boldfont));
             pagesetstarted = true;
         }
-        private void AddRow(string Code, string name, int pid, Font font)
+        private void AddRow(string Code, string name, string med, int pid, Font font)
         {
             t.AddCell(pid.ToString());
             t.AddCell(name);
             t.AddCell(Code);
-            string med = "see registration card";
             t.AddCell(med);
         }
         private class OrgInfo
@@ -144,14 +144,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Teacher { get; set; }
             public string Location { get; set; }
         }
-        private IEnumerable<OrgInfo> list(int? orgid, int? divid, int? schedule)
+        private IEnumerable<OrgInfo> list(int? orgid)
         {
         	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
         	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
-                    where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     select new OrgInfo
                     {

@@ -77,8 +77,9 @@ CKEditorFuncNum, baseurl + fn, error));
             return Content("error");
         }
 
-        public ActionResult Error()
+        public ActionResult Error(string e)
         {
+            ViewBag.Message = e;
             return View();
         }
 		[MyRequireHttps]

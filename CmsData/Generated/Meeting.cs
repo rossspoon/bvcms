@@ -49,6 +49,8 @@ namespace CmsData
 		
 		private int? _AttendCreditId;
 		
+		private int? _ScheduleId;
+		
    		
    		private EntitySet< Attend> _Attends;
 		
@@ -115,6 +117,9 @@ namespace CmsData
 		
 		partial void OnAttendCreditIdChanging(int? value);
 		partial void OnAttendCreditIdChanged();
+		
+		partial void OnScheduleIdChanging(int? value);
+		partial void OnScheduleIdChanged();
 		
     #endregion
 		public Meeting()
@@ -488,6 +493,28 @@ namespace CmsData
 					this._AttendCreditId = value;
 					this.SendPropertyChanged("AttendCreditId");
 					this.OnAttendCreditIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int", IsDbGenerated=true)]
+		public int? ScheduleId
+		{
+			get { return this._ScheduleId; }
+
+			set
+			{
+				if (this._ScheduleId != value)
+				{
+				
+                    this.OnScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleId = value;
+					this.SendPropertyChanged("ScheduleId");
+					this.OnScheduleIdChanged();
 				}
 
 			}

@@ -169,7 +169,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="First", Storage="_First", DbType="varchar(25)")]
+		[Column(Name="First", Storage="_First", DbType="varchar(100)")]
 		public string First
 		{
 			get
@@ -186,7 +186,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PreferredName", Storage="_PreferredName", DbType="varchar(25)")]
+		[Column(Name="PreferredName", Storage="_PreferredName", DbType="varchar(100)")]
 		public string PreferredName
 		{
 			get
@@ -203,7 +203,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Last", Storage="_Last", DbType="varchar(30)")]
+		[Column(Name="Last", Storage="_Last", DbType="varchar(100)")]
 		public string Last
 		{
 			get
@@ -271,7 +271,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Class", Storage="_ClassX", DbType="varchar(50)")]
+		[Column(Name="Class", Storage="_ClassX", DbType="varchar(100)")]
 		public string ClassX
 		{
 			get
@@ -288,7 +288,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Leader", Storage="_Leader", DbType="varchar(50)")]
+		[Column(Name="Leader", Storage="_Leader", DbType="varchar(100)")]
 		public string Leader
 		{
 			get
@@ -322,7 +322,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Location", Storage="_Location", DbType="varchar(60)")]
+		[Column(Name="Location", Storage="_Location", DbType="varchar(100)")]
 		public string Location
 		{
 			get
@@ -424,7 +424,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="goesby", Storage="_Goesby", DbType="varchar(25)")]
+		[Column(Name="goesby", Storage="_Goesby", DbType="varchar(100)")]
 		public string Goesby
 		{
 			get
@@ -441,7 +441,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="email", Storage="_Email", DbType="varchar(50)")]
+		[Column(Name="email", Storage="_Email", DbType="varchar(100)")]
 		public string Email
 		{
 			get
@@ -458,7 +458,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="addr", Storage="_Addr", DbType="varchar(50)")]
+		[Column(Name="addr", Storage="_Addr", DbType="varchar(100)")]
 		public string Addr
 		{
 			get
@@ -492,7 +492,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="home", Storage="_Home", DbType="varchar(15)")]
+		[Column(Name="home", Storage="_Home", DbType="varchar(20)")]
 		public string Home
 		{
 			get
@@ -509,7 +509,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="cell", Storage="_Cell", DbType="varchar(15)")]
+		[Column(Name="cell", Storage="_Cell", DbType="varchar(20)")]
 		public string Cell
 		{
 			get
@@ -594,7 +594,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="emfriend", Storage="_Emfriend", DbType="varchar(50)")]
+		[Column(Name="emfriend", Storage="_Emfriend", DbType="varchar(100)")]
 		public string Emfriend
 		{
 			get
@@ -611,7 +611,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="emphone", Storage="_Emphone", DbType="varchar(25)")]
+		[Column(Name="emphone", Storage="_Emphone", DbType="varchar(100)")]
 		public string Emphone
 		{
 			get
@@ -645,7 +645,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="parent", Storage="_Parent", DbType="varchar(25)")]
+		[Column(Name="parent", Storage="_Parent", DbType="varchar(100)")]
 		public string Parent
 		{
 			get
@@ -747,7 +747,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="church", Storage="_Church", DbType="varchar(30)")]
+		[Column(Name="church", Storage="_Church", DbType="varchar(130)")]
 		public string Church
 		{
 			get

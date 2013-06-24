@@ -78,7 +78,7 @@ namespace CmsWeb.Models
                          Zip = h.PrimaryZip,
                          LabelName = (h.Family.CoupleFlag == 1 ? (UseTitles ? (h.TitleCode != null ? h.TitleCode + " and Mrs. " + h.Name
                                                                                                     : "Mr. and Mrs. " + h.Name)
-                                                                             : h.PreferredName + " and " + spouse.PreferredName + " " + h.LastName) :
+                                                                             : h.PreferredName + " and " + spouse.PreferredName + " " + h.LastName + (h.SuffixCode.Length > 0 ? ", " + h.SuffixCode : "")) :
                                       h.Family.CoupleFlag == 2 ? ("The " + h.Name + " Family") :
                                       h.Family.CoupleFlag == 3 ? ("The " + h.Name + " Family") :
                                       h.Family.CoupleFlag == 4 ? (h.Name + " & Family") :
@@ -186,9 +186,9 @@ namespace CmsWeb.Models
                          LabelName = (spouse == null ? (UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name) :
                              (p.Family.HeadOfHouseholdId == p.PeopleId ?
                                  (UseTitles ? (p.TitleCode != null ? p.TitleCode + " and Mrs. " + p.Name : "Mr. and Mrs. " + p.Name)
-                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName)) :
+                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName + (p.SuffixCode.Length > 0 ? ", " + p.SuffixCode : ""))) :
                                  (UseTitles ? (spouse.TitleCode != null ? spouse.TitleCode + " and Mrs. " + spouse.Name : "Mr. and Mrs. " + spouse.Name)
-                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
+                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName + (spouse.SuffixCode.Length > 0 ? ", " + spouse.SuffixCode : ""))))),
                          Name = p.Name,
                          LastName = p.LastName,
                          CellPhone = p.CellPhone,
@@ -217,9 +217,9 @@ namespace CmsWeb.Models
                          LabelName = (spouse == null ? (UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name) :
                              (p.Family.HeadOfHouseholdId == p.PeopleId ?
                                  (UseTitles ? (p.TitleCode != null ? p.TitleCode + " and Mrs. " + p.Name : "Mr. and Mrs. " + p.Name)
-                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName)) :
+                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName + (p.SuffixCode.Length > 0 ? ", " + p.SuffixCode : ""))) :
                                  (UseTitles ? (spouse.TitleCode != null ? spouse.TitleCode + " and Mrs. " + spouse.Name : "Mr. and Mrs. " + spouse.Name)
-                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
+                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName + (spouse.SuffixCode.Length > 0 ? ", " + spouse.SuffixCode : ""))))),
                          Name = p.Name,
                          LastName = p.LastName,
                          CellPhone = p.CellPhone,
@@ -258,9 +258,9 @@ namespace CmsWeb.Models
                          LabelName = (spouse == null ? (UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name) :
                              (p.Family.HeadOfHouseholdId == p.PeopleId ?
                                  (UseTitles ? (p.TitleCode != null ? p.TitleCode + " and Mrs. " + p.Name : "Mr. and Mrs. " + p.Name)
-                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName)) :
+                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName + (p.SuffixCode.Length > 0 ? ", " + p.SuffixCode : ""))) :
                                  (UseTitles ? (spouse.TitleCode != null ? spouse.TitleCode + " and Mrs. " + spouse.Name : "Mr. and Mrs. " + spouse.Name)
-                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
+                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName + (spouse.SuffixCode.Length > 0 ? ", " + spouse.SuffixCode : ""))))),
                          FirstName = p.PreferredName,
                          FirstNameSpouse = spouse != null ? spouse.PreferredName : "",
                          LastName = p.LastName,
@@ -290,9 +290,9 @@ namespace CmsWeb.Models
                          LabelName = (spouse == null ? (UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name) :
                              (p.Family.HeadOfHouseholdId == p.PeopleId ?
                                  (UseTitles ? (p.TitleCode != null ? p.TitleCode + " and Mrs. " + p.Name : "Mr. and Mrs. " + p.Name)
-                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName)) :
+                                             : (p.PreferredName + " and " + spouse.PreferredName + " " + p.LastName + (p.SuffixCode.Length > 0 ? ", " + p.SuffixCode : ""))) :
                                  (UseTitles ? (spouse.TitleCode != null ? spouse.TitleCode + " and Mrs. " + spouse.Name : "Mr. and Mrs. " + spouse.Name)
-                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName)))),
+                                             : (spouse.PreferredName + " and " + p.PreferredName + " " + spouse.LastName + (spouse.SuffixCode.Length > 0 ? ", " + spouse.SuffixCode : ""))))),
                          FirstName = p.PreferredName,
                          FirstNameSpouse = spouse != null ? spouse.PreferredName : "",
                          LastName = p.LastName,
@@ -329,7 +329,7 @@ namespace CmsWeb.Models
                     {
                         LabelName = (h.Family.CoupleFlag == 1 ? (UseTitles ? (h.TitleCode != null ? h.TitleCode + " and Mrs. " + h.Name
                                                                                                    : "Mr. and Mrs. " + h.Name)
-                                                                            : h.PreferredName + " and " + spouse.PreferredName + " " + h.LastName) :
+                                                                            : h.PreferredName + " and " + spouse.PreferredName + " " + h.LastName + (h.SuffixCode.Length > 0 ? ", " + h.SuffixCode : "")) :
                                      h.Family.CoupleFlag == 2 ? ("The " + h.Name + " Family") :
                                      h.Family.CoupleFlag == 3 ? ("The " + h.Name + " Family") :
                                      h.Family.CoupleFlag == 4 ? (h.Name + " & Family") :

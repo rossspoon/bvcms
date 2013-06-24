@@ -39,6 +39,7 @@ namespace CmsWeb.Models
         public int? OnlineReg { get; set; }
         public bool? MainFellowship { get; set; }
         public bool? ParentOrg { get; set; }
+        public bool FromOrgSearch { get; set; }
 
         public OrgSearchModel()
         {
@@ -234,15 +235,15 @@ namespace CmsWeb.Models
                                 where o.CampusId == null
                                 select o;
 
-            if (this.OnlineReg == 99)
+            if (OnlineReg == 99)
                 organizations = from o in organizations
                                 where o.RegistrationTypeId > 0
                                 select o;
-            else if (this.OnlineReg > 0)
+            else if (OnlineReg > 0)
                 organizations = from o in organizations
                                 where o.RegistrationTypeId == OnlineReg
                                 select o;
-            else if (this.OnlineReg == 0)
+            else if (OnlineReg == 0)
                 organizations = from o in organizations
                                 where (o.RegistrationTypeId ?? 0) == 0
                                 select o;

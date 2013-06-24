@@ -1,5 +1,6 @@
 ﻿@using System.Security.Cryptography
 @using System.Threading
+@using UtilityExtensions
 @{
     Layout = null;
     byte[] delay = new byte[1];
@@ -12,7 +13,11 @@
     if (disposable != null) {
         disposable.Dispose();
     }
-    string error = TempData["error"] as string;
+    var error = TempData["error"] as string;
+    if (!error.HasValue() && ViewBag.Message != null)
+    {
+        error = ViewBag.Message;
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
