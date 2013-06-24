@@ -7,6 +7,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CheckinLabelsController : Controller
     {
         public ActionResult Index(int id = 0)
@@ -26,7 +27,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
             if (label != null)
             {
-                label.Format = labelFormat.Replace("\n", "").Replace("\r", "").Replace(" ", "");
+                label.Format = labelFormat.Replace("\n", "").Replace("\r", "");
                 DbUtil.Db.SubmitChanges();
             }
 
