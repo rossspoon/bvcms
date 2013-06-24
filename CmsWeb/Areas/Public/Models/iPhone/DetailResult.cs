@@ -28,7 +28,7 @@ namespace CmsWeb.Models.iPhone
                 var p = DbUtil.Db.LoadPersonById(PeopleId);
                 w.WriteStartElement("Person");
                 w.WriteAttributeString("peopleid", p.PeopleId.ToString());
-                w.WriteAttributeString("first", p.FirstName);
+                w.WriteAttributeString("first", p.PreferredName);
                 w.WriteAttributeString("last", p.LastName);
                 w.WriteAttributeString("address", p.PrimaryAddress);
                 w.WriteAttributeString("citystatezip", p.CityStateZip);
