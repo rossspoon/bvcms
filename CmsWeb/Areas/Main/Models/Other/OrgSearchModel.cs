@@ -585,7 +585,7 @@ namespace CmsWeb.Models
                          where olist.Contains(p.OrganizationId)
                          select p).ToList();
 
-            var mlist = (from r in DbUtil.Db.LastMeetings(null, DivisionId, days)
+            var mlist = (from r in DbUtil.Db.LastMeetings(null, null, days)
                          where olist.Contains(r.OrganizationId)
                          select r).ToList();
 
