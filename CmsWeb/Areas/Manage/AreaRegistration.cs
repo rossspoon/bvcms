@@ -15,6 +15,7 @@ namespace CmsWeb.Areas.Manage
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            AddRoute(context, "CheckinLabels");
             AddRoute(context, "Account");
             AddRoute(context, "Display");
             AddRoute(context, "Merge");

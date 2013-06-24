@@ -143,6 +143,7 @@
                                     @if (admin || edit)
                                     {
                                         <li>@Html.ActionLink("Check-in Activity", "Index", "CheckinTime", new { Area = "Manage" }, null)</li>
+                                        <li>@Html.ActionLink("Check-in Labels", "Index", "CheckinLabels", new { Area = "Manage" }, null)</li>
                                     }			
                                     @if (admin || manageemails)
                                     {
