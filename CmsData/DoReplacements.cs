@@ -12,7 +12,7 @@ namespace CmsData
 {
     public partial class CMSDataContext
     {
-        public List<MailAddress> DoReplacements(ref string text, string CmsHost, Person p, EmailQueueTo emailqueueto)
+        public List<MailAddress> DoReplacements(ref string text, Person p, EmailQueueTo emailqueueto)
         {
             if (text == null)
                 text = "(no content)";
@@ -37,11 +37,11 @@ namespace CmsData
                 text = text.Replace("{emailhref}", eurl, ignoreCase: true);
             }
 
-            text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
-            text = DoVoteTag(text, CmsHost, emailqueueto);
-            text = DoVoteTag2(text, CmsHost, emailqueueto);
-            text = DoRegisterTag(text, CmsHost, emailqueueto);
-            text = DoRegisterTag2(text, CmsHost, emailqueueto);
+            text = DoVoteLinkAnchorStyle(text, emailqueueto);
+            text = DoVoteTag(text, emailqueueto);
+            text = DoVoteTag2(text, emailqueueto);
+            text = DoRegisterTag(text, emailqueueto);
+            text = DoRegisterTag2(text, emailqueueto);
             text = DoExtraValueData(text, emailqueueto);
             if (emailqueueto.OrgId.HasValue)
             {
@@ -57,19 +57,19 @@ namespace CmsData
             if (text.Contains("{today}", ignoreCase: true))
                 text = text.Replace("{today}", DateTime.Today.ToShortDateString());
             if (text.Contains("{createaccount}", ignoreCase: true))
-                text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
+                text = text.Replace("{createaccount}", DoCreateUserTag(emailqueueto));
             if (text.Contains("{peopleid}", ignoreCase: true))
                 text = text.Replace("{peopleid}", emailqueueto.PeopleId.ToString(), ignoreCase: true);
             if (text.Contains("http://votelink", ignoreCase: true))
-                text = DoVoteLink(text, CmsHost, emailqueueto);
+                text = DoVoteLink(text, emailqueueto);
             if (text.Contains("http://registerlink", ignoreCase: true))
-                text = DoRegisterLink(text, CmsHost, emailqueueto);
+                text = DoRegisterLink(text, emailqueueto);
             if (text.Contains("http://rsvplink", ignoreCase: true))
-                text = DoRsvpLink(text, CmsHost, emailqueueto);
+                text = DoRsvpLink(text, emailqueueto);
             if (text.Contains("http://volsublink", ignoreCase: true))
-                text = DoVolSubLink(text, CmsHost, emailqueueto);
+                text = DoVolSubLink(text, emailqueueto);
             if (text.Contains("http://volreqlink", ignoreCase: true))
-                text = DoVolReqLink(text, CmsHost, emailqueueto);
+                text = DoVolReqLink(text, emailqueueto);
             if (text.Contains("{barcode}", ignoreCase: true))
             {
                 string link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
@@ -223,7 +223,7 @@ namespace CmsData
             return text;
         }
 
-        private string DoVoteLinkAnchorStyle(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoVoteLinkAnchorStyle(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VoteLinkRE = @"{votelink(?<inside>[^}]*)}";
@@ -261,11 +261,9 @@ namespace CmsData
                 if (a.Length > 1)
                     pre = a[0];
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("Votelink: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "VoteLink");
 
-                string url = VoteLinkUrl(text, CmsHost, emailqueueto, list, votelink, id, msg, confirm, smallgroup, pre);
+                string url = VoteLinkUrl(text, emailqueueto, list, votelink, id, msg, confirm, smallgroup, pre);
                 text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, txt));
 
                 match = match.NextMatch();
@@ -274,7 +272,7 @@ namespace CmsData
         }
 
         //&lt;votetag .*?&gt;(?<inside>.+?)&lt;/votetag&gt;
-        private string DoVoteTag2(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoVoteTag2(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VoteLinkRE = @"&lt;votetag .*?&gt;(?<inside>.+?)&lt;/votetag&gt;";
@@ -306,18 +304,16 @@ namespace CmsData
                 if (a.Length > 1)
                     pre = a[0];
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("Votelink: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "VoteTag");
 
-                string url = VoteLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
+                string url = VoteLinkUrl(text, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
 
-        private string DoCreateUserTag(string CmsHost, EmailQueueTo emailqueueto)
+        private string DoCreateUserTag(EmailQueueTo emailqueueto)
         {
             User user = (from u in Users
                          where u.PeopleId == emailqueueto.PeopleId
@@ -341,7 +337,7 @@ namespace CmsData
             return @"<a href=""{0}"">Create Account</a>".Fmt(url);
         }
 
-        private string DoVoteLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoVoteLink(string text, EmailQueueTo emailqueueto)
         {
             //<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
             var list = new Dictionary<string, OneTimeLink>();
@@ -374,18 +370,16 @@ namespace CmsData
                 if (a.Length > 1)
                     pre = a[0];
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("Votelink: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "VoteLink");
 
-                string url = VoteLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
+                string url = VoteLinkUrl(text, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
 
-        private string DoRsvpLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoRsvpLink(string text, EmailQueueTo emailqueueto)
         {
             //<a dir="ltr" href="http://rsvplink" id="798" rel="meetingid" title="This is a message">test</a>
             var list = new Dictionary<string, OneTimeLink>();
@@ -414,18 +408,16 @@ namespace CmsData
                 if (d.ContainsKey("rel"))
                     smallgroup = d["rel"];
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("Rsvplink: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "RsvpLink");
 
-                string url = RsvpLinkUrl(CmsHost, emailqueueto, list, id, smallgroup, msg, confirm);
+                string url = RsvpLinkUrl(emailqueueto, list, id, smallgroup, msg, confirm);
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
 
-        private string DoRegisterLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoRegisterLink(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://(?<rlink>registerlink2{0,1})/{0,1}\"[^>]*>.*?</a>";
@@ -442,11 +434,9 @@ namespace CmsData
                 string inside = ele.InnerHtml;
                 Dictionary<string, string> d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("RegisterTag: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "RegisterLink");
 
-                string url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id,
+                string url = RegisterTagUrl(text, emailqueueto, list, tag, id,
                                             showfamily: rlink == "registerlink2");
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
@@ -454,7 +444,7 @@ namespace CmsData
             return text;
         }
 
-        public string DoVolSubLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+        public string DoVolSubLink(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VolSubLinkRE = "<a[^>]*?href=\"https{0,1}://volsublink\"[^>]*>.*?</a>";
@@ -494,7 +484,7 @@ namespace CmsData
             return text;
         }
 
-        public string DoVolReqLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+        public string DoVolReqLink(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VolSubLinkRE = "<a[^>]*?href=\"https{0,1}://volreqlink\"[^>]*>.*?</a>";
@@ -535,7 +525,7 @@ namespace CmsData
             return text;
         }
 
-        private string DoVoteTag(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoVoteTag(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VoteLinkRE = @"<votetag[^>]*>(?<inside>.+?)</votetag>";
@@ -567,18 +557,16 @@ namespace CmsData
                 if (a.Length > 1)
                     pre = a[0];
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("Votelink: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "VoteTag");
 
-                string url = VoteLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
+                string url = VoteLinkUrl(text, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
 
-        private string DoRegisterTag2(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoRegisterTag2(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VoteLinkRE = @"&lt;registertag .*?&gt;(?<inside>.+?)&lt;/registertag&gt;";
@@ -594,18 +582,16 @@ namespace CmsData
                 HtmlNode ele = doc.DocumentNode.Element("registertag");
                 Dictionary<string, string> d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("RegisterTag: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "RegisterTag");
 
-                string url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id);
+                string url = RegisterTagUrl(text, emailqueueto, list, tag, id);
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
 
-        private string DoRegisterTag(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoRegisterTag(string text, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
             const string VoteLinkRE = @"<registertag[^>]*>(?<inside>.+?)</registertag>";
@@ -621,19 +607,28 @@ namespace CmsData
                 HtmlNode ele = doc.DocumentNode.Element("registertag");
                 Dictionary<string, string> d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
 
-                if (!d.ContainsKey("id"))
-                    throw new Exception("RegisterTag: no id attribute");
-                string id = d["id"];
+                var id = GetId(d, "RegisterTag");
 
-                string url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id);
+                string url = RegisterTagUrl(text, emailqueueto, list, tag, id);
                 text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
 
+        private static string GetId(Dictionary<string, string> d, string from)
+        {
+            string id = null;
+            if (d.ContainsKey("lang"))
+                id = d["lang"];
+            else if (d.ContainsKey("id"))
+                id = d["id"];
+            if (id == null)
+                throw new Exception("{0}: no id attribute".Fmt(from));
+            return id;
+        }
+
         private string RsvpLinkUrl(
-            string CmsHost,
             EmailQueueTo emailqueueto,
             Dictionary<string, OneTimeLink> list,
             string id,
@@ -662,7 +657,6 @@ namespace CmsData
         }
 
         private string VoteLinkUrl(string text,
-                                   string CmsHost,
                                    EmailQueueTo emailqueueto,
                                    Dictionary<string, OneTimeLink> list,
                                    string votelink,
@@ -693,7 +687,6 @@ namespace CmsData
         }
 
         private string RegisterTagUrl(string text,
-                                      string CmsHost,
                                       EmailQueueTo emailqueueto,
                                       Dictionary<string, OneTimeLink> list,
                                       string votelink,

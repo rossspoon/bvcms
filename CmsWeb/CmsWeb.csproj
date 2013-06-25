@@ -248,6 +248,7 @@
     <Compile Include="Areas\Main\Models\Report\WeeklyDecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\DecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\CheckinLabelsController.cs" />
     <Compile Include="Areas\Org\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Org\Controllers\OrgMembersDialogController.cs" />
     <Compile Include="Areas\Dialog\Controllers\DeleteMeetingController.cs" />
@@ -946,6 +947,7 @@
     <Content Include="Areas\Main\Views\Reports\WeeklyDecisions.cshtml" />
     <Content Include="Areas\Main\Views\Reports\Decisions.cshtml" />
     <Content Include="Areas\People\Views\Person\PendingEnrollments.cshtml" />
+    <Content Include="Areas\Manage\Views\CheckinLabels\Index.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />

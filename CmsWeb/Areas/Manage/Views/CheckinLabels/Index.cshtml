@@ -1,0 +1,32 @@
+﻿@using CmsWeb
+@using CmsData;
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    int labelID = ViewBag.ID;
+    LabelFormat label = null;
+
+    var list = (from e in DbUtil.Db.LabelFormats
+                orderby e.Size, e.Name
+                select new {
+                    id = e.Id,
+                    name = String.Concat(e.Name, "~", e.Size)
+                }).ToList();
+    list.Insert(0, new { id = 0, name = "- Select a format -" });
+    
+    if( labelID > 0 )
+    {
+        label = (from e in DbUtil.Db.LabelFormats
+                 where e.Id == labelID
+                 select e).FirstOrDefault();
+    }
+}
+<form action="/CheckinLabels" method="post">
+    @Html.DropDownList("id", new SelectList(list, "id", "name", labelID) ) <input type="submit" value="Load Label"/>
+</form>
+<br />
+<form action="/CheckinLabels/Save" method="post">
+    <input type="hidden" name="id" value="@labelID" />
+    <textarea name="labelFormat" cols="80" rows="20">@if (label != null) { @label.Format.Replace("~", "~\r\n"); }</textarea><br />
+    <br />
+    <input type="submit" value="Save Label"/>
+</form>

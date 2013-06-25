@@ -14,7 +14,7 @@
     Meeting Dates:
     @if (!Model.FromWeekAtAGlance)
     {
-        @:Start: <input type = "text" id = "Dt1" name = "Dt1" value = "@Model.Dt1.ToString2("g")" style = "width: 200px; font-size: 110%" class="datepicker" />
+        @:Start: <input type = "text" id = "Dt1" name = "Dt1" value="@Model.Dt1.ToString2("g")" style = "width: 200px; font-size: 110%" class="datepicker" />
         @:End: <input type = "text" id = "Dt2" name = "Dt2" value="@Model.Dt2.ToString2("g")" style = "width: 200px; font-size: 110%" class="datepicker" />
     }
     else
@@ -24,6 +24,7 @@
         @Html.HiddenFor(m => m.Dt1)
         @Html.HiddenFor(m => m.Dt2)
     }
+    No Zero Meetings: @Html.CheckBox("NoZero")
     @Html.HiddenFor(m => m.FromWeekAtAGlance)
     @Html.HiddenFor(m => m.Name)
     @Html.HiddenFor(m => m.StatusId)
