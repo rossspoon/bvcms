@@ -6,19 +6,11 @@
  */
 using System;
 using System.Net.Mail;
-using System.Threading;
-using CmsData.Codes;
 using UtilityExtensions;
 using System.Linq;
-using System.Text;
 using System.Configuration;
 using System.Collections.Generic;
-using System.Web;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
-using System.IO;
-using System.Xml.Linq;
-using HtmlAgilityPack;
 
 namespace CmsData
 {
@@ -66,7 +58,7 @@ namespace CmsData
                 Guid = Guid.NewGuid(),
             });
             SubmitChanges();
-            SendPersonEmail(CmsHost, emailqueue.Id, p.PeopleId);
+            SendPersonEmail(emailqueue.Id, p.PeopleId);
         }
 
         public List<MailAddress> PersonListToMailAddressList(IEnumerable<Person> list)
@@ -78,17 +70,19 @@ namespace CmsData
         }
         public void Email(string from, IEnumerable<Person> list, string subject, string body)
         {
-            if (list.Count() == 0)
+            var li = list.ToList();
+            if (!li.Any())
                 return;
-            var aa = PersonListToMailAddressList(list);
-            Email(from, list.First(), aa, subject, body, false);
+            var aa = PersonListToMailAddressList(li);
+            Email(from, li[0], aa, subject, body, false);
         }
         public void EmailRedacted(string from, IEnumerable<Person> list, string subject, string body)
         {
-            if (list.Count() == 0)
+            var li = list.ToList();
+            if (!li.Any())
                 return;
-            var aa = PersonListToMailAddressList(list);
-            Email(from, list.First(), aa, subject, body, redacted: true);
+            var aa = PersonListToMailAddressList(li);
+            Email(from, li[0], aa, subject, body, redacted: true);
         }
         public IEnumerable<Person> PeopleFromPidString(string pidstring)
         {
@@ -166,9 +160,7 @@ namespace CmsData
             var q = from u in Users
                     where u.Person.EmailAddress == email || u.Person.EmailAddress2 == email
                     select u.Person;
-            var p = q.FirstOrDefault();
-            if (p == null)
-                p = CMSRoleProvider.provider.GetAdmins().First();
+            var p = q.FirstOrDefault() ?? CMSRoleProvider.provider.GetAdmins().First();
             return p;
         }
         public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int tagId, bool publicViewable)
@@ -213,10 +205,8 @@ namespace CmsData
                      orderby p.PeopleId
                      select p.PeopleId;
 
-            var i = 0;
             foreach (var pid in q2)
             {
-                i++;
                 emailqueue.EmailQueueTos.Add(new EmailQueueTo
                 {
                     PeopleId = pid,
@@ -227,25 +217,22 @@ namespace CmsData
             SubmitChanges();
             return emailqueue;
         }
-        public void SendPersonEmail(string CmsHost, int id, int pid)
+        public void SendPersonEmail(int id, int pid)
         {
             var sysFromEmail = Util.SysFromEmail;
             var emailqueue = EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
             var fromname = emailqueue.FromName;
-            if (!fromname.HasValue())
-                fromname = emailqueue.FromAddr;
-            else
-                fromname = emailqueue.FromName.Replace("\"", "");
-            var From = Util.FirstAddress(emailqueue.FromAddr, fromname);
+            fromname = !fromname.HasValue() ? emailqueue.FromAddr : emailqueue.FromName.Replace("\"", "");
+            var from = Util.FirstAddress(emailqueue.FromAddr, fromname);
 
             try
             {
                 var p = LoadPersonById(emailqueueto.PeopleId);
-                string text = emailqueue.Body;
-                var aa = DoReplacements(ref text, CmsHost, p, emailqueueto);
+                var text = emailqueue.Body;
+                var aa = DoReplacements(ref text, p, emailqueueto);
 
-                var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
+                var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, from.Address));
                 var url = Util.URLCombine(CmsHost, qs);
                 var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                 text = text.Replace("{unsubscribe}", link, ignoreCase: true);
@@ -255,18 +242,18 @@ namespace CmsData
                     text = text.Replace("{toemail}", aa[0].Address, ignoreCase: true);
                     text = text.Replace("%7Btoemail%7D", aa[0].Address, ignoreCase: true);
                 }
-                text = text.Replace("{fromemail}", From.Address, ignoreCase: true);
-                text = text.Replace("%7Bfromemail%7D", From.Address, ignoreCase: true);
+                text = text.Replace("{fromemail}", from.Address, ignoreCase: true);
+                text = text.Replace("%7Bfromemail%7D", from.Address, ignoreCase: true);
 
                 if (Setting("sendemail", "true") != "false")
                 {
                     if (aa.Count > 0)
-                        Util.SendMsg(sysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid);
+                        Util.SendMsg(sysFromEmail, CmsHost, from, emailqueue.Subject, text, aa, emailqueue.Id, pid);
                     else
-                        Util.SendMsg(sysFromEmail, CmsHost, From,
+                        Util.SendMsg(sysFromEmail, CmsHost, from,
                             "(no email address) " + emailqueue.Subject,
                             "<p style='color:red'>You are receiving this because there is no email address for {0}({1}). You should probably contact them since they were probably expecting this information.</p>\n{2}".Fmt(p.Name, p.PeopleId, text),
-                            Util.ToMailAddressList(From),
+                            Util.ToMailAddressList(from),
                             emailqueue.Id, pid);
                     emailqueueto.Sent = DateTime.Now;
                     emailqueue.Sent = DateTime.Now;
@@ -277,11 +264,11 @@ namespace CmsData
             }
             catch (Exception ex)
             {
-                Util.SendMsg(sysFromEmail, CmsHost, From,
+                Util.SendMsg(sysFromEmail, CmsHost, from,
                     "sent emails - error", ex.ToString(),
-                    Util.ToMailAddressList(From),
+                    Util.ToMailAddressList(from),
                     emailqueue.Id, null);
-                throw ex;
+                throw;
             }
         }
         public List<MailAddress> GetAddressList(Person p)
@@ -301,15 +288,6 @@ namespace CmsData
             return aa;
         }
 
-        bool EmailMatch(string existing, string addemail)
-        {
-            var exist = Util.TryGetMailAddress(existing, null);
-            var add = Util.TryGetMailAddress(addemail, null);
-            if (add == null || exist == null)
-                return false;
-            var r = string.Compare(exist.Address, add.Address, true);
-            return r == 0;
-        }
         public void SendPeopleEmail(int queueid)
         {
             var emailqueue = EmailQueues.Single(ee => ee.Id == queueid);
@@ -338,7 +316,7 @@ namespace CmsData
                 {
                     var p = LoadPersonById(To.PeopleId);
                     string text = emailqueue.Body;
-                    var aa = DoReplacements(ref text, CmsHost, p, To);
+                    var aa = DoReplacements(ref text, p, To);
                     var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, from.Address));
                     var url = Util.URLCombine(CmsHost, qs);
                     var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
@@ -379,13 +357,13 @@ namespace CmsData
             {
                 var nitems = emailqueue.EmailQueueTos.Count();
                 if (nitems > 1)
-                    NotifySentEmails(CmsHost, from.Address, from.DisplayName,
+                    NotifySentEmails(from.Address, from.DisplayName,
                         emailqueue.Subject, nitems, emailqueue.Id);
             }
             SubmitChanges();
         }
 
-        private void NotifySentEmails(string CmsHost, string From, string FromName, string subject, int count, int id)
+        private void NotifySentEmails(string From, string FromName, string subject, int count, int id)
         {
             if (Setting("sendemail", "true") != "false")
             {
@@ -394,8 +372,6 @@ namespace CmsData
                 var uri = new Uri(new Uri(CmsHost), "/Manage/Emails/Details/" + id);
                 string body = @"<a href=""{0}"">{1} emails sent</a>".Fmt(uri, count);
                 var sysFromEmail = Util.SysFromEmail;
-                var sendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
-                sendErrorsTo = sendErrorsTo.Replace(';', ',');
 
                 Util.SendMsg(sysFromEmail, CmsHost, from,
                     subj, body, Util.ToMailAddressList(from), id, null);

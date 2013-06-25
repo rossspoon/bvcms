@@ -21,14 +21,14 @@
             advancedTab.remove('advStyles');
             advancedTab.remove('advAccessKey');
             advancedTab.remove('advName');
-            advancedTab.remove('advLangCode');
+            advancedTab.remove('advId');
             advancedTab.remove('advTabIndex');
 
             var relField = advancedTab.get('advRel');
             relField.label = "SmallGroup";
             var titleField = advancedTab.get('advTitle');
             titleField.label = "Message";
-            var idField = advancedTab.get('advId');
+            var idField = advancedTab.get('advLangCode');
             idField.label = "OrgId/MeetingId";
             var langdirField = advancedTab.get('advLangDir');
             langdirField.label = "Confirmation";
