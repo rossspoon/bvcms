@@ -411,12 +411,18 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "Vanco")
+                using (var csv = new CsvReader(new StringReader(text), false, '\t'))
+                    return BatchProcessVanco(csv, date, fundid);
+
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "Silverdale")
                 using (var csv = new CsvReader(new StringReader(text), true))
                     return BatchProcessSilverdale(csv, date, fundid);
+
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "OakbrookChurch")
                 using (var csv = new CsvReader(new StringReader(text), true))
                     return BatchProcessOakbrookChurch(csv, date, fundid);
+
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "BankOfNorthGeorgia")
                 return BatchProcessBankOfNorthGeorgia(text, date, fundid);
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "FBCStark")
@@ -431,6 +437,7 @@ namespace CmsWeb.Models
             if (text.StartsWith("TOTAL DEPOSIT AMOUNT"))
                 using (var csv = new CsvReader(new StringReader(text), true))
                     return BatchProcessChase(csv, date, fundid);
+
             using (var csv = new CsvReader(new StringReader(text), true))
             {
                 var names = csv.GetFieldHeaders();
@@ -784,6 +791,7 @@ namespace CmsWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
+
         public static int? BatchProcessSilverdale(CsvReader csv, DateTime date, int? fundid)
         {
             var cols = csv.GetFieldHeaders();
@@ -806,6 +814,30 @@ namespace CmsWeb.Models
                     continue;
                 }
                 if(bh == null)
+                    bh = GetBundleHeader(date, DateTime.Now);
+
+                var bd = AddContributionDetail(date, fund, amount, checkno, routing, account);
+                bh.BundleDetails.Add(bd);
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
+
+        public static int? BatchProcessVanco(CsvReader csv, DateTime date, int? fundid)
+        {
+            var cols = csv.GetFieldHeaders();
+            BundleHeader bh = null;
+            var firstfund = FirstFundId();
+            var fund = fundid ?? firstfund;
+
+            while (csv.ReadNextRecord())
+            {
+                var routing = "0";
+                var checkno = "0";
+                var account = csv[0];
+                var amount = csv[1];
+
+                if (bh == null)
                     bh = GetBundleHeader(date, DateTime.Now);
 
                 var bd = AddContributionDetail(date, fund, amount, checkno, routing, account);
