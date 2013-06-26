@@ -8,7 +8,7 @@ namespace CmsWeb.Areas.Main.Models.Avery
 	public static class EmployerAddressCell
 	{
 		// Creates an TableCell instance and adds its children.
-		public static void AddPersonCell(this TableRow row, Person p)
+		public static void AddPersonCell(this TableRow row, Person p, bool addEmployer)
 		{
 			TableCell tableCell1 = new TableCell();
 
@@ -41,7 +41,7 @@ namespace CmsWeb.Areas.Main.Models.Avery
 				paragraph1.Append(run1);
 
 				Paragraph paragraph2 = null;
-				if (p.EmployerOther.HasValue())
+				if (addEmployer && p.EmployerOther.HasValue())
 				{
 					paragraph2 = new Paragraph()
 					                       {
