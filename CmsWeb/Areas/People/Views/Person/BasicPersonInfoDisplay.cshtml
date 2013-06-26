@@ -16,11 +16,11 @@
         @Html.DisplayFor(m => m.WeddingDate)
         @Html.DisplayFor(m => m.Occupation)
         @Html.DisplayFor(m => m.Employer)
-        @* Dave: Look at what is happening when these get long and wrapped, line spacing problem, e.g. my record *@
         @Html.DisplayFor(m => m.School)
         @Html.DisplayFor(m => m.Grade)
     </fieldset>
 </div>
+@*Dave: what about moving this row to the top?*@
 <div class="row-fluid">
     <fieldset class="span12 display form-columns">
         @if (Model.DoNotContactAny)

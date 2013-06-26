@@ -4,12 +4,11 @@
 <img src="@Model.Picture.SmallUrl" alt="" />
 <h2>@Model.Name</h2>
 <ul class="meta unstyled">
-    <li class="role"><a class="edit-inline" id="position" data-value="@Model.basic.person.PositionInFamilyId" data-pk="@Model.PeopleId" title="Family Position">
+    <li class="role"><i class="icon-user"></i><a class="edit-inline" id="position" data-value="@Model.basic.person.PositionInFamilyId" data-pk="@Model.PeopleId" title="Family Position">
                          @Html.DisplayFor(m => m.basic.FamilyPosition)
                      </a></li>
-    <li class="status"><strong>Member Status:</strong> @Model.member.MemberStatus</li>
-    <li class="affiliation"><strong>Campus Affiliation:</strong> @Model.basic.Campus</li>
-    <li class="meta"><small>Record added @Model.basic.Created.FormatDate()</small></li>
+@*    <li class="status"><strong>Member Status:</strong> @Model.member.MemberStatus</li>*@
+@*    <li class="affiliation"><strong>Campus Affiliation:</strong> @Model.basic.Campus</li>*@
     <li class="badges">
         @foreach (var status in Model.StatusFlags)
         {

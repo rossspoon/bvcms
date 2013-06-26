@@ -412,7 +412,7 @@ table {
 }
 body {
   margin: 0;
-  font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5em;
   color: #333333;
@@ -1458,7 +1458,7 @@ input,
 button,
 select,
 textarea {
-  font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 label {
   display: block;
@@ -4868,7 +4868,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   margin-bottom: 0;
   padding: 4px 14px;
-  font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
@@ -7221,7 +7221,7 @@ a.badge:focus {
   }
 }
 body {
-  padding-top: 150px;
+  padding-top: 140px;
 }
 header.subhead {
   background: #e4e1d5;
@@ -7300,7 +7300,6 @@ header.subhead #nav-search #nav-search-results {
   border-left: 1px solid #b9b9b9;
 }
 #sidebar {
-  background: #e8e8e8;
   height: 100%;
   min-height: 100%;
 }
@@ -7318,15 +7317,17 @@ header.subhead #nav-search #nav-search-results {
   margin: 0;
 }
 #sidebar .sidebar_title {
-  background: #c8c8c8;
-  padding: 4px 20px;
+  padding: 4px 0;
+  border-bottom: 2px solid #DDD;
 }
 #sidebar .sidebar_title h2 {
   display: inline-block;
   max-width: 180px;
   color: #404040;
-  font-size: 14px;
-  line-height: 1;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 14px;
   font-weight: 600;
 }
 #sidebar .sidebar_title .dropdown {
@@ -7338,17 +7339,85 @@ header.subhead #nav-search #nav-search-results {
   color: #555555;
   text-decoration: none;
 }
-#sidebar .nav {
+#sidebar .sidebar_content {
+  background: #ededed;
+}
+#sidebar #contact {
+  margin-bottom: 10px;
+}
+#sidebar #contact .nav-tabs {
+  border-bottom-width: 0;
+}
+#sidebar #contact .nav-tabs li a {
+  border-width: 0;
+}
+#sidebar #contact .nav-tabs li.active a {
+  background: #EEE;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+}
+#sidebar #contact .tab-content {
+  margin: 0;
+  background: #EFEFEF;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  padding: 6px 10px;
+  text-align: left;
+  overflow: visible;
+}
+#sidebar #contact .tab-content .tab-pane {
+  position: relative;
+  padding-left: 50px;
+}
+#sidebar #contact .tab-content h3 {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1;
+  padding-top: 0.5em;
+  color: #444;
+}
+#sidebar #contact .tab-content p {
+  font-size: 12px;
+  color: #222;
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.6;
+  padding-top: 4px;
+}
+#sidebar #contact .tab-content .btn-group {
+  position: absolute;
+  left: 0;
+  top: 4px;
+}
+#sidebar #contact .tab-content .btn-group .dropdown-toggle {
+  padding: 4px 8px;
+  color: #111;
+  font-size: 14px;
+}
+#sidebar #contact .tab-content .btn-group .dropdown-toggle i {
+  font-size: 14px;
+}
+#sidebar #family_members {
   border-left: 0;
   border-right: 0;
 }
-#sidebar .nav li {
+#sidebar #family_members li {
   clear: left;
+  border-bottom: 1px solid #FFF;
 }
-#sidebar .nav li.active a {
+#sidebar #family_members li.active a,
+#sidebar #family_members li.active a:hover {
   background-color: #FFF;
 }
-#sidebar .nav li a {
+#sidebar #family_members li a {
   color: #111;
   border: 0;
   -webkit-border-radius: 0;
@@ -7362,30 +7431,32 @@ header.subhead #nav-search #nav-search-results {
   padding-right: 10px;
   min-height: 50px;
 }
-#sidebar .nav li a img.headshot {
+#sidebar #family_members li a img.headshot {
   width: 38px;
   border-width: 1px;
   height: 50px;
   float: left;
   margin-right: 10px;
 }
-#sidebar .nav li .name {
+#sidebar #family_members li a:hover {
+  background-color: #E4EFF7;
+}
+#sidebar #family_members li .name {
   font-weight: 600;
   line-height: 1.2;
 }
-#sidebar .nav li .age,
-#sidebar .nav li .role,
-#sidebar .nav li .email {
-  font-size: 90%;
-  color: #444;
+#sidebar #family_members li .meta {
+  text-transform: uppercase;
+  font-size: 80%;
+  padding: 3px 0;
 }
-#sidebar .nav li .role {
-  font-style: italic;
+#sidebar #family_members li .email {
+  font-size: 80%;
 }
-#sidebar .nav li .badge {
+#sidebar #family_members li .badge {
   float: right;
 }
-#sidebar .nav li .email {
+#sidebar #family_members li .email {
   display: block;
 }
 #sidebar .sidebar_nav {
@@ -7463,10 +7534,10 @@ header.subhead #nav-search #nav-search-results {
   margin-bottom: 0;
 }
 #sidebar #family_related > li {
-  margin-bottom: 10px;
+  padding: 10px 0 10px 65px;
   position: relative;
-  padding-left: 65px;
   font-size: 90%;
+  border-bottom: 1px solid #FFF;
 }
 #sidebar #family_related > li div.btn-group {
   top: 8px;
@@ -7578,6 +7649,8 @@ fieldset .control-group .textcombo {
 .footer {
   margin-bottom: 50px;
   font-size: 12px;
+  border-top: 4px solid #EEE;
+  padding-top: 10px;
 }
 .footer ul li {
   margin-right: 20px;
@@ -7588,81 +7661,45 @@ fieldset .control-group .textcombo {
 }
 /* Person 
 ----------------------------------*/
+#profile-header {
+  padding: 10px 5px 5px 112px;
+  height: 165px;
+  position: relative;
+  border-top: 5px solid #45A5F4;
+  box-sizing: border-box;
+}
 #profile-header h2 {
   margin-top: 0;
   line-height: 1;
-  margin-bottom: 0.5em;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
   font-weight: 300;
+  border-bottom: 1px solid #DDD;
 }
 #profile-header img {
-  float: left;
-  margin-right: 20px;
+  position: absolute;
+  left: 0;
+  top: 10px;
+}
+#profile-header li.role {
+  padding-bottom: 6px;
+  border-bottom: 1px solid #EEE;
 }
 #profile-header li.badges {
   padding-top: 6px;
 }
+#profile-header li.badges span.label {
+  font-weight: 300;
+  padding-left: 8px;
+  padding-right: 8px;
+}
 #profile-header .muted {
   margin: 0;
 }
-#profile-header .contact {
-  margin-top: 8px;
-}
-#profile-header .contact .nav-tabs {
-  margin-right: 0;
-  border-right: 0;
-}
-#profile-header .contact .nav-tabs a {
-  border: 0;
-  font-size: 12px;
-  min-width: 20px;
-}
-#profile-header .contact .nav-tabs li.active a {
-  background: #EEE;
-}
-#profile-header .contact .tab-content {
-  margin: 0;
-  background: #EFEFEF;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  padding: 6px 10px;
-  text-align: left;
-}
-#profile-header .contact .tab-content .group {
-  position: relative;
-  padding-left: 15px;
-}
-#profile-header .contact .tab-content h3 {
-  font-size: 10px;
-  text-transform: uppercase;
-  font-weight: 400;
-  margin: 0;
-  line-height: 1;
-  padding-top: 0.5em;
-  color: #444;
-}
-#profile-header .contact .tab-content p {
-  font-size: 12px;
-  color: #222;
-  margin: 0;
-  font-weight: bold;
-  line-height: 1.6;
-  padding-top: 4px;
-}
-#profile-header .contact .tab-content .btn-group {
+#profile-header .record_added {
   position: absolute;
-  left: 0;
-  top: 4px;
-}
-#profile-header .contact .tab-content .btn-group .dropdown-toggle {
-  padding: 4px 8px;
-  color: #111;
-  font-size: 14px;
-}
-#profile-header .contact .tab-content .btn-group .dropdown-toggle i {
-  font-size: 14px;
+  right: 5px;
+  bottom: 10px;
 }
 #contact-phone-primary {
   font-size: 12px;
@@ -7729,6 +7766,34 @@ fieldset .control-group .textcombo {
 }
 /* TABLES
 ---------------------------------*/
+thead {
+  border-bottom: 2px solid #CCC;
+}
+thead tr {
+  padding-bottom: 5px;
+}
+thead th {
+  font-size: 90%;
+  padding-bottom: 5px;
+}
+thead th a {
+  color: inherit;
+}
+thead th [class*=icon-] {
+  color: #999;
+}
+tbody td {
+  color: #222;
+}
+tbody td a {
+  color: #212844;
+}
+tbody td [class*=icon-] {
+  color: #999;
+}
+tbody tr:hover td {
+  background-color: #ECE;
+}
 td.right,
 th.right {
   text-align: right;
@@ -7779,6 +7844,9 @@ table.enrollments tr.oddrow > td {
 }
 /* NAV
 ----------------------------------*/
+.primary-tabs .nav-tabs {
+  margin-bottom: 0;
+}
 .primary-tabs .nav-tabs.subnav {
   margin-top: 0;
   border-color: #CCC;

@@ -15,7 +15,10 @@
         </a>
     </li>
 }
-<div class="contact tabbable tabs-left">
+<div id="contact" class="tabbable group">
+    <div class="sidebar_title">
+        <h2>Contact Information</h2>
+    </div>
     <ul class="nav nav-tabs">
         @ListItem(Model.displayperson.FamilyAddr, "home")
         @ListItem(Model.displayperson.PersonalAddr, "suitcase")
@@ -23,6 +26,10 @@
     <div class="tab-content">
         @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
         @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
+        <p>
+            @* Dave: No way to edit the home phone *@
+            <i class="icon-phone"></i> @Model.displayperson.basic.HomePhone.FmtFone("H ")<br/>
+            <i class="icon-phone"></i> @Model.displayperson.basic.Mobile.Number.FmtFone("C ")
+        </p>
     </div>
-    <p id="contact-phone-primary"><i class="icon-phone"></i>@Model.Person.CellPhone.FmtFone("C ")</p>
 </div>
