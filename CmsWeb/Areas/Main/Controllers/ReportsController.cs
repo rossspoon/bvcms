@@ -399,7 +399,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult EmployerAddress(int id)
         {
-            return new EmployerAddress(id);
+            return new EmployerAddress(id, true);
         }
 
         public class QueryStatsResult : ActionResult

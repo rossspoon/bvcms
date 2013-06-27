@@ -7,15 +7,14 @@
     var id = "tab-" + a.Name;
     <li @(a.Preferred ? "class=active" : "")>
         <a href="#@id" data-toggle="tab">
-            @if (a.Preferred)
-            {
-                <i class="icon-star"></i>
-            }
-            <i class="icon-@icon"></i>
+            @a.Name
         </a>
     </li>
 }
-<div class="contact tabbable tabs-left">
+<div id="contact" class="tabbable group">
+    <div class="sidebar_title">
+        <h2>Contact Information</h2>
+    </div>
     <ul class="nav nav-tabs">
         @ListItem(Model.displayperson.FamilyAddr, "home")
         @ListItem(Model.displayperson.PersonalAddr, "suitcase")
@@ -24,5 +23,4 @@
         @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
         @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
     </div>
-    <p id="contact-phone-primary"><i class="icon-phone"></i>@Model.Person.CellPhone.FmtFone("C ")</p>
 </div>

@@ -18,12 +18,13 @@ namespace CmsWeb.Areas.Main.Models.Avery
 	public class EmployerAddress : ActionResult
 	{
 		IEnumerable<Person> q;
-		public EmployerAddress(int? qid)
+	    private bool addEmployer;
+		public EmployerAddress(int? qid, bool addEmployer)
 		{
-                q =  from p in DbUtil.Db.PeopleQuery(qid.Value)
-					 orderby p.Name2
-					 select p;
-			
+            q =  from p in DbUtil.Db.PeopleQuery(qid.Value)
+				 orderby p.Name2
+				 select p;
+		    this.addEmployer = addEmployer;
 		}
         // Creates a WordprocessingDocument.
 		public override void ExecuteResult(ControllerContext context)
@@ -214,7 +215,7 @@ namespace CmsWeb.Areas.Main.Models.Avery
 						table1.Append(row);
 					row = EmployerAddressRow.AddPersonsRow();
 				}
-				row.AddPersonCell(p);
+				row.AddPersonCell(p, addEmployer);
 				if (n % 3 < 2)
 					row.AddSpacerCell();
 				n++;
