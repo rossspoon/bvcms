@@ -7,7 +7,6 @@
             <i class="icon-map-marker"></i>
             <span class="caret"></span>
         </a>
-
         <ul class="dropdown-menu">
             <li><a href="http://www.google.com/maps?q=@Model.MapAddrCityStateZip()" target="_blank">Google Map</a></li>
             <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@Model.MapAddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
@@ -16,13 +15,17 @@
         </ul>
     </div>
     <h3>@Model.Display</h3>
-    @* Dave: how to style this, and is this the right place *@
-    <p style="margin-left:50px">
-        <a href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId" class="editaddr editable-click"> @Model.Address1 <i class="icon-pencil pull-right"></i><br/>
-        @if (Model.Address2.HasValue())
-        {
-            @Model.Address2<br />
-        }
-        @Model.CityStateZip()</a>
+    <p>
+        <a href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId" class="editaddr editable-click">@Model.Address1 <i class="icon-pencil pull-right"></i>
+            <br />
+            @if (Model.Address2.HasValue())
+            {
+                @Model.Address2<br />
+            }
+            @Model.CityStateZip()</a>
+    </p>
+    <p>
+        <i class="icon-phone"></i>@Model.person.HomePhone.FmtFone("H ")<br />
+        <i class="icon-phone"></i>@Model.person.CellPhone.FmtFone("C ")
     </p>
 </div>

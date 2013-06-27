@@ -2,6 +2,18 @@
 @FormAction()
 <div class="row-fluid">
     <fieldset id="fieldset1" class="span12 display form-columns">
+        @if (Model.DoNotContactAny)
+        {
+            @Html.DisplayFor(m => m.DoNotContact)
+        }
+        @Html.DisplayFor(m => m.PrimaryEmail)
+        @Html.DisplayFor(m => m.Mobile)
+        @Html.DisplayFor(m => m.AltEmail)
+        @Html.DisplayFor(m => m.Work)
+    </fieldset>
+</div>
+<div class="row-fluid">
+    <fieldset class="span12 display form-columns">
         @Html.DisplayFor(m => m.Title)
         @Html.DisplayFor(m => m.FirstName)
         @Html.DisplayFor(m => m.GoesBy)
@@ -18,19 +30,6 @@
         @Html.DisplayFor(m => m.Employer)
         @Html.DisplayFor(m => m.School)
         @Html.DisplayFor(m => m.Grade)
-    </fieldset>
-</div>
-@*Dave: what about moving this row to the top?*@
-<div class="row-fluid">
-    <fieldset class="span12 display form-columns">
-        @if (Model.DoNotContactAny)
-        {
-            @Html.DisplayFor(m => m.DoNotContact)
-        }
-        @Html.DisplayFor(m => m.PrimaryEmail)
-        @Html.DisplayFor(m => m.Mobile)
-        @Html.DisplayFor(m => m.AltEmail)
-        @Html.DisplayFor(m => m.Work)
     </fieldset>
 </div>
 @FormAction()
