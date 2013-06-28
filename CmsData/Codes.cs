@@ -85,6 +85,13 @@ namespace CmsData.Codes
         public const int NotDropped = 0;
         public const int Deceased = 30;
     }
+    public static class LetterStatusCode
+    {
+        public const int Request1 = 10;
+        public const int Request2 = 20;
+        public const int NonResponse = 30;
+        public const int Complete = 40;
+    }
     public static class EnvelopeOptionCode
     {
         public const int None = 9;
