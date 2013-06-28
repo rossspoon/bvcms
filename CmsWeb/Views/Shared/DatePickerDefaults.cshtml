@@ -8,13 +8,7 @@
             return this.optional(element) || /@Util.jQueryNumberValidation/.test(value);
         };
         $.validator.methods.date = function (value, element) {
-            try {
-                $.datepicker.parseDate( '@Util.jQueryDateFormat', value);
-                return true;
-            }
-            catch(e) {
-                return false;
-            }
+            return this.optional(element) || /@Util.jQueryDateValidation/.test(value);
         };
         $.dateFormat = '@Util.jQueryDateFormat';
         $.datepicker.setDefaults({
