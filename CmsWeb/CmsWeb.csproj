@@ -1786,9 +1786,6 @@
     <Content Include="Scripts\jQuery\jquery.transpose.js" />
     <Content Include="Scripts\jQuery\jquery.transpose.min.js" />
     <Content Include="constants.py" />
-    <Content Include="secrets.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Tutorials\_Home_Index_Menu.cshtml" />
     <Content Include="Tutorials\_Home_Index.cshtml" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />
