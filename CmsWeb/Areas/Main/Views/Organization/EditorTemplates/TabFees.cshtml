@@ -77,6 +77,10 @@
     |Other Fees on the Questions tab.">
         Other Fees are Additional:</span> @Html.CheckBox("OtherFeesAddedToOrgFee", Model.OtherFeesAddedToOrgFee)
 </li>
+<li><span class="keyword big tip" title="Accounting Code
+    |Used to add a (1234) to the end of the OrgName passed to the payment processor">
+    AccountingCode:</span> @Html.TextBox("AccountingCode", Model.AccountingCode)
+</li>
 @if (DbUtil.Db.Setting("ShowExtraValueFeeName", "false").ToBool())
 {
     <li><span class="keyword big tip" title="ExtraValueFeeName
