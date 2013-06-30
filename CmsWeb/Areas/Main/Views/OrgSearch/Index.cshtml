@@ -126,12 +126,16 @@
         <tr><th>Meeting Date</th><td><input id="MeetingDate" type="text" class='datepicker' /></td></tr>
         <tr><th>Meeting Time</th><td><input id="MeetingTime" title="Time in Format hh:mm am or pm" type="text" /></td></tr>
         <tr>
-            <th id="altnames">Use Alt Names</th>
+            <th>Use Alt Names</th>
             <td>@Html.CheckBox("altnames")</td>
         </tr>
         <tr>
-            <th id="altnames">Parents (rally mode)</th>
+            <th>Parents (rally mode)</th>
             <td>@Html.CheckBox("rallymode")</td>
+        </tr>
+        <tr>
+            <th>By Group</th>
+            <td>@Html.CheckBox("bygroup")</td>
         </tr>
         <tr><td class="right" colspan="2">
             <a class="bt" id="rollsheet2" href="#">create</a></td>
@@ -151,11 +155,11 @@
     <div id="PanelEnrollmentControl" class="modalDiv dialog" style="display: none">
         <table>
         <tr>
-            <th id="altnames">Filter by Active Tag</th>
+            <th>Filter by Active Tag</th>
             <td>@Html.CheckBox("enrcontrolfiltertag")</td>
         </tr>
         <tr>
-            <th id="altnames">Excel Export (default is PDF)</th>
+            <th>Excel Export (default is PDF)</th>
             <td>@Html.CheckBox("enrcontrolexcel")</td>
         </tr>
         <tr><td class="right" colspan="2">

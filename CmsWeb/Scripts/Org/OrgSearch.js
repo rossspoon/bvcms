@@ -219,6 +219,8 @@
         var args = "?dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
         if ($('#altnames').is(":checked"))
             args += "&altnames=true";
+        if ($('#bygroup').is(":checked"))
+            args += "&bygroup=1";
 
         if ($('#rallymode').is(":checked"))
             $("#orgsearchform").attr("action", "/Reports/RallyRollsheet" + args);
