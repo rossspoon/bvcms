@@ -252,6 +252,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.SendNotices(this);
             return Content("ok");
         }
+
         public ActionResult OrganizationStructure(bool? active, OrgSearchModel m)
         {
             var orgs = m.FetchOrgs();

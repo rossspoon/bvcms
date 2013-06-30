@@ -589,26 +589,18 @@ namespace CmsWeb.Models
                          where olist.Contains(r.OrganizationId)
                          select r).ToList();
 
-            var plist = from om in DbUtil.Db.OrganizationMembers
-                        where olist.Contains(om.OrganizationId)
-                        where om.MemberType.AttendanceTypeId == AttendTypeCode.Leader
-                        let u =
-                            om.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
-                        where u != null
-                        group om.OrganizationId by om.Person
-                            into leaderlist
-                        orderby leaderlist.Key.Name2
-                            select leaderlist;
-
-
+            var plist = (from om in DbUtil.Db.ViewOrganizationLeaders
+                         where olist.Contains(om.OrganizationId)
+                         group om.OrganizationId by om.PeopleId into leaderlist
+                         select leaderlist).ToList();
 
             var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
             foreach (var p in plist)
             {
                 var sb = new StringBuilder("The following meetings are ready to be viewed:<br/>\n");
-                var leader = p.Key;
                 var orgids = p.Select(vv => vv).ToList();
                 var meetings = mlist.Where(m => orgids.Contains(m.OrganizationId)).ToList();
+                var leader = DbUtil.Db.LoadPersonById(p.Key);
                 foreach (var m in meetings)
                 {
                     string orgname = Organization.FormatOrgName(m.OrganizationName, m.LeaderName, m.Location);
