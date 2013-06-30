@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CmsWeb.Models;
+using CmsData.API;
+using ContributionSearchModel = CmsWeb.Models.ContributionSearchModel;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
@@ -12,16 +13,12 @@ namespace CmsWeb.Areas.Finance.Controllers
     {
         public ActionResult Index(int? id, int? year)
         {
-        	var m = new ContributionSearchModel();
-			if (id.HasValue)
-				m.PeopleId = id;
-			if (year.HasValue)
-				m.Year = year.Value;
+        	var m = new ContributionSearchModel(id, year);
             return View(m);
         }
         [HttpPost]
 		public ActionResult Results(ContributionSearchModel m)
-		{
+        {
 			return View(m);
 		}
     }

@@ -323,6 +323,7 @@
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
     <Compile Include="CheckinFamilyMember.cs" />
+    <Compile Include="APIContributionSearchModel.cs" />
     <Compile Include="DoReplacements.cs" />
     <Compile Include="Generated\ActivityOld.cs" />
     <Compile Include="Generated\BuildingAccessType.cs" />

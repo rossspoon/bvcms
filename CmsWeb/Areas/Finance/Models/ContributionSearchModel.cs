@@ -19,144 +19,57 @@ namespace CmsWeb.Models
 {
 	public class ContributionSearchModel : PagerModel2
 	{
-		public string Name { get; set; }
-		public string Comments { get; set; }
-		public int? BundleType { get; set; }
-		public int? Type { get; set; }
-		public int? Status { get; set; }
-		public decimal? MinAmt { get; set; }
-		public decimal? MaxAmt { get; set; }
-	    public string taxDedNonTaxDedPledge { get; set; }
-		private int? _peopleId;
-		public int? PeopleId
-		{
-			get { return _peopleId; }
-			set
-			{
-				_peopleId = value;
-				if (value != null) person = DbUtil.Db.LoadPersonById(value.Value);
-			}
-		}
+	    private APIContributionSearchModel api { get; set; }
+	    public ContributionSearchInfo SearchInfo { get; set; }
 
-		public int Year { get; set; }
-		public int FundId { get; set; }
-		public Person person { get; set; }
+	    private string _name = null;
+	    public string Name
+	    {
+	        get
+	        {
+	            if (!_name.HasValue())
+	                _name = (from p in DbUtil.Db.People
+	                         where p.PeopleId == SearchInfo.PeopleId
+	                         select p.Name).SingleOrDefault() ?? "";
+	            return _name;
+	        }
+	    }
 
-		public ContributionSearchModel()
-		{
-			GetCount = Count;
+	    private void Setup()
+	    {
+			GetCount = api.Count;
 			Sort = "Date";
 			Direction = "desc";
-            taxDedNonTaxDedPledge = "TaxDed";
-		}
+	        SearchInfo = api.model;
+	    }
 
-		private IQueryable<Contribution> contributions;
-		public IEnumerable<ContributionInfo> ContributionsList()
-		{
-			contributions = FetchContributions();
-			if (!_count.HasValue)
-				_count = contributions.Count();
-			contributions = ApplySort(contributions).Skip(StartRow).Take(PageSize);
-			return ContributionsList(contributions);
-		}
+	    public ContributionSearchModel()
+	    {
+            api = new APIContributionSearchModel(DbUtil.Db);
+	        Setup();
+	    }
+	    public ContributionSearchModel(ContributionSearchInfo m)
+	    {
+            api = new APIContributionSearchModel(DbUtil.Db, m);
+	        Setup();
+	    }
 
-		private IEnumerable<ContributionInfo> ContributionsList(IQueryable<Contribution> query)
-		{
-			var q2 = from c in query
-					 let bd = c.BundleDetails.FirstOrDefault()
-					 select new ContributionInfo
-					 {
-						 BundleId = bd == null ? 0 : bd.BundleHeaderId,
-						 ContributionAmount = c.ContributionAmount,
-						 ContributionDate = c.ContributionDate,
-						 ContributionId = c.ContributionId,
-						 ContributionType = c.ContributionType.Description,
-						 ContributionTypeId = c.ContributionTypeId,
-						 Fund = c.ContributionFund.FundName,
-						 NonTaxDed = c.ContributionTypeId == ContributionTypeCode.NonTaxDed || (c.ContributionFund.NonTaxDeductible ?? false),
-						 StatusId = c.ContributionStatusId,
-						 Status = c.ContributionStatus.Description,
-						 Name = c.Person.Name,
-						 PeopleId = c.PeopleId,
-						 Description = c.ContributionDesc,
-						 CheckNo = c.CheckNo
-					 };
-			return q2;
-		}
+	    public ContributionSearchModel(int? peopleId, int? year)
+	    {
+            api = new APIContributionSearchModel(DbUtil.Db);
+	        Setup();
+	        SearchInfo.PeopleId = peopleId;
+	        SearchInfo.Year = year;
+	    }
 
-		private int? _count;
-		public int Count()
-		{
-			if (!_count.HasValue)
-				_count = FetchContributions().Count();
-			return _count.Value;
-		}
-		private IQueryable<Contribution> FetchContributions()
-		{
-			if (contributions != null)
-				return contributions;
+	    public IEnumerable<ContributionInfo> ContributionsList()
+	    {
+	        var q = api.FetchContributions();
+            q = ApplySort(q).Skip(StartRow).Take(PageSize);
+	        return api.ContributionsList(q);
+	    }
 
-			contributions = from c in DbUtil.Db.Contributions
-							where c.PeopleId == PeopleId || PeopleId == null
-                            where taxDedNonTaxDedPledge == "All" 
-                                || (taxDedNonTaxDedPledge == "TaxDed" && !ContributionTypeCode.NonTaxTypes.Contains(c.ContributionTypeId))
-                                || (taxDedNonTaxDedPledge == "NonTaxDed" && c.ContributionTypeId == ContributionTypeCode.NonTaxDed)
-                                || (taxDedNonTaxDedPledge == "Pledge" && c.ContributionTypeId == ContributionTypeCode.Pledge) 
-							select c;
-
-			if (MinAmt.HasValue)
-				contributions = from c in contributions
-								where c.ContributionAmount >= MinAmt
-								select c;
-			if (MaxAmt.HasValue)
-				contributions = from c in contributions
-								where c.ContributionAmount <= MaxAmt
-								select c;
-
-		    var i = Name.ToInt();
-			if (i > 0)
-			    contributions = from c in contributions
-			                    where c.Person.PeopleId == i
-			                    select c;
-			else if (Name.HasValue())
-			    contributions = from c in contributions
-			                    where c.Person.Name.Contains(Name) 
-			                    select c;
-
-		    if (Comments.HasValue())
-				contributions = from c in contributions
-								where c.ContributionDesc.Contains(Comments)
-									|| c.CheckNo == Comments
-								select c;
-
-			if ((Type ?? 0) != 0)
-				contributions = from c in contributions
-								where c.ContributionTypeId == Type
-								select c;
-
-			if ((BundleType ?? 0) != 0)
-				contributions = from c in contributions
-								where c.BundleDetails.First().BundleHeader.BundleHeaderTypeId == BundleType
-								select c;
-
-			if ((Status ?? 99) != 99)
-				contributions = from c in contributions
-								where c.ContributionStatusId == Status
-								select c;
-
-			if (Year > 0)
-				contributions = from c in contributions
-								where c.ContributionDate.Value.Year == Year
-								select c;
-
-			if (FundId > 0)
-				contributions = from c in contributions
-								where c.FundId == FundId
-								select c;
-
-			return contributions;
-		}
-		public IQueryable<Contribution> ApplySort(IQueryable<Contribution> q)
+	    public IQueryable<Contribution> ApplySort(IQueryable<Contribution> q)
 		{
 			if ((Direction ?? "desc") == "asc")
 				switch (Sort)
@@ -227,22 +140,22 @@ namespace CmsWeb.Models
 		public SelectList ContributionStatuses()
 		{
 			return new SelectList(new CodeValueModel().ContributionStatuses99(),
-				"Id", "Value", Status.ToString());
+				"Id", "Value", SearchInfo.Status.ToString());
 		}
 		public SelectList ContributionTypes()
 		{
 			return new SelectList(new CodeValueModel().ContributionTypes0(),
-				"Id", "Value", Type.ToString());
+				"Id", "Value", SearchInfo.Type.ToString());
 		}
 		public SelectList BundleTypes()
 		{
 			return new SelectList(new CodeValueModel().BundleHeaderTypes0(),
-				"Id", "Value", Type.ToString());
+				"Id", "Value", SearchInfo.Type.ToString());
 		}
 		public IEnumerable<SelectListItem> Years()
 		{
 			var q = from c in DbUtil.Db.Contributions
-					where c.PeopleId == PeopleId || PeopleId == null
+					where c.PeopleId == SearchInfo.PeopleId || SearchInfo.PeopleId == null
 					group c by c.ContributionDate.Value.Year
 						into g
 						orderby g.Key descending
@@ -251,24 +164,11 @@ namespace CmsWeb.Models
 			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
 			return list;
 		}
-        public decimal Total()
-        {
-        	var q = FetchContributions();
-			q = from c in q
-				where c.ContributionStatusId == ContributionStatusCode.Recorded
-                where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                where taxDedNonTaxDedPledge != "All" || c.ContributionTypeId != ContributionTypeCode.Pledge
-                select c;
-            var t = q.Sum(c => c.ContributionAmount);
-            if (t.HasValue)
-                return t.Value;
-            return 0;
-        }
 
 		public IEnumerable<SelectListItem> Funds()
 		{
 			var list = (from c in DbUtil.Db.Contributions
-						where c.PeopleId == PeopleId || PeopleId == null
+						where c.PeopleId == SearchInfo.PeopleId || SearchInfo.PeopleId == null
 						group c by new { c.FundId, c.ContributionFund.FundName }
 							into g
 							orderby g.Key.FundName
@@ -280,22 +180,15 @@ namespace CmsWeb.Models
 			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
 			return list;
 		}
-		public class ContributionInfo
-		{
-			public int BundleId { get; set; }
-			public int ContributionId { get; set; }
-			public string Fund { get; set; }
-			public string ContributionType { get; set; }
-			public int? ContributionTypeId { get; set; }
-			public int? PeopleId { get; set; }
-			public string Name { get; set; }
-			public DateTime? ContributionDate { get; set; }
-			public decimal? ContributionAmount { get; set; }
-			public string Status { get; set; }
-			public int? StatusId { get; set; }
-			public bool NonTaxDed { get; set; }
-			public string Description { get; set; }
-			public string CheckNo { get; set; }
-		}
+
+	    public decimal Total()
+	    {
+	        return api.Total();
+	    }
+
+	    public int Count()
+	    {
+	        return api.Count();
+	    }
 	}
 }

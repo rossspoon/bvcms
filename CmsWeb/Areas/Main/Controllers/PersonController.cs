@@ -834,7 +834,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				PeopleId = id, 
 				FromDate = fr,
 				ToDate = to,
-				typ = p.PositionInFamilyId == PositionInFamily.PrimaryAdult ? 2 : 1,
+				typ = p.PositionInFamilyId == PositionInFamily.PrimaryAdult && p.ContributionOptionsId == EnvelopeOptionCode.Joint ? 2 : 1,
 				noaddressok = true,
 				useMinAmt = false,
 			};

@@ -59,7 +59,6 @@ namespace CmsWeb.Areas.Finance.Models.Report
             switch (typ)
             {
                 case 1:
-                    SpouseId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).SpouseId.ToInt();
                     q = APIContribution.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt);
                     break;
                 case 2:
