@@ -245,7 +245,15 @@
                 <td>@Html.CheckBox("group")
                 </td>
             </tr>
-            <tr>
+            <tr class="notformeeting">
+                <th>Group Filter Prefix</th>
+                <td>@Html.TextBox("sgprefix")</td>
+            </tr>
+            <tr class="notformeeting">
+                <th>Highlight Group</th>
+                <td>@Html.TextBox("highlightsg")</td>
+            </tr>
+            <tr class="notformeeting">
                 <th>Use Alt Names
                 </th>
                 <td>@Html.CheckBox("altnames")

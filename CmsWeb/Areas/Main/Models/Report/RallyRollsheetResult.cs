@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -35,11 +36,13 @@ namespace CmsWeb.Areas.Main.Models.Report
 			public string NameParent2 { get; set; }
 			public string VisitorType { get; set; }
 		}
-		public int? qid, pid, div, schedule, meetingid, orgid;
+
+        public OrgSearchModel Model;
+		public int? qid, meetingid, orgid;
 		public int[] groups;
 		public bool? bygroup;
 		public bool? altnames;
-		public string name, sgprefix;
+		public string sgprefix, highlightsg;
 		public DateTime? dt;
 
 		public override void ExecuteResult(ControllerContext context)
@@ -56,9 +59,9 @@ namespace CmsWeb.Areas.Main.Models.Report
 
 			IEnumerable<OrgInfo> list1;
 			if (bygroup == true)
-				list1 = ReportList2(orgid, pid, div, schedule, name, sgprefix);
+				list1 = ReportList2();
 			else
-				list1 = ReportList(orgid, groups, pid, div, schedule, name);
+				list1 = ReportList();
 
 			if (list1.Count() == 0)
 			{
@@ -240,52 +243,42 @@ namespace CmsWeb.Areas.Main.Models.Report
 			public string Location { get; set; }
 			public int[] Groups { get; set; }
 		}
-		private IEnumerable<OrgInfo> ReportList(int? orgid, int[] groups, int? progid, int? divid, int? schedule, string name)
+		private IEnumerable<OrgInfo> ReportList()
 		{
-			var roles = DbUtil.Db.CurrentRoles();
-			var q = from o in DbUtil.Db.Organizations
-					where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-					where o.OrganizationId == orgid || orgid == 0 || orgid == null
-					where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
-					where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-					where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-					where o.OrganizationStatusId == OrgStatusCode.Active
-					where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
-					orderby o.Division.Name, o.OrganizationName
-					select new OrgInfo
-					{
-						OrgId = o.OrganizationId,
-						Division = o.Division.Name,
-						Name = o.OrganizationName,
-						Teacher = o.LeaderName,
-						Location = o.Location,
-						Groups = groups
-					};
-			return q;
+            var roles = DbUtil.Db.CurrentRoles();
+            var q = from o in Model.FetchOrgs()
+                    where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
+                    orderby o.Division.Name, o.OrganizationName
+                    select new OrgInfo
+                    {
+                        OrgId = o.OrganizationId,
+                        Division = o.Division.Name,
+                        Name = o.OrganizationName,
+                        Teacher = o.LeaderName,
+                        Location = o.Location,
+                        Groups = groups
+                    };
+            return q;
 		}
-		private IEnumerable<OrgInfo> ReportList2(int? orgid, int? progid, int? divid, int? schedule, string name, string sgprefix)
+		private IEnumerable<OrgInfo> ReportList2()
 		{
-			var roles = DbUtil.Db.CurrentRoles();
-			var q = from o in DbUtil.Db.Organizations
-					where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-					from sg in o.MemberTags
-					where sgprefix == null || sgprefix == "" || sg.Name.StartsWith(sgprefix)
-					where o.OrganizationId == orgid || orgid == 0 || orgid == null
-					where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
-					where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-					where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-					where o.OrganizationStatusId == OrgStatusCode.Active
-					where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
-					select new OrgInfo
-					{
-						OrgId = o.OrganizationId,
-						Division = o.OrganizationName,
-						Name = sg.Name,
-						Teacher = "",
-						Location = o.Location,
-						Groups = new int[] { sg.Id }
-					};
-			return q;
+            var roles = DbUtil.Db.CurrentRoles();
+            var q = from o in Model.FetchOrgs()
+                    where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+                    from sg in o.MemberTags
+                    where (sgprefix ?? "") == "" || sg.Name.StartsWith(sgprefix)
+                    where o.OrganizationId == orgid || (orgid ?? 0) == 0
+                    select new OrgInfo
+                    {
+                        OrgId = o.OrganizationId,
+                        Division = o.OrganizationName,
+                        Name = sg.Name,
+                        Teacher = "",
+                        Location = o.Location,
+                        Groups = new int[] { sg.Id }
+                    };
+            return q;
 		}
 		class CellEvent : IPdfPCellEvent
 		{

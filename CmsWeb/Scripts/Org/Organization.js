@@ -112,7 +112,7 @@ $(function () {
             RebindMemberGrids();
         }
     });
-    $('body').on("click", 'a.addfromtag', function (e) {
+    $('a.addfromtag').live("click", function (e) {
         e.preventDefault();
         var d = $('#AddFromTag');
         $('iframe', d).attr("src", this.href);
@@ -134,14 +134,14 @@ $(function () {
             $.updateTable($('#Meetings-tab form'));
         }
     });
-    $('body').on("click", '#RepairTransactions', function (e) {
+    $('#RepairTransactions').live("click", function (e) {
         e.preventDefault();
         var d = $('#LongRunOp');
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Repair Transactions");
         d.dialog("open");
     });
-    $('body').on('click', '.delmeeting', function (ev) {
+    $('a.delmeeting').live('click', function (ev) {
         ev.preventDefault();
         if (confirm("delete meeting for sure?")) {
             var d = $('#LongRunOp');
@@ -153,14 +153,14 @@ $(function () {
     });
 
 
-    $('body').on("click", 'a.addmembers', function (e) {
+    $('a.addmembers').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Add Members");
         d.dialog("open");
     });
-    $('body').on("click", 'a.memberdialog', function (e) {
+    $('a.memberdialog').live("click", function (e) {
         e.preventDefault();
         var title;
         var d = $('#memberDialog');
@@ -234,9 +234,9 @@ $(function () {
                 break;
         }
     };
-    $("body").on("change", '#org_RegistrationTypeId', $.showHideRegTypes);
+    $("#org_RegistrationTypeId").live("change", $.showHideRegTypes);
     $.showHideRegTypes();
-    $("body").on('click', 'a.displayedit,a.displayedit2', function (ev) {
+    $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
@@ -267,7 +267,7 @@ $(function () {
         });
         return false;
     });
-    $('body').on("click", "#selectquestions a", function (ev) {
+    $('#selectquestions a').live("click", function (ev) {
         ev.preventDefault();
         $.post('/Organization/NewAsk/', { id: 'AskItems', type: $(this).attr("type") }, function (ret) {
             $('#selectquestions').dialog("close");
@@ -279,14 +279,14 @@ $(function () {
         });
         return false;
     });
-    $("body").on("click", 'ul.enablesort a.del', function (ev) {
+    $("ul.enablesort a.del").live("click", function (ev) {
         ev.preventDefault();
         if (!$(this).attr("href"))
             return false;
         $(this).parent().parent().parent().remove();
         return false;
     });
-    $("body").on("click", 'ul.enablesort a.delt', function (ev) {
+    $("ul.enablesort a.delt").live("click", function (ev) {
         ev.preventDefault();
         if (!$(this).attr("href"))
             return false;
@@ -317,7 +317,7 @@ $(function () {
         });
     };
     $(".helptip").tooltip({ showBody: "|", blocked: true });
-    $("body").on('click', 'form.DisplayEdit a.submitbutton', function (ev) {
+    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
@@ -336,7 +336,7 @@ $(function () {
         });
         return false;
     });
-    $("body").on('click', '#future', function () {
+    $("#future").live('click', function () {
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(f).attr("action"), q, function (ret) {
@@ -349,7 +349,7 @@ $(function () {
             return false;
         return true;
     });
-    $('body').on("click", 'a.taguntag', function (ev) {
+    $('a.taguntag').live("click", function (ev) {
         ev.preventDefault();
         $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function (ret) {
             $(ev.target).text(ret);
@@ -412,7 +412,7 @@ $(function () {
         });
         return false;
     };
-    $("body").on("click", 'a.filtergroupslink', function (ev) {
+    $("a.filtergroupslink").live("click", function (ev) {
         ev.preventDefault();
         var f = $(this).closest("form");
         $("#FilterGroups").dialog({
@@ -490,9 +490,10 @@ $(function () {
         height: 450,
         modal: true
     });
-    $('body').on("click", '#RollsheetLink', function (ev) {
+    $('#RollsheetLink').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
+        $("tr.notformeeting").show();
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
             "Ok": function () {
@@ -503,16 +504,21 @@ $(function () {
                 if ($('#altnames').is(":checked"))
                     args += "&altnames=true";
                 if ($('#group').is(":checked"))
-                    args += "&bygroup=1&sgprefix=";
+                    args += "&bygroup=1";
+                if ($("#highlightsg").val())
+                    args += "&highlight=" + $("#highlightsg").val();
+                if ($("#sgprefix").val())
+                    args += "&sgprefix=" + $("#sgprefix").val();
                 window.open("/Reports/Rollsheet/" + args);
                 $(this).dialog("close");
             }
         });
         d.dialog('open');
     });
-    $('body').on("click", '#RallyRollsheetLink', function (ev) {
+    $('#RallyRollsheetLink').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
+        $("tr.notformeeting").show();
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
             "Ok": function () {
@@ -524,15 +530,20 @@ $(function () {
                     args += "&altnames=true";
                 if ($('#group').is(":checked"))
                     args += "&bygroup=1&sgprefix=";
+                if ($("#highlightsg").val())
+                    args += "&highlight=" + $("#highlightsg").val();
+                if ($("#sgprefix").val())
+                    args += "&sgprefix=" + $("#sgprefix").val();
                 window.open("/Reports/RallyRollsheet/" + args);
                 $(this).dialog("close");
             }
         });
         d.dialog('open');
     });
-    $('body').on("click", '#NewMeeting', function (ev) {
+    $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");
+        $("tr.notformeeting").hide();
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
             "Ok": function () {
@@ -572,7 +583,7 @@ $(function () {
         }
         return { date: d, time: t, valid: v };
     };
-    $('body').on('click', 'a.joinlink', function (ev) {
+    $('a.joinlink').live('click', function (ev) {
         ev.preventDefault();
         $.post("/Organization/Join/", { id: this.id },
             function (ret) {
@@ -623,7 +634,7 @@ $(function () {
             $('iframe', this).attr("src", "");
         }
     });
-    $('body').on("click", '#orgpicklist', function (e) {
+    $('#orgpicklist').live("click", function (e) {
         e.preventDefault();
         var d = $('#orgsDialog');
         $('iframe', d).attr("src", this.href);
@@ -670,7 +681,7 @@ $(function () {
             }
         }
     });
-    $("body").on("click", '#newextravalue', function (ev) {
+    $("#newextravalue").live("click", function (ev) {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
@@ -679,12 +690,12 @@ $(function () {
         autoOpen: false,
         width: 500
     });
-    $("body").on("click", '#tryreg', function (ev) {
+    $("#tryreg").live("click", function (ev) {
         ev.preventDefault();
         var d = $('#TryRegDialog');
         d.dialog("open");
     });
-    $("body").on("click", 'a.deleteextra', function (ev) {
+    $("a.deleteextra").live("click", function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
             $.post("/Organization/DeleteExtra/" + $("#OrganizationId").val(), { field: $(this).attr("field") }, function (ret) {
@@ -710,7 +721,7 @@ $(function () {
             $(".bt").button();
         });
     });
-    $(document).on("click", "#closeSubmitDialog", null, function (ev) {
+    $("#closeSubmitDialog").live("click", null, function (ev) {
         ev.preventDefault();
         $(submitDialog).dialog("close");
     });
