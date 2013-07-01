@@ -49,6 +49,7 @@ namespace CmsData.Registration
 		public bool NotReqMarital { get; set; }
 		public bool NotReqZip { get; set; }
 		public int? DonationFundId { get; set; }
+        public string AccountingCode { get; set; }
 		public int? TimeSlotLockDays { get; set; }
 		public string GroupToJoin { get; set; }
 		public bool GiveOrgMembAccess { get; set; }
@@ -242,6 +243,9 @@ namespace CmsData.Registration
 					break;
 				case Parser.RegKeywords.DonationFundId:
 					DonationFundId = parser.GetNullInt();
+					break;
+				case Parser.RegKeywords.AccountingCode:
+				    AccountingCode = parser.GetString();
 					break;
 				case Parser.RegKeywords.DonationLabel:
 					DonationLabel = parser.GetString();
@@ -588,6 +592,7 @@ namespace CmsData.Registration
 			AddValueCk(0, sb, "MaximumFee", MaximumFee);
 			AddValueCk(0, sb, "ApplyMaxToOtherFees", ApplyMaxToOtherFees);
 			AddValueCk(0, sb, "ExtraValueFeeName", ExtraValueFeeName);
+			AddValueCk(0, sb, "AccountingCode", AccountingCode);
 			sb.AppendLine();
 		}
 		private void AddDonation(StringBuilder sb)
@@ -725,5 +730,6 @@ namespace CmsData.Registration
 				return new MasterOrgInfo();
 			return i;
 		}
-	}
+
+    }
 }

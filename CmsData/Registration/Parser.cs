@@ -280,6 +280,7 @@ namespace CmsData.Registration
 			DonationLabel,
 			ExtraValueFeeName,
 			DonationFundId,
+			AccountingCode,
 			GroupToJoin,
 			GiveOrgMembAccess,
 			NotReqDOB,
