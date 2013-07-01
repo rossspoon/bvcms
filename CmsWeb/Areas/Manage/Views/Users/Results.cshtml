@@ -14,6 +14,7 @@
         <th><a href="#" class="sortable">Online</a></th>
         <th><a href="#" class="sortable">Email</a></th>
         <th><a href="#" class="sortable">Activity</a></th>
+        <th>Roles</th>
     </tr>
     </thead>
 	<tbody>
@@ -22,14 +23,15 @@
 	<tr><td colspan="6">No matching records.</td></tr>
 } 
 		@foreach (var u in Model.Users()) {
-			<tr>
-				<td>@u.userid</td>
-				<td class="tip" title="@u.roles">@u.username</td>
-				<td>@Html.ActionLink(@u.name, "Index", "Person", new { area = "Main", id = u.peopleid }, null) </td>
-				<td>@u.online</td>
-				<td>@u.email</td>
-				<td>@u.activity.FormatDateTm()</td>
-			</tr>
+		    <tr>
+		        <td>@u.userid</td>
+		        <td class="tip">@u.username</td>
+		        <td>@Html.ActionLink(@u.name, "Index", "Person", new { area = "Main", id = u.peopleid }, null) </td>
+		        <td>@u.online</td>
+		        <td>@u.email</td>
+		        <td>@u.activity.FormatDateTm()</td>
+		        <td><i>@u.roles</i></td>
+		    </tr>
 		}
 	</tbody>
     <tfoot>
