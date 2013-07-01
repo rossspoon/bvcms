@@ -7,7 +7,6 @@ namespace CmsData
 {
     public enum QueryType
     {
-        ActiveRecords,
         Age,
         DaysAfterNthVisitDateRange,
         AttendMemberTypeAsOf,

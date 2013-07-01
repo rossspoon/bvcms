@@ -558,9 +558,6 @@
     <Field Name="PeopleIds" Title="HasOneOfPeopleIds" Type="StringEqual" >
       People with one of these PeopleIds
     </Field>
-    <Field Name="ActiveRecords" Title="Active Records" Type="Bit" DisplayAs="ActiveRecords" DataValueField="IdCode">
-      Active Record
-    </Field>
     <Field Name="MatchAnything" Title="Select Condition" Type="Bit" DisplayAs="Select Condition" DataValueField="IdCode">
       This condition is always true
     </Field>

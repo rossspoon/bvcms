@@ -1168,6 +1168,25 @@ namespace CmsData
 			}
 			return fund;
 		}
+		public int ActiveRecords()
+        {
+		    const string name = "ActiveRecords";
+		    var qb = QueryBuilderClauses.FirstOrDefault(c => c.IsPublic && c.Description == name && c.SavedBy == "public");
+		    if (qb == null)
+		    {
+			    qb = QueryBuilderScratchPad();
+                qb.CleanSlate(this);
+		        var anygroup = qb.AddNewGroupClause(CompareType.AnyTrue);
+
+                var clause = anygroup.AddNewClause(QueryType.RecentAttendCount, CompareType.GreaterEqual, "1");
+                clause.Days = 365;
+		        clause = anygroup.AddNewClause(QueryType.RecentHasIndContributions, CompareType.Equal, "1,T");
+		        clause.Days = 365;
+		        qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
+		        qb.SaveTo(this, name, "public", true);
+		    }
+            return PeopleQuery(qb.QueryId).Count();
+		}
 
 	}
 }

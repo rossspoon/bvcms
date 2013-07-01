@@ -29,23 +29,6 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p => true;
             return Expression.Invoke(pred, parm);
         }
-        internal static Expression ActiveRecords(
-            ParameterExpression parm,
-            CompareType op,
-            bool tf)
-        {
-            var dt1 = DateTime.Now.AddDays(-365);
-            Expression<Func<Person, bool>> pred = p =>
-                                                  p.Attends.Any(aa => aa.AttendanceFlag == true && aa.MeetingDate >= dt1) ||
-                                                  p.Contributions.Any(cc =>
-                                                      cc.ContributionDate > dt1 && cc.ContributionAmount > 0 &&
-                                                      !ContributionTypeCode.ReturnedReversedTypes.Contains
-                                                           (cc.ContributionTypeId));
-            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
-            if (!(op == CompareType.Equal && tf))
-                expr = Expression.Not(expr);
-            return expr;
-        }
         internal static Expression BackgroundCheckStatus(ParameterExpression parm,
             string labels,
             string usernameOrPeopleId,
