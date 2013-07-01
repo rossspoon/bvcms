@@ -245,6 +245,7 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
     <Compile Include="Areas\Dialog\Models\SearchModel.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionStatementsExtra.cs" />
     <Compile Include="Areas\Main\Models\Report\WeeklyDecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\DecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlModel.cs" />
