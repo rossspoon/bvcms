@@ -1097,8 +1097,9 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
-                return AlwaysFalse(parm);
+            if(!Db.FromActiveRecords)
+                if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+                    return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
             Expression<Func<Person, bool>> pred = p =>
@@ -2186,6 +2187,23 @@ namespace CmsData
             if (!(op == CompareType.Equal && tf))
                 expr2 = Expression.Not(expr2);
             return Expression.And(expr1, expr2);
+        }
+        internal static Expression MedicalLength(
+            ParameterExpression parm,
+            CompareType op,
+            int len)
+        {
+            if (len == 0 && op == CompareType.Equal)
+            {
+                Expression<Func<Person, bool>> pp = p =>
+                    !p.RecRegs.Any() || p.RecRegs.First().MedicalDescription == null ||
+                    p.RecRegs.First().MedicalDescription.Length == 0;
+                return Expression.Invoke(pp, parm);
+            }
+            Expression<Func<Person, int>> pred = p => p.RecRegs.Sum(rr => rr.MedicalDescription.Length);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(len), left.Type);
+            return Compare(left, op, right);
         }
         internal static Expression HasParents(
             ParameterExpression parm,

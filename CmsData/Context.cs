@@ -1185,8 +1185,13 @@ namespace CmsData
 		        qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
 		        qb.SaveTo(this, name, "public", true);
 		    }
-            return PeopleQuery(qb.QueryId).Count();
-		}
+		    FromActiveRecords = true;
+            var n = PeopleQuery(qb.QueryId).Count();
+		    FromActiveRecords = false;
+		    return n;
+        }
 
-	}
+
+        internal bool FromActiveRecords { get; set; }
+    }
 }
