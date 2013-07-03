@@ -573,6 +573,17 @@ namespace UtilityExtensions
                 return "m/d/yy";
             }
         }
+        public static string jQueryDateValidation
+        {
+            get
+            {
+                var dt = new DateTime(2002,1,30);
+                var s = dt.ToShortDateString();
+                if (s.StartsWith("30"))
+                    return @"^\d\d?[-/](0?[1-9]|1[012])[-/]\d\d(\d\d)?$";
+                return @"^(0?[1-9]|1[012])[-/]\d\d?[-/]\d\d(\d\d)?$";
+            }
+        }
         public static string jQueryDateFormat2
         {
             get

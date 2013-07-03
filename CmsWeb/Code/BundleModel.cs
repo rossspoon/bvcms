@@ -54,33 +54,6 @@ namespace CmsWeb.Models
         public decimal Cash { get; set; }
         public decimal Coins { get; set; }
     }
-    public class ContributionInfo
-    {
-        public int BundleId { get; set; }
-        public int ContributionId { get; set; }
-        public string Fund { get; set; }
-        public string ContributionType { get; set; }
-        public int? ContributionTypeId { get; set; }
-        public int? PeopleId { get; set; }
-        public string Name { get; set; }
-        public DateTime? ContributionDate { get; set; }
-        public decimal? ContributionAmount { get; set; }
-        public string Status { get; set; }
-        public int? StatusId { get; set; }
-        public bool Pledge { get; set; }
-    	public string Checkno { get; set; }
-    	public string Description { get; set; }
-        public bool NotIncluded
-        {
-            get
-            {
-                if (!StatusId.HasValue)
-                    return true;
-                return StatusId.Value != ContributionStatusCode.Recorded
-                    || ContributionTypeCode.ReturnedReversedTypes.Contains(ContributionTypeId.Value);
-            }
-        }
-    }
     public class FundTotalInfo
     {
         public int FundId { get; set; }
@@ -280,12 +253,12 @@ namespace CmsWeb.Models
                         ContributionType = d.Contribution.ContributionType.Description,
                         ContributionTypeId = d.Contribution.ContributionTypeId,
                         Fund = d.Contribution.ContributionFund.FundName,
-                        PeopleId = d.Contribution.PeopleId,
+                        PeopleId = d.Contribution.PeopleId ?? 0,
                         StatusId = d.Contribution.ContributionStatusId.Value,
                         Status = d.Contribution.ContributionStatus.Description,
                         Name = d.Contribution.Person.Name2,
                         Description = d.Contribution.ContributionDesc,
-						Checkno = d.Contribution.CheckNo,
+						CheckNo = d.Contribution.CheckNo,
                     };
             return q;
         }
@@ -335,7 +308,7 @@ namespace CmsWeb.Models
                          StatusId = c.ContributionStatusId,
                          Status = c.ContributionStatus.Description,
                          Name = c.Person.Name,
-                         PeopleId = c.PeopleId,
+                         PeopleId = c.PeopleId ?? 0,
                          Description = c.ContributionDesc,
                      };
             return q2;

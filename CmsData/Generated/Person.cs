@@ -243,13 +243,13 @@ namespace CmsData
 		
 		private bool? _IsDeceased;
 		
-		private string _Name;
-		
 		private string _Ssn;
 		
 		private string _Dln;
 		
 		private int? _DLStateID;
+		
+		private string _Name;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -729,9 +729,6 @@ namespace CmsData
 		partial void OnIsDeceasedChanging(bool? value);
 		partial void OnIsDeceasedChanged();
 		
-		partial void OnNameChanging(string value);
-		partial void OnNameChanged();
-		
 		partial void OnSsnChanging(string value);
 		partial void OnSsnChanged();
 		
@@ -740,6 +737,9 @@ namespace CmsData
 		
 		partial void OnDLStateIDChanging(int? value);
 		partial void OnDLStateIDChanged();
+		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
 		
     #endregion
 		public Person()
@@ -3431,28 +3431,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
-		public string Name
-		{
-			get { return this._Name; }
-
-			set
-			{
-				if (this._Name != value)
-				{
-				
-                    this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="SSN", UpdateCheck=UpdateCheck.Never, Storage="_Ssn", DbType="varchar(50)")]
 		public string Ssn
 		{
@@ -3512,6 +3490,28 @@ namespace CmsData
 					this._DLStateID = value;
 					this.SendPropertyChanged("DLStateID");
 					this.OnDLStateIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(138)", IsDbGenerated=true)]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
 				}
 
 			}

@@ -27,5 +27,14 @@ namespace CmsWeb.Areas.Public.Controllers
 			DbUtil.LogActivity("APIContribution Contributions for ({0})".Fmt(id));
 			return Content(new APIContribution(DbUtil.Db).Contributions(id, Year), "text/xml");
 		}
+		[HttpPost]
+		public ActionResult ContributionSearch(ContributionSearchInfo m, int? page)
+		{
+			var ret = AuthenticateDeveloper(addrole: "Finance");
+			if (ret.StartsWith("!"))
+				return Content(@"<Contributions status=""error"">" + ret.Substring(1) + "</Contributions>");
+			DbUtil.LogActivity("APIContribution ContributionSearch");
+			return Content(new APIContributionSearchModel(DbUtil.Db, m).ContributionsXML(((page ?? 1) -1) * 100, 100), "text/xml");
+		}
     }
 }

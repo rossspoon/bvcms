@@ -22,10 +22,6 @@ namespace CmsData
         partial void UpdateActivityLog(ActivityLog instance);
         partial void DeleteActivityLog(ActivityLog instance);
         
-        partial void InsertActivityOld(ActivityOld instance);
-        partial void UpdateActivityOld(ActivityOld instance);
-        partial void DeleteActivityOld(ActivityOld instance);
-        
         partial void InsertAddress(Address instance);
         partial void UpdateAddress(Address instance);
         partial void DeleteAddress(Address instance);
@@ -663,12 +659,6 @@ namespace CmsData
 		public Table< ActivityLog> ActivityLogs
 		{
 			get	{ return this.GetTable< ActivityLog>(); }
-
-		}
-
-		public Table< ActivityOld> ActivityOlds
-		{
-			get	{ return this.GetTable< ActivityOld>(); }
 
 		}
 
@@ -1629,6 +1619,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.OrganizationLeader> ViewOrganizationLeaders
+	    {
+		    get { return this.GetTable< View.OrganizationLeader>(); }
+
+	    }
+
 	    public Table< View.OrganizationStructure> ViewOrganizationStructures
 	    {
 		    get { return this.GetTable< View.OrganizationStructure>(); }
@@ -2439,6 +2435,16 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.AvgSunAttendance", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? AvgSunAttendance(
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod()))
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.GetAttendedTodaysMeeting", IsComposable = true)]
 		[return: Parameter(DbType = "bit")]
 		public bool? GetAttendedTodaysMeeting(
@@ -2482,16 +2488,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
                 thisday
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.AvgSunAttendance", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? AvgSunAttendance(
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod()))
                 ).ReturnValue));
 		}
 

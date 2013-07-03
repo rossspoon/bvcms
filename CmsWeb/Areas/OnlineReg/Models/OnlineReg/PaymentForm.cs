@@ -182,7 +182,7 @@ namespace CmsWeb.Models
                 PayBalance = false,
                 Amtdue = m.TotalAmount() + (m.donation ?? 0),
                 Donate = m.donation,
-                Description = m.Header,
+                Description = m.DescriptionForPayment,
                 Email = r.Email,
                 First = r.First,
                 MiddleInitial = r.Middle,

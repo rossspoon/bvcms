@@ -152,7 +152,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(100)")]
+		[Column(Name="Name", Storage="_Name", DbType="varchar(150)")]
 		public string Name
 		{
 			get
@@ -169,7 +169,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="First", Storage="_First", DbType="varchar(100)")]
+		[Column(Name="First", Storage="_First", DbType="varchar(50)")]
 		public string First
 		{
 			get
@@ -186,7 +186,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PreferredName", Storage="_PreferredName", DbType="varchar(100)")]
+		[Column(Name="PreferredName", Storage="_PreferredName", DbType="varchar(50)")]
 		public string PreferredName
 		{
 			get
@@ -322,7 +322,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Location", Storage="_Location", DbType="varchar(100)")]
+		[Column(Name="Location", Storage="_Location", DbType="varchar(200)")]
 		public string Location
 		{
 			get
@@ -424,7 +424,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="goesby", Storage="_Goesby", DbType="varchar(100)")]
+		[Column(Name="goesby", Storage="_Goesby", DbType="varchar(50)")]
 		public string Goesby
 		{
 			get
@@ -441,7 +441,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="email", Storage="_Email", DbType="varchar(100)")]
+		[Column(Name="email", Storage="_Email", DbType="varchar(150)")]
 		public string Email
 		{
 			get
@@ -577,7 +577,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="allergies", Storage="_Allergies", DbType="varchar(200)")]
+		[Column(Name="allergies", Storage="_Allergies", DbType="varchar(1000)")]
 		public string Allergies
 		{
 			get

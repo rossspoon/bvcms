@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Xml;
 using System.Text;
@@ -19,6 +20,7 @@ namespace CmsData.API
         {
             this.Db = Db;
         }
+
 		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc, string date, int? type, string checkno)
 		{
 			try
@@ -42,31 +44,7 @@ namespace CmsData.API
 				return @"<PostContribution status=""error"">" + ex.Message + "</PostContribution>";
 			}
 		}
-		[Serializable]
-		public class FamilyContributions
-		{
-			[XmlAttribute]
-			public string status { get; set; }
-			public List<Contributor> Contributors { get; set; }
-		}
-		[Serializable]
-		public class Contributor
-		{
-			[XmlAttribute]
-			public string Type { get; set; }
-			public string Name { get; set; }
-			public List<Contribution> Contributions { get; set; }
-		}
-		[Serializable]
-		public class Contribution
-		{
-			public string Name { get; set; }
-			public string Date { get; set; }
-			public decimal Amount { get; set; }
-			public string Fund { get; set; }
-			public string Description { get; set; }
-			public string CheckNo { get; set; }
-		}
+
 	    public string Contributions(int PeopleId, int Year)
 		{
 		    try
@@ -151,10 +129,12 @@ namespace CmsData.API
                       where option != 9 || noaddressok
                       where startswith == null || p.LastName.StartsWith(startswith)
 #if DEBUG2
-                      where p.LastName.StartsWith("V") 
+                      where p.PeopleId == 828612
 #endif
-                      where (option == 1 && (p.Amount > MinAmt || p.GiftInKind == true)) 
+                     
+                      where (option == 1 && (p.Amount > MinAmt || p.GiftInKind == true))  // GiftInKind = NonTaxDeductible Fund or Pledge OR GiftInkind
                             || (option == 2 && p.HohFlag == 1 && ((p.Amount + p.SpouseAmount) > MinAmt || p.GiftInKind == true))
+
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo
                       {
@@ -199,7 +179,8 @@ namespace CmsData.API
                         ContributionDate = c.ContributionDate,
                         Fund = c.ContributionFund.FundName,
 						CheckNo = c.CheckNo,
-						Name = c.Person.Name
+						Name = c.Person.Name,
+                        Description = c.ContributionDesc
                     };
 
             return q;
@@ -289,6 +270,35 @@ namespace CmsData.API
                     };
             return q;
         }
+
+        [Serializable]
+        public class FamilyContributions
+        {
+            [XmlAttribute]
+            public string status { get; set; }
+            public List<Contributor> Contributors { get; set; }
+        }
+        [Serializable]
+        public class Contributor
+        {
+            [XmlAttribute]
+            public string Type { get; set; }
+            public string Name { get; set; }
+            public List<Contribution> Contributions { get; set; }
+        }
+        [Serializable]
+        public class Contribution
+        {
+            public int PeopleId { get; set; }
+            public string Name { get; set; }
+            public string Date { get; set; }
+            public decimal Amount { get; set; }
+            public string Fund { get; set; }
+            [DefaultValue("")]  
+            public string Description { get; set; }
+            [DefaultValue("")]  
+            public string CheckNo { get; set; }
+        }
     }
     public class PledgeSummaryInfo
     {
@@ -316,22 +326,25 @@ namespace CmsData.API
         public bool Joint { get; set; }
         public int? CampusId { get; set; }
     }
+
+    [Serializable]
     public class ContributionInfo
     {
-        public int BundleId { get; set; }
-        public int ContributionId { get; set; }
-        public string Fund { get; set; }
-        public string ContributionType { get; set; }
-        public int? ContributionTypeId { get; set; }
-        public int? PeopleId { get; set; }
+        public int PeopleId { get; set; }
         public string Name { get; set; }
         public DateTime? ContributionDate { get; set; }
         public decimal? ContributionAmount { get; set; }
+        public string Fund { get; set; }
+        public string Description { get; set; }
+        public string CheckNo { get; set; }
+
+        public int BundleId { get; set; }
+        public int ContributionId { get; set; }
+        public string ContributionType { get; set; }
+        public int? ContributionTypeId { get; set; }
         public string Status { get; set; }
         public int? StatusId { get; set; }
         public bool Pledge { get; set; }
-        public string CheckNo { get; set; }
-        public string Description { get; set; }
         public bool NotIncluded
         {
             get
@@ -342,5 +355,6 @@ namespace CmsData.API
                     || ContributionTypeCode.ReturnedReversedTypes.Contains(ContributionTypeId.Value);
             }
         }
+        public bool NonTaxDed { get; set; }
     }
 }

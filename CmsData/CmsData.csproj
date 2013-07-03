@@ -323,6 +323,7 @@
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
     <Compile Include="CheckinFamilyMember.cs" />
+    <Compile Include="APIContributionSearchModel.cs" />
     <Compile Include="DoReplacements.cs" />
     <Compile Include="Generated\ActivityOld.cs" />
     <Compile Include="Generated\BuildingAccessType.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="Generated\Functions\Pledges0.cs" />
     <Compile Include="Generated\Functions\RecentAbsents2.cs" />
     <Compile Include="Generated\Functions\StatusFlag.cs" />
+    <Compile Include="Generated\Views\OrganizationLeader.cs" />
     <Compile Include="Generated\Views\OrganizationStructure.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
     <Compile Include="Classes\QuickBooks\QBDHelper.cs" />

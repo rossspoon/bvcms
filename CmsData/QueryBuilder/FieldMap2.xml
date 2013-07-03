@@ -393,6 +393,9 @@
     <Field Name="MembersUnderCurrentOrg" Title="Members under current org" Type="Bit" DataValueField="IdCode">
       People that are a Member of an organization  in this org or in a child org of the current organization
     </Field>
+    <Field Name="MedicalLength" Title="Length of Medical / Allergies Info" Type="Integer">
+      Medical / Allergies Info Greater than or less than number of characters
+    </Field>
   </Category>
   <Category Title="Attendance">
     <Field Name="AttendMemberTypeAsOf" Title="Member Type Attended As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
@@ -557,9 +560,6 @@
     </Field>
     <Field Name="PeopleIds" Title="HasOneOfPeopleIds" Type="StringEqual" >
       People with one of these PeopleIds
-    </Field>
-    <Field Name="ActiveRecords" Title="Active Records" Type="Bit" DisplayAs="ActiveRecords" DataValueField="IdCode">
-      Active Record
     </Field>
     <Field Name="MatchAnything" Title="Select Condition" Type="Bit" DisplayAs="Select Condition" DataValueField="IdCode">
       This condition is always true

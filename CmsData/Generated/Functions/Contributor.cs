@@ -379,7 +379,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(126)")]
+		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(138)")]
 		public string SpouseName
 		{
 			get

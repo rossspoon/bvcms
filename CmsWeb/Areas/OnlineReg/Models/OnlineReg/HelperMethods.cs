@@ -199,6 +199,31 @@ namespace CmsWeb.Models
                 return org.OrganizationName;
             }
         }
+        public string DescriptionForPayment
+        {
+            get
+            {
+                if (masterorgid.HasValue)
+                {
+                    if (settings != null && org != null && settings[masterorgid.Value] != null)
+                    {
+                        var accountcode = settings[masterorgid.Value].AccountingCode;
+                        if (accountcode.HasValue())
+                            return "{0} ({1})".Fmt(masterorg.OrganizationName, accountcode);
+                    }
+                    return masterorg.OrganizationName;
+                }
+                if (settings != null && org != null && settings[org.OrganizationId] != null)
+                {
+                    var name = Util.PickFirst(settings[org.OrganizationId].Title, org.OrganizationName);
+                    var accountcode = settings[org.OrganizationId].AccountingCode;
+                    if (accountcode.HasValue())
+                        return "{0} ({1})".Fmt(name, accountcode);
+                    return name;
+                }
+                return org.OrganizationName;
+            }
+        }
         public string Instructions
         {
             get

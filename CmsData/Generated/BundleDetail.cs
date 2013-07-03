@@ -29,6 +29,10 @@ namespace CmsData
 		
 		private int? _BundleSort1;
 		
+		private int? _RefOrgId;
+		
+		private int? _RefPeopleId;
+		
    		
     	
 		private EntityRef< BundleHeader> _BundleHeader;
@@ -59,6 +63,12 @@ namespace CmsData
 		
 		partial void OnBundleSort1Changing(int? value);
 		partial void OnBundleSort1Changed();
+		
+		partial void OnRefOrgIdChanging(int? value);
+		partial void OnRefOrgIdChanged();
+		
+		partial void OnRefPeopleIdChanging(int? value);
+		partial void OnRefPeopleIdChanged();
 		
     #endregion
 		public BundleDetail()
@@ -206,6 +216,50 @@ namespace CmsData
 					this._BundleSort1 = value;
 					this.SendPropertyChanged("BundleSort1");
 					this.OnBundleSort1Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RefOrgId", UpdateCheck=UpdateCheck.Never, Storage="_RefOrgId", DbType="int")]
+		public int? RefOrgId
+		{
+			get { return this._RefOrgId; }
+
+			set
+			{
+				if (this._RefOrgId != value)
+				{
+				
+                    this.OnRefOrgIdChanging(value);
+					this.SendPropertyChanging();
+					this._RefOrgId = value;
+					this.SendPropertyChanged("RefOrgId");
+					this.OnRefOrgIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RefPeopleId", UpdateCheck=UpdateCheck.Never, Storage="_RefPeopleId", DbType="int")]
+		public int? RefPeopleId
+		{
+			get { return this._RefPeopleId; }
+
+			set
+			{
+				if (this._RefPeopleId != value)
+				{
+				
+                    this.OnRefPeopleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RefPeopleId = value;
+					this.SendPropertyChanged("RefPeopleId");
+					this.OnRefPeopleIdChanged();
 				}
 
 			}

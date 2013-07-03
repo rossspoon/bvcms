@@ -245,6 +245,7 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
     <Compile Include="Areas\Dialog\Models\SearchModel.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionStatementsExtra.cs" />
     <Compile Include="Areas\Main\Models\Report\WeeklyDecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\DecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlModel.cs" />
@@ -1786,9 +1787,6 @@
     <Content Include="Scripts\jQuery\jquery.transpose.js" />
     <Content Include="Scripts\jQuery\jquery.transpose.min.js" />
     <Content Include="constants.py" />
-    <Content Include="secrets.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Tutorials\_Home_Index_Menu.cshtml" />
     <Content Include="Tutorials\_Home_Index.cshtml" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />

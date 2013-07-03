@@ -191,10 +191,6 @@
         ev.preventDefault();
         hideDropdowns();
         var did = $('#DivisionId').val();
-//        if (did == '0') {
-//            $.growlUI("error", 'must choose division');
-//            return false;
-//        }
         if (!confirm("This will send email notices to leaders based on your filters, continue?"))
             return false;
         $.block();
@@ -219,6 +215,12 @@
         var args = "?dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
         if ($('#altnames').is(":checked"))
             args += "&altnames=true";
+        if ($('#bygroup').is(":checked"))
+            args += "&bygroup=1";
+        if ($("#highlightsg").val())
+            args += "&highlight=" + $("#highlightsg").val();
+        if ($("#sgprefix").val())
+            args += "&sgprefix=" + $("#sgprefix").val();
 
         if ($('#rallymode').is(":checked"))
             $("#orgsearchform").attr("action", "/Reports/RallyRollsheet" + args);

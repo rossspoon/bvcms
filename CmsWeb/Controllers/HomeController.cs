@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using System.Diagnostics;
+using CmsData.API;
 using CmsData.Registration;
 using UtilityExtensions;
 using System.Threading;
@@ -108,26 +109,7 @@ namespace CmsWeb.Controllers
         [Authorize(Roles = "Admin")]
 		public ActionResult ActiveRecords()
         {
-		    var name = "ActiveRecords";
-		    var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.IsPublic && c.Description == name && c.SavedBy == "public");
-		    if (qb == null)
-		    {
-			    qb = DbUtil.Db.QueryBuilderScratchPad();
-                qb.CleanSlate(DbUtil.Db);
-		        var anygroup = qb.AddNewGroupClause(CompareType.AnyTrue);
-
-                var clause = anygroup.AddNewClause(QueryType.RecentAttendCount, CompareType.GreaterEqual, "1");
-                clause.Days = 365;
-		        clause = anygroup.AddNewClause(QueryType.RecentHasIndContributions, CompareType.Equal, "1,T");
-		        clause.Days = 365;
-		        qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
-		        qb.SaveTo(DbUtil.Db, name, "public", true);
-		    }
-            qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate(DbUtil.Db);
-            qb.AddNewClause(QueryType.ActiveRecords, CompareType.Equal, "1,T");
-            var count = DbUtil.Db.PeopleQuery(qb.QueryId).Count();
-            TempData["ActiveRecords"] = count;
+            TempData["ActiveRecords"] = DbUtil.Db.ActiveRecords();
             return View("About");
 		}
         public ActionResult UseOldLook()

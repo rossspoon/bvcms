@@ -62,11 +62,6 @@ namespace CmsData
         {
             switch (c.FieldInfo.QueryType)
             {
-                case QueryType.ActiveRecords:
-                    c.SetIncludeDeceased();
-                    return Expressions.ActiveRecords(parm,
-                        CompType, 
-                        c.CodeIds == "1");
                 case QueryType.DaysAfterNthVisitDateRange:
                     return Expressions.DaysAfterNthVisitDateRange(parm, Db,
                                c.StartDate,
@@ -358,6 +353,10 @@ namespace CmsData
                                c.Program,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.MedicalLength:
+                    return Expressions.MedicalLength(parm,
+                               CompType,
+                               c.TextValue.ToInt());
 				case QueryType.MembOfOrgWithCampus:
                     return Expressions.MembOfOrgWithCampus(parm,
                                c.Program,
