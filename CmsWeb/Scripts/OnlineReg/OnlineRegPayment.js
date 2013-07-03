@@ -68,7 +68,7 @@ $(function () {
         if (!$("#Submit").val())
             return false;
         if ($("form").valid())
-            $("#Submit").attr("disabled", "true");
+            $("#Submit").attr("disabled", "disabled");
         return true;
     });
 

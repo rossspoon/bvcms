@@ -353,6 +353,10 @@ namespace CmsData
                                c.Program,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.MedicalLength:
+                    return Expressions.MedicalLength(parm,
+                               CompType,
+                               c.TextValue.ToInt());
 				case QueryType.MembOfOrgWithCampus:
                     return Expressions.MembOfOrgWithCampus(parm,
                                c.Program,

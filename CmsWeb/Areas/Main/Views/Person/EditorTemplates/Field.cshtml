@@ -46,7 +46,7 @@
 		}
 	}
     <td>
-    @if (Model.nonstandard)
+    @if (Model.nonstandard && Model.UserCanEdit())
     {
         <a href="#" class="deleteextra" field="@Model.name"><img src="/images/delete.gif" /></a>
     }
