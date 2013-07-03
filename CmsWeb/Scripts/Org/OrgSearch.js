@@ -236,6 +236,13 @@
         $("#orgsearchform").submit();
         return false;
     });
+    $('#ExportMembersExcel').click(function (ev) {
+        ev.preventDefault();
+        hideDropdowns();
+        $("#orgsearchform").attr("action", "/OrgSearch/ExportMembersExcel");
+        $("#orgsearchform").submit();
+        return false;
+    });
     $('#Meetings').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');

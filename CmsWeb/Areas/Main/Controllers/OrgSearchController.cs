@@ -118,6 +118,11 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new OrgExcelResult(m);
         }
+        [HttpPost]
+        public ActionResult ExportMembersExcel(OrgSearchModel m)
+        {
+            return new OrgsMembersExcelResult(m);
+        }
         private void SaveToSession(OrgSearchModel m)
         {
             Session[STR_OrgSearch] = new OrgSearchInfo

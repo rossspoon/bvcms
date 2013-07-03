@@ -133,6 +133,63 @@ namespace CmsWeb.Models
                      };
             return q2;
         }
+        public class OrgMemberInfoClass : ExportInvolvements.MemberInfoClass
+        {
+            public int OrganizationId { get; set; }
+            public string Organization { get; set; }
+            public string Schedule { get; set; }
+        }
+        public IEnumerable<OrgMemberInfoClass> OrgsMemberList()
+        {
+            var q = FetchOrgs();
+            var Db = DbUtil.Db;
+            var q2 = from o in q 
+                     from om in o.OrganizationMembers
+                     let p = om.Person
+                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                     let recreg = p.RecRegs.FirstOrDefault()
+                     let bal = (from t in Db.Transactions
+                                where t.OriginalTransaction.TransactionPeople.Any(pp => pp.PeopleId == p.PeopleId)
+                                where t.OriginalTransaction.OrgId == o.OrganizationId
+                                orderby t.Id descending
+                                select t.Amtdue).FirstOrDefault()
+                     select new OrgMemberInfoClass
+                     {
+                         OrganizationId = o.OrganizationId,
+                         Organization = o.OrganizationName,
+                         Schedule = Db.GetScheduleDesc(sc.MeetingTime),
+                         FirstName = p.PreferredName,
+                         LastName = p.LastName,
+                         Gender = p.Gender.Code,
+                         Grade = om.Grade.ToString(),
+                         ShirtSize = om.ShirtSize,
+                         Request = om.Request,
+                         Amount = om.Amount ?? 0,
+                         AmountPaid = om.AmountPaid ?? 0,
+                         HasBalance = bal != null && bal > 0,
+                         Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name)),
+                         Email = p.EmailAddress,
+                         HomePhone = p.HomePhone.FmtFone(),
+                         CellPhone = p.CellPhone.FmtFone(),
+                         WorkPhone = p.WorkPhone.FmtFone(),
+                         Age = p.Age.ToString(),
+                         BirthDate = Util.FormatBirthday(p.BirthYear, p.BirthMonth, p.BirthDay),
+                         JoinDate = p.JoinDate.FormatDate(),
+                         MemberStatus = p.MemberStatus.Description,
+                         School = p.SchoolOther,
+                         LastAttend = om.LastAttended.ToString(),
+                         AttendPct = om.AttendPct.ToString(),
+                         AttendStr = om.AttendStr,
+                         MemberType = om.MemberType.Description,
+                         MemberInfoRaw = om.UserData,
+                         InactiveDate = om.InactiveDate.FormatDate(),
+                         Medical = recreg.MedicalDescription,
+                         PeopleId = p.PeopleId,
+                         EnrollDate = om.EnrollmentDate.FormatDate(),
+                         Tickets = om.Tickets.ToString(),
+                     };
+            return q2;
+        }
 
         private int TagSubDiv(string s)
         {
