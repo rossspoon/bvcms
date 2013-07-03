@@ -28,11 +28,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		{
 			if (Session["FormId"] != null)
 				if ((Guid)Session["FormId"] == pf.FormId)
-					return Content("Already submitted");
+					return Content("Already submitted");                    
 			OnlineRegModel m = null;
 			var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pf.DatumId);
 			if (ed != null)
 				m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+
+            if(m != null && m.History.Contains("ProcessPayment"))
+					return Content("Already submitted");                    
 
 			if (pf.AmtToPay < 0) pf.AmtToPay = 0;
 			if (pf.Donate < 0) pf.Donate = 0;
@@ -71,7 +74,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							au.AddUpdateCustomerProfile(m.UserPeopleId.Value,
 								pf.Type,
 								pf.CreditCard,
-								pf.Expires,
+								Payments.NormalizeExpires(pf.Expires),
 								pf.MaskedCCV != null && pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
 								pf.Routing,
 								pf.Account);
@@ -84,7 +87,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							sg.storeVault(m.UserPeopleId.Value,
 										  pf.Type,
 										  pf.CreditCard,
-										  pf.Expires,
+            							  Payments.NormalizeExpires(pf.Expires),
 										  pf.MaskedCCV != null && pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
 										  pf.Routing,
 										  pf.Account,
@@ -178,7 +181,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.testing);
 					else
 						tinfo = OnlineRegModel.PostTransaction(
-							pf.CreditCard, pf.CCV, pf.Expires,
+							pf.CreditCard, pf.CCV,
+							Payments.NormalizeExpires(pf.Expires),
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
 							pid ?? 0, pf.Email, pf.First, pf.Last,
@@ -206,7 +210,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.testing);
 					else
 						tinfo = OnlineRegModel.PostTransactionSage(
-							pf.CreditCard, pf.CCV, pf.Expires,
+							pf.CreditCard, pf.CCV,
+							Payments.NormalizeExpires(pf.Expires),
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
 							pid ?? 0, pf.Email, pf.First, pf.MiddleInitial, pf.Last, pf.Suffix,
