@@ -6,6 +6,7 @@
  */
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Collections.Generic;
 using System.Text;
@@ -513,7 +514,7 @@ namespace UtilityExtensions
             get
             {
                 var h = ConfigurationManager.AppSettings["cmshost"];
-                return h.Replace("{church}", Host, ignoreCase:true);
+                return h.Replace("{church}", Host, ignoreCase: true);
             }
         }
         private const string STR_ConnectionString = "ConnectionString";
@@ -566,7 +567,7 @@ namespace UtilityExtensions
         {
             get
             {
-                var dt = new DateTime(2002,1,30);
+                var dt = new DateTime(2002, 1, 30);
                 var s = dt.ToShortDateString();
                 if (s.StartsWith("30"))
                     return "d/m/yy";
@@ -577,7 +578,7 @@ namespace UtilityExtensions
         {
             get
             {
-                var dt = new DateTime(2002,1,30);
+                var dt = new DateTime(2002, 1, 30);
                 var s = dt.ToShortDateString();
                 if (s.StartsWith("30"))
                     return @"^\d\d?[-/](0?[1-9]|1[012])[-/]\d\d(\d\d)?$";
@@ -589,7 +590,7 @@ namespace UtilityExtensions
             get
             {
 
-                var dt = new DateTime(2002,1,30);
+                var dt = new DateTime(2002, 1, 30);
                 var s = dt.ToShortDateString();
                 if (s.StartsWith("30"))
                     return "D/M/YYYY";
@@ -640,7 +641,7 @@ namespace UtilityExtensions
                     cs = ConfigurationManager.ConnectionStrings["CMS"];
                 var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
                 var a = Host.SplitStr(".:");
-                cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
+                cb.InitialCatalog = "CMSi_{0}".Fmt(a[0]);
                 return cb.ConnectionString;
             }
         }
@@ -1200,14 +1201,14 @@ namespace UtilityExtensions
             {
                 var tag = ConfigurationManager.AppSettings["senderrorsto"];
                 if (HttpContext.Current != null)
-                        if ((HttpContext.Current.Items[STR_AdminMail] as string).HasValue())
-                            tag = HttpContext.Current.Items[STR_AdminMail].ToString();
+                    if ((HttpContext.Current.Items[STR_AdminMail] as string).HasValue())
+                        tag = HttpContext.Current.Items[STR_AdminMail].ToString();
                 return tag;
             }
             set
             {
                 if (HttpContext.Current != null)
-                    HttpContext.Current.Items[STR_AdminMail] = value;                
+                    HttpContext.Current.Items[STR_AdminMail] = value;
             }
         }
         private const string STR_SysFromEmail = "UnNamed";
@@ -1329,7 +1330,7 @@ namespace UtilityExtensions
             }
             catch (Exception)
             {
-                if(name.HasValue())
+                if (name.HasValue())
                     return new MailAddress(AdminMail, name);
                 return new MailAddress(AdminMail);
             }
@@ -1346,10 +1347,21 @@ namespace UtilityExtensions
             }
             catch (Exception)
             {
-                if(name.HasValue())
+                if (name.HasValue())
                     return new MailAddress(AdminMail, name);
                 return new MailAddress(AdminMail);
             }
+        }
+
+        public static bool FastFileExists(string path)
+        {
+            var task = new Task<bool>(() =>
+            {
+                var fi = new FileInfo(path);
+                return fi.Exists;
+            });
+            task.Start();
+            return task.Wait(1000) && task.Result;
         }
 
         public static bool AppOffline
@@ -1357,7 +1369,7 @@ namespace UtilityExtensions
             get
             {
                 var path = ConfigurationManager.AppSettings["AppOfflineFile"];
-                return path.HasValue() && File.Exists(path);
+                return File.Exists(path);
             }
         }
 
