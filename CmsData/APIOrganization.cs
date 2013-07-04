@@ -327,7 +327,7 @@ class OrgMembers(object):
         {
             var div = Db.DivOrgs.SingleOrDefault(dd => dd.DivId == divid && dd.OrgId == orgid);
             if (div == null)
-                Db.DivOrgs.InsertOnSubmit(new DivOrg {DivId = divid, OrgId = orgid});
+                Db.DivOrgs.InsertOnSubmit(new DivOrg { DivId = divid, OrgId = orgid });
             var o = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == orgid && oo.DivisionId == null);
             if (o != null)
                 o.DivisionId = divid;
@@ -362,11 +362,11 @@ class OrgMembers(object):
 
                 if (securityrole != null)
                     o.LimitToRole = securityrole;
-                if(leadertype.HasValue)
+                if (leadertype.HasValue)
                     o.LeaderMemberTypeId = leadertype;
                 if (orgtype.HasValue)
                     o.OrganizationTypeId = orgtype;
-                if(securitytype.HasValue)
+                if (securitytype.HasValue)
                     o.SecurityTypeId = securitytype.Value;
                 if (parentorg.HasValue)
                     o.ParentOrgId = parentorg == 0 ? null : parentorg;
@@ -593,12 +593,12 @@ class OrgMembers(object):
         }
         public static string MessageReplacements(Person p, string DivisionName, string OrganizationName, string Location, string message)
         {
-            message = message.Replace("{first}", p.PreferredName, ignoreCase:true);
-            message = message.Replace("{name}", p.Name, ignoreCase:true);
-            message = message.Replace("{division}", DivisionName, ignoreCase:true);
-            message = message.Replace("{org}", OrganizationName, ignoreCase:true);
-            message = message.Replace("{location}", Location, ignoreCase:true);
-            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost, ignoreCase:true);
+            message = message.Replace("{first}", p.PreferredName, ignoreCase: true);
+            message = message.Replace("{name}", p.Name, ignoreCase: true);
+            message = message.Replace("{division}", DivisionName, ignoreCase: true);
+            message = message.Replace("{org}", OrganizationName, ignoreCase: true);
+            message = message.Replace("{location}", Location, ignoreCase: true);
+            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost, ignoreCase: true);
             return message;
         }
         public void SendVolunteerReminders(int id, bool sendall)
@@ -606,21 +606,22 @@ class OrgMembers(object):
             var org = Db.LoadOrganizationById(id);
             var setting = new Registration.Settings(org.RegSetting, Db, org.OrganizationId);
             setting.org = org;
-            var currmembers = from om in org.OrganizationMembers
-                              where (om.Pending ?? false) == false
-                              where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
-                              where org.Attends.Any(a => (a.MeetingDate <= DateTime.Today.AddDays(7) || sendall)
-                                  && a.MeetingDate >= DateTime.Today
-                                  && (a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
-                                  && a.PeopleId == om.PeopleId)
-                              select om;
+            var currmembers = (from om in org.OrganizationMembers
+                               where (om.Pending ?? false) == false
+                               where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+                               where org.Attends.Any(a => (a.MeetingDate <= DateTime.Today.AddDays(7) || sendall)
+                                   && a.MeetingDate >= DateTime.Today
+                                   && (a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
+                                   && a.PeopleId == om.PeopleId)
+                               select om).ToList();
 
             var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
             var message = Util.PickFirst(setting.ReminderBody, "no body");
             if (subject == "no subject" || message == "no body")
                 throw new Exception("no subject or body");
-            var notify = Db.StaffPeopleForOrg(org.OrganizationId).FirstOrDefault();
-            if (notify == null)
+            var notify = Db.StaffPeopleForOrg(org.OrganizationId);
+            var from = notify.FirstOrDefault();
+            if (from == null)
                 throw new Exception("no notify person");
 
             foreach (var om in currmembers)
@@ -650,18 +651,59 @@ class OrgMembers(object):
     </table>
 </blockquote>", q);
 
-                var organizationName = org.OrganizationName;
+                var oname = org.OrganizationName;
 
                 subject = Util.PickFirst(setting.ReminderSubject, "no subject");
                 message = Util.PickFirst(setting.ReminderBody, "no body");
 
-                string location = org.Location;
-                message = MessageReplacements(om.Person, null, organizationName, location, message);
+                string loc = org.Location;
+                message = MessageReplacements(om.Person, null, oname, loc, message);
 
                 message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
                 message = message.Replace("{details}", details);
 
-                Db.Email(notify.FromEmail, om.Person, subject, message);
+                Db.Email(from.FromEmail, om.Person, subject, message);
+            }
+            var sb = new StringBuilder(@"
+<blockquote>
+    <table>
+        <tr>
+            <td> Date </td>
+            <td> Time </td>
+        </tr>");
+            foreach (var om in currmembers)
+            {
+                var q = (from a in org.Attends
+                         where a.PeopleId == om.PeopleId
+                         where
+                             a.Commitment == AttendCommitmentCode.Attending ||
+                             a.Commitment == AttendCommitmentCode.Substitute
+                         where a.MeetingDate >= DateTime.Today
+                         where a.MeetingDate <= DateTime.Today.AddDays(7)
+                         orderby a.MeetingDate
+                         select a.MeetingDate).ToList();
+                if (!q.Any())
+                    continue;
+                foreach (var d in q)
+                    sb.AppendFormat("\n<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", om.Person.Name, d.ToLongDateString(), d.ToLongTimeString());
+            }
+            sb.Append(@"
+    </table>
+</blockquote>
+");
+            foreach (var n in notify)
+            {
+                var organizationName = org.OrganizationName;
+
+                message = Util.PickFirst(setting.ReminderBody, "no body");
+
+                string location = org.Location;
+                message = MessageReplacements(n, null, organizationName, location, message);
+
+                message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
+                message = message.Replace("{details}", sb.ToString());
+
+                Db.Email(from.FromEmail, n, "Reminder Notices sent for " + organizationName, message);
             }
         }
         public void SendEventReminders(int id)
