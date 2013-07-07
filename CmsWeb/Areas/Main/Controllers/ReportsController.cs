@@ -382,6 +382,27 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewBag.queryid = id;
             return View(rdr);
         }
+        public ActionResult ExtraValuesGrid2(int id, string sort)
+        {
+            var roles = CMSRoleProvider.provider.GetRolesForUser(Util.UserName);
+            var xml = XDocument.Parse(DbUtil.Db.Content("StandardExtraValues.xml", "<Fields/>"));
+            var fields = (from ff in xml.Root.Elements("Field")
+                          let vroles = ff.Attribute("VisibilityRoles")
+                          where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
+                          select ff.Attribute("name").Value);
+            var nodisplaycols = string.Join("|", fields);
+
+            var tag = DbUtil.Db.PopulateSpecialTag(id, DbUtil.TagTypeId_ExtraValues);
+            var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");
+            cmd.Parameters.AddWithValue("@p1", tag.Id);
+            cmd.Parameters.AddWithValue("@p2", sort ?? "");
+            cmd.Parameters.AddWithValue("@p3", nodisplaycols);
+            cmd.Connection = new SqlConnection(Util.ConnectionString);
+            cmd.Connection.Open();
+            var rdr = cmd.ExecuteReader();
+            ViewBag.queryid = id;
+            return View(rdr);
+        }
         public ActionResult FamilyDirectory(int id)
         {
             return new FamilyDir(id);
