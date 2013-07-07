@@ -45,7 +45,7 @@ namespace CmsWeb.Models.PersonPage
             var flags = DbUtil.Db.Setting("StatusFlags", "F04,F01,F02,F03");
 			var i = (from pp in DbUtil.Db.People
 					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
-                     let statusflags = DbUtil.Db.StatusFlags(flags).Single(sf => sf.PeopleId == id).StatusFlags
+                     let statusflags = DbUtil.Db.StatusFlag(pp.PeopleId)
 					 where pp.PeopleId == id
 					 select new
 					 {
