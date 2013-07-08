@@ -125,6 +125,10 @@
             <li><a href='/Manage/ExtraValues/Delete/@ViewData["queryid"]' class="ChooseExtraValues"> Delete Extra Values</a></li>
             <li><a href="/Reports/ExtraValuesGrid/@ViewData["queryid"]">Extra Values Grid</a></li>
 }
+@if (User.IsInRole("Developer"))
+{
+            <li><a href="/Reports/ExtraValuesGrid2/@ViewData["queryid"]" class="hideAlt">Extra Values Grid2</a></li>
+}
             <li><a href='/Task/NotesExcel/@ViewData["queryid"]'> Export Task Notes</a></li>
             </ul>
         </div>

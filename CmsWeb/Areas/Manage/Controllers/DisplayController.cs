@@ -127,6 +127,13 @@ namespace CmsWeb.Areas.Manage.Controllers
             return RedirectToAction("Index", "Display");
         }
 
+        public ActionResult ContentDeleteDrafts(string[] draftID)
+        {
+            string deleteList = String.Join(",", draftID);
+            DbUtil.Db.ExecuteCommand("DELETE FROM dbo.Content WHERE Id IN(" + deleteList + ")", "");
+            return RedirectToAction("Index", "Display");
+        }
+
         public ActionResult RedirectEdit(Content cContent)
         {
             switch (cContent.TypeID) // 0 = HTML, 1 = Text, 2 = eMail Template

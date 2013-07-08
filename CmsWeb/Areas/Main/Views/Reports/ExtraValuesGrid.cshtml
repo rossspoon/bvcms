@@ -43,24 +43,24 @@
 <table id="extragrid" class="grid">
     <thead>
         <tr>
-            @for(var c = 1; c < Model.FieldCount; c++)
-{
+            @for (var c = 1; c < Model.FieldCount; c++)
+            {
                 <th><a href="/Reports/ExtraValuesGrid/@(ViewBag.queryid + "?sort=" + Model.GetName(c))">@Model.GetName(c)</a></th>
-}
+            }
         </tr>
     </thead>
     <tbody>
         @while (Model.Read())
-{
+        {
             <tr>
                 <td><a class="target" href="/Person/Index/@Model.GetValue(0)" @target>@Model.GetValue(1)</a></td>
                 @for (var c = 2; c < Model.FieldCount; c++)
-    {
-        var v = Model.GetValue(c).ToString();
+                {
+                    var v = Model.GetValue(c).ToString();
                     <td>@(v.HasValue() ? Html.Raw(v) : Html.Raw("&nbsp;"))</td>
-    }
+                }
             </tr>
-}
+        }
     </tbody>
 </table>
 <div style="float: clear"></div>

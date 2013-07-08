@@ -28,7 +28,8 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIOrganization(DbUtil.Db);
 			DbUtil.LogActivity("APIOrg OrgMembers2 " + id);
-            return Content(api.OrgMembersPython(id), "text/xml");
+//            return Content(api.OrgMembersPython(id), "text/xml");
+            return Content(api.OrgMembers2(id, null), "text/xml");
         }
         [HttpGet]
         public ActionResult OrgMembers(int id, string search)

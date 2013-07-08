@@ -522,8 +522,11 @@
     <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\demo_page.css" />
+    <Content Include="Content\css\demo_table.css" />
     <Content Include="Content\css\images\ajax-loader.gif" />
     <Content Include="Content\css\img\ajax-loader.gif" />
+    <Content Include="Content\css\jquery.dataTables.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\main.min.css">
       <DependentUpon>main.css</DependentUpon>
@@ -818,12 +821,15 @@
     <Content Include="Scripts\Finance\Transactions.min.js">
       <DependentUpon>Transactions.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jQuery\FixedColumns.js" />
+    <Content Include="Scripts\jQuery\FixedHeader.js" />
     <Content Include="Scripts\jQuery\jquery-1.9.1.min.js.map">
       <DependentUpon>jquery-1.9.1.js</DependentUpon>
     </Content>
     <Content Include="Scripts\jQuery\jquery-ui-1.10.0.custom.min.js.map">
       <DependentUpon>jquery-ui-1.10.0.custom.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jQuery\jquery.dataTables.js" />
     <Content Include="Scripts\jQuery\jquery.tooltip.min.js.map">
       <DependentUpon>jquery.tooltip.js</DependentUpon>
     </Content>
@@ -890,6 +896,7 @@
     <Content Include="Scripts\js\ChurchAttendance.min.js">
       <DependentUpon>ChurchAttendance.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\js\ExtraValuesGrid2.js" />
     <Content Include="Scripts\js\form-ajax.js" />
     <Content Include="Scripts\js\HomeTest.min.js">
       <DependentUpon>HomeTest.js</DependentUpon>
@@ -950,6 +957,7 @@
     <Content Include="Areas\Main\Views\Reports\Decisions.cshtml" />
     <Content Include="Areas\People\Views\Person\PendingEnrollments.cshtml" />
     <Content Include="Areas\Manage\Views\CheckinLabels\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid2.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />

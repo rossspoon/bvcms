@@ -32,7 +32,7 @@ namespace CmsWeb.Areas.Main.Models
 
 			return from i in DbUtil.Db.Contents
 					 where i.TypeID == ContentTypeCode.TypeSavedDraft
-					 where isadmin || (i.RoleID == 0 && i.OwnerID == Util.UserId) || currentRoleIds.Contains(i.RoleID)
+					 where isadmin || i.RoleID == 0 || i.OwnerID == Util.UserId || currentRoleIds.Contains(i.RoleID)
 					 orderby i.Name
 					 select i;
 		}
