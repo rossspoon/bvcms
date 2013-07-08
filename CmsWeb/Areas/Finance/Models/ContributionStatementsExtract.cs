@@ -20,6 +20,10 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public int LastSet { get; set; }
 		public string StartsWith { get; set; }
 
+        // For extended report
+        public bool showCheckNo { get; set; }
+        public bool showNotes { get; set; }
+
 		public ContributionStatementsExtract(string Host, DateTime fd, DateTime td, bool PDF, string OutputFile, string startswith = null)
 		{
 			this.fd = fd;
@@ -28,6 +32,9 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			this.Host = Host;
 			this.OutputFile = OutputFile;
 		    StartsWith = startswith;
+
+            showCheckNo = DbUtil.Db.Setting("RequireCheckNoOnStatement", "false").ToLower() == "true";
+            showNotes = DbUtil.Db.Setting("RequireNotesOnStatement", "false").ToLower() == "true";
 		}
 
 
@@ -45,24 +52,50 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.SubmitChanges();
 			if (PDF)
 			{
-				var c = new ContributionStatements
-				{
-					FromDate = fd,
-					ToDate = td,
-					typ = 3
-				};
-				using (var stream = new FileStream(OutputFile, FileMode.Create))
-					c.Run(stream, Db, qc);
-				LastSet = c.LastSet();
-				var sets = c.Sets();
-				foreach(var set in sets)
-					using(var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
-						c.Run(stream, Db, qc, set);
-				runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
-				runningtotals.LastSet = LastSet;
-				runningtotals.Sets = string.Join(",", sets);
-				runningtotals.Completed = DateTime.Now;
-				Db.SubmitChanges();
+                if (showCheckNo || showNotes)
+                {
+                    var c = new ContributionStatementsExtra
+                    {
+                        FromDate = fd,
+                        ToDate = td,
+                        typ = 3,
+                        ShowCheckNo = showCheckNo,
+                        ShowNotes = showNotes
+                    };
+                    using (var stream = new FileStream(OutputFile, FileMode.Create))
+                        c.Run(stream, Db, qc);
+                    LastSet = c.LastSet();
+                    var sets = c.Sets();
+                    foreach (var set in sets)
+                        using (var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
+                            c.Run(stream, Db, qc, set);
+                    runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+                    runningtotals.LastSet = LastSet;
+                    runningtotals.Sets = string.Join(",", sets);
+                    runningtotals.Completed = DateTime.Now;
+                    Db.SubmitChanges();
+                }
+                else
+                {
+                    var c = new ContributionStatements
+                    {
+                        FromDate = fd,
+                        ToDate = td,
+                        typ = 3
+                    };
+                    using (var stream = new FileStream(OutputFile, FileMode.Create))
+                        c.Run(stream, Db, qc);
+                    LastSet = c.LastSet();
+                    var sets = c.Sets();
+                    foreach (var set in sets)
+                        using (var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
+                            c.Run(stream, Db, qc, set);
+                    runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+                    runningtotals.LastSet = LastSet;
+                    runningtotals.Sets = string.Join(",", sets);
+                    runningtotals.Completed = DateTime.Now;
+                    Db.SubmitChanges();
+                }
 			}
 			else
 			{
