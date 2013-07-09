@@ -60,5 +60,9 @@ cassette-cache/
 CmsDataSqlClr.dbmdl
 CmsWeb/Upload/
 Web*.config
-*.pubxml
+*.pubxml.user
 CmsDataSqlClr_.*.sqlproj
+
+/.gitignore~
+
+/CmsWeb/Properties/PublishProfiles/production.pubxml
