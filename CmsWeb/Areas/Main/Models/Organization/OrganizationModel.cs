@@ -36,11 +36,14 @@ namespace CmsWeb.Models.OrganizationPage
 			if (i == null)
 				return;
 			org = i.o;
-			Schedule = i.sch;
 			var u = from s in i.sc
 					orderby s.Id
 					select new ScheduleInfo(s);
 			schedules = u.ToList();
+            if(schedules.Count > 0)
+    		    Schedule = schedules[0].Display;
+            else
+                Schedule = "None";
 			MemberModel = new MemberModel(id, MemberModel.GroupSelect.Active, String.Empty);
 
 			IsVolunteerLeader = VolunteerLeaderInOrg(OrganizationId);

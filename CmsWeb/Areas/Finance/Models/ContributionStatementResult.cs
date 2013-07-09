@@ -43,8 +43,8 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			useMinAmt = true;
             noaddressok = DbUtil.Db.Setting("RequireAddressOnStatement", "true") == "false";
 
-            showCheckNo = DbUtil.Db.Setting("RequireCheckNoOnStatement", "false") == "true";
-            showNotes = DbUtil.Db.Setting("RequireNotesOnStatement", "false") == "true";
+            showCheckNo = DbUtil.Db.Setting("RequireCheckNoOnStatement", "false").ToLower() == "true";
+            showNotes = DbUtil.Db.Setting("RequireNotesOnStatement", "false").ToLower() == "true";
 		}
 
         public override void ExecuteResult(ControllerContext context)

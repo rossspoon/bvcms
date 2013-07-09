@@ -210,20 +210,22 @@ namespace CmsData
             var m = Regex.Match(s, @"\A(?<dow>.*)\s(?<time>\d{1,2}:\d{2}\s(A|P)M)", RegexOptions.IgnoreCase);
             var d = new Dictionary<string, int>
             {
-                { "Sun", 0 },
-                { "Mon", 1 },
-                { "Tue", 2 },
-                { "Wed", 3 },
-                { "Thu", 4 },
-                { "Fri", 5 },
-                { "Sat", 6 },
+                { "sun", 0 },
+                { "mon", 1 },
+                { "tue", 2 },
+                { "wed", 3 },
+                { "thu", 4 },
+                { "fri", 5 },
+                { "sat", 6 },
+                { "any", 10 },
             };
-            var dow = m.Groups["dow"].Value;
-            var time = m.Groups["time"].Value;
+            var dow = m.Groups["dow"].Value.ToLower();
+            var time = DateTime.Parse(m.Groups["time"].Value);
+            var mt = Util.Now.Sunday().AddDays(d[dow]).Add(time.TimeOfDay);
             var sc = new OrgSchedule
             {
                 SchedDay = d[dow],
-                SchedTime = DateTime.Parse(time),
+                SchedTime = mt,
                 AttendCreditId = 1
             };
             return sc;

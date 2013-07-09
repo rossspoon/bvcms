@@ -20,6 +20,10 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public int LastSet { get; set; }
 		public string StartsWith { get; set; }
 
+        // For extended report
+        public bool showCheckNo { get; set; }
+        public bool showNotes { get; set; }
+
 		public ContributionStatementsExtract(string Host, DateTime fd, DateTime td, bool PDF, string OutputFile, string startswith = null)
 		{
 			this.fd = fd;
@@ -30,7 +34,6 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		    StartsWith = startswith;
 		}
 
-
 		public CMSDataContext Db { get; set; }
 		public void DoWork()
 		{
@@ -39,30 +42,59 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.CommandTimeout = 1200;
 
 			var noaddressok = Db.Setting("RequireAddressOnStatement", "true") == "false";
+            showCheckNo = Db.Setting("RequireCheckNoOnStatement", "false").ToLower() == "true";
+            showNotes = Db.Setting("RequireNotesOnStatement", "false").ToLower() == "true";
+
 			var qc = APIContribution.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true, startswith: StartsWith);
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 			runningtotals.Count = qc.Count();
 			Db.SubmitChanges();
 			if (PDF)
 			{
-				var c = new ContributionStatements
-				{
-					FromDate = fd,
-					ToDate = td,
-					typ = 3
-				};
-				using (var stream = new FileStream(OutputFile, FileMode.Create))
-					c.Run(stream, Db, qc);
-				LastSet = c.LastSet();
-				var sets = c.Sets();
-				foreach(var set in sets)
-					using(var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
-						c.Run(stream, Db, qc, set);
-				runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
-				runningtotals.LastSet = LastSet;
-				runningtotals.Sets = string.Join(",", sets);
-				runningtotals.Completed = DateTime.Now;
-				Db.SubmitChanges();
+                if (showCheckNo || showNotes)
+                {
+                    var c = new ContributionStatementsExtra
+                    {
+                        FromDate = fd,
+                        ToDate = td,
+                        typ = 3,
+                        ShowCheckNo = showCheckNo,
+                        ShowNotes = showNotes
+                    };
+                    using (var stream = new FileStream(OutputFile, FileMode.Create))
+                        c.Run(stream, Db, qc);
+                    LastSet = c.LastSet();
+                    var sets = c.Sets();
+                    foreach (var set in sets)
+                        using (var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
+                            c.Run(stream, Db, qc, set);
+                    runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+                    runningtotals.LastSet = LastSet;
+                    runningtotals.Sets = string.Join(",", sets);
+                    runningtotals.Completed = DateTime.Now;
+                    Db.SubmitChanges();
+                }
+                else
+                {
+                    var c = new ContributionStatements
+                    {
+                        FromDate = fd,
+                        ToDate = td,
+                        typ = 3
+                    };
+                    using (var stream = new FileStream(OutputFile, FileMode.Create))
+                        c.Run(stream, Db, qc);
+                    LastSet = c.LastSet();
+                    var sets = c.Sets();
+                    foreach (var set in sets)
+                        using (var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
+                            c.Run(stream, Db, qc, set);
+                    runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+                    runningtotals.LastSet = LastSet;
+                    runningtotals.Sets = string.Join(",", sets);
+                    runningtotals.Completed = DateTime.Now;
+                    Db.SubmitChanges();
+                }
 			}
 			else
 			{
