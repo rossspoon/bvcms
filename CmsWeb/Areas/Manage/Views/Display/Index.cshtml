@@ -1,6 +1,7 @@
 ﻿@using CmsData
 @using CmsWeb
 @using CmsWeb.Models
+@using UtilityExtensions
 @model CmsWeb.Models.ContentModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -155,8 +156,14 @@
                 {
 		        <tr>
 			        <td>
-				        <input draft="yes" type="checkbox" name="draftID" value="@item.Id" />
-                            @Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id })
+				        <input draft="yes" type="checkbox" name="draftID" value="@item.id" />
+                        <b>@Html.ActionLink(item.name, "ContentEdit", new { id = item.id })</b><br />
+                        <span style="padding-left:3em; font-size:0.8em">
+                        @item.created.FormatDate()
+                        - @item.owner
+                        - @( item.roleID == 0 ? "Everyone" : item.role )
+                        </span>
+                        
 			        </td>
 		        </tr>
                 }

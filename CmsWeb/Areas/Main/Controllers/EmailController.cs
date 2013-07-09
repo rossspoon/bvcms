@@ -79,6 +79,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		    content.Title = subject;
 			content.Body = body;
 			content.OwnerID = Util.UserId;
+            content.DateCreated = DateTime.Now;
 
 			if( saveid == 0 ) DbUtil.Db.Contents.InsertOnSubmit(content);
 			DbUtil.Db.SubmitChanges();
