@@ -32,11 +32,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			this.Host = Host;
 			this.OutputFile = OutputFile;
 		    StartsWith = startswith;
-
-            showCheckNo = DbUtil.Db.Setting("RequireCheckNoOnStatement", "false").ToLower() == "true";
-            showNotes = DbUtil.Db.Setting("RequireNotesOnStatement", "false").ToLower() == "true";
 		}
-
 
 		public CMSDataContext Db { get; set; }
 		public void DoWork()
@@ -46,6 +42,9 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.CommandTimeout = 1200;
 
 			var noaddressok = Db.Setting("RequireAddressOnStatement", "true") == "false";
+            showCheckNo = Db.Setting("RequireCheckNoOnStatement", "false").ToLower() == "true";
+            showNotes = Db.Setting("RequireNotesOnStatement", "false").ToLower() == "true";
+
 			var qc = APIContribution.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true, startswith: StartsWith);
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 			runningtotals.Count = qc.Count();

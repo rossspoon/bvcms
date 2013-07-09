@@ -180,8 +180,8 @@ namespace CmsWeb.Areas.Manage.Controllers
                         case "Schedule":
                             if (a[c].HasValue() && a[c] != "None")
                             {
-                                var scin = Organization.ParseSchedule(a[c].TrimEnd());
                                 var sc = o.OrgSchedules.FirstOrDefault();
+                                var scin = Organization.ParseSchedule(a[c].TrimEnd());
                                 if (sc != null)
                                 {
                                     sc.SchedDay = scin.SchedDay;

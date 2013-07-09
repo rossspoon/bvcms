@@ -220,11 +220,12 @@ namespace CmsData
                 { "any", 10 },
             };
             var dow = m.Groups["dow"].Value.ToLower();
-            var time = m.Groups["time"].Value;
+            var time = DateTime.Parse(m.Groups["time"].Value);
+            var mt = Util.Now.Sunday().AddDays(d[dow]).Add(time.TimeOfDay);
             var sc = new OrgSchedule
             {
                 SchedDay = d[dow],
-                SchedTime = DateTime.Parse(time),
+                SchedTime = mt,
                 AttendCreditId = 1
             };
             return sc;
