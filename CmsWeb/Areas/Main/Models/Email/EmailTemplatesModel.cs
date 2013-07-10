@@ -25,6 +25,16 @@ namespace CmsWeb.Areas.Main.Models
 					 select i;
 		}
 
+        public Content fetchTemplateByName( string name )
+        {
+            var currentRoleIds = DbUtil.Db.CurrentRoleIds();
+            var isadmin = HttpContext.Current.User.IsInRole("Admin");
+
+            return (from i in DbUtil.Db.Contents
+                    where i.Name == name
+                    select i).SingleOrDefault();
+        }
+
 		public IQueryable<Content> fetchDrafts()
 		{
 			var currentRoleIds = DbUtil.Db.CurrentRoleIds();
