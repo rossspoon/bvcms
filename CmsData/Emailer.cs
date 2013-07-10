@@ -122,7 +122,7 @@ namespace CmsData
                      where p.PeopleId == a[0]
                      select p.FromEmail;
             if (!q2.Any())
-                return Setting("AdminMail", "support@bvcms.com");
+                return Setting("AdminMail", "support2@bvcms.com");
             return q2.SingleOrDefault();
         }
         public List<Person> StaffPeopleForOrg(int orgid, out bool usedAdmins)
