@@ -34,12 +34,22 @@ namespace CmsWeb.Models
 					 select c;
 		}
 
-		public IQueryable<Content> fetchSavedDrafts()
+        public IQueryable<SavedDraft> fetchSavedDrafts()
 		{
 			return from c in DbUtil.Db.Contents
 					 where c.TypeID == ContentTypeCode.TypeSavedDraft
+                     from p in DbUtil.Db.Users.Where( p => p.UserId == c.OwnerID ).DefaultIfEmpty()
+                     from r in DbUtil.Db.Roles.Where( r => r.RoleId == c.RoleID ).DefaultIfEmpty()
 					 orderby c.Name
-					 select c;
+					 select new SavedDraft()
+                     {
+                         created = c.DateCreated,
+                         id = c.Id,
+                         name = c.Name,
+                         owner = p.Username,
+                         role = r.RoleName,
+                         roleID = c.RoleID
+                     };
 		}
 
 		public static List<Role> fetchRoles()
@@ -51,5 +61,15 @@ namespace CmsWeb.Models
 			l.Insert( 0, new Role() { RoleId = 0, RoleName = "Everyone" } );
 			return l;
 		}
+
+        public class SavedDraft
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+            public string owner { get; set; }
+            public string role { get; set; }
+            public int roleID { get; set; }
+            public DateTime? created { get; set; }
+        }
 	}
 }
