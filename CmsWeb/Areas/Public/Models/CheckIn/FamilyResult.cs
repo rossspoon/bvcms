@@ -105,7 +105,7 @@ namespace CmsWeb.Models
                     x.Attr("leader", c.Leader);
                     x.Attr("orgid", c.OrgId.ToString());
                     x.Attr("loc", c.Location);
-                    x.Attr("gender", c.Gender);
+                    x.Attr("gender", c.Genderid);
                     x.Attr("leadtime", leadtime.ToString());
                     x.Attr("age", c.Age.ToString());
                     x.Attr("numlabels", c.NumLabels.ToString());
