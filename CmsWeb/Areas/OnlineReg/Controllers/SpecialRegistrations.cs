@@ -524,7 +524,7 @@ You have the following subscriptions:<br/>
             {
                 var subject = Util.PickFirst(setting.Subject, "no subject");
                 var msg = Util.PickFirst(setting.Body, "no message");
-                msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                msg = CmsData.API.APIOrganization.MessageReplacements(DbUtil.Db, q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 
@@ -618,7 +618,7 @@ You have the following subscriptions:<br/>
             {
                 var subject = Util.PickFirst(setting.Subject, "no subject");
                 var msg = Util.PickFirst(setting.Body, "no message");
-                msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                msg = CmsData.API.APIOrganization.MessageReplacements(DbUtil.Db, q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 
@@ -731,7 +731,7 @@ emailid={2}
             {
                 var subject = Util.PickFirst(setting.Subject, "no subject");
                 var msg = Util.PickFirst(setting.Body, "no message");
-                msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                msg = CmsData.API.APIOrganization.MessageReplacements(DbUtil.Db, q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("f"));
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 
@@ -794,7 +794,7 @@ emailid={2}
             {
                 var subject = Util.PickFirst(setting.Subject, "no subject");
                 var msg = Util.PickFirst(setting.Body, "no message");
-                msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                msg = CmsData.API.APIOrganization.MessageReplacements(DbUtil.Db, q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("f"));
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 
