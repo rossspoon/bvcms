@@ -172,10 +172,12 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                 if (bygroup == false && groups[0] == 0 && meeting == null)
                 {
-                    if (!pageSetStarted)
-                        StartPageSet(o);
-                    foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true, UseAltNames: altnames == true))
+                    foreach ( var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true, UseAltNames: altnames == true))
+                    {
+                        if(list.Count == 0)
+                            StartPageSet(o);
                         list.Add(AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont));
+                    }
                 }
                 if (!pageSetStarted)
                     continue;
@@ -188,31 +190,45 @@ namespace CmsWeb.Areas.Main.Models.Report
                                    new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top),
                                    new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top)
                                };
-                var ct = new ColumnText(dc);
-                ct.SetSimpleColumn(cols[0]);
-                int status = 0;
-                float y;
+                var ct = new ColumnText(w.DirectContent);
                 foreach (var li in list)
+                    ct.AddElement(li);
+
+                int status = 0;
+
+                while (ColumnText.HasMoreText(status))
                 {
-                    y = ct.YLine;
-                    ct.AddElement(li);
-                    status = ct.Go(true);
-                    if (ColumnText.HasMoreText(status))
-                    {
-                        ++col;
-                        if (col > 1)
-                        {
-                            col = 0;
-                            doc.NewPage();
-                        }
-                        ct.SetSimpleColumn(cols[col]);
-                        y = doc.Top;
-                    }
-                    ct.YLine = y;
-                    ct.SetText(null);
-                    ct.AddElement(li);
+                    ct.SetSimpleColumn(cols[col]);
                     status = ct.Go();
+                    ++col;
+                    if (col > 1)
+                    {
+                        col = 0;
+                        doc.NewPage();
+                    }
                 }
+
+//                foreach (var li in list)
+//                {
+//                    y = ct.YLine;
+//                    ct.AddElement(li);
+//                    status = ct.Go(true);
+//                    if (ColumnText.HasMoreText(status))
+//                    {
+//                        ++col;
+//                        if (col > 1)
+//                        {
+//                            col = 0;
+//                            doc.NewPage();
+//                        }
+//                        ct.SetSimpleColumn(cols[col]);
+//                        y = doc.Top;
+//                    }
+//                    ct.YLine = y;
+//                    ct.SetText(null);
+//                    ct.AddElement(li);
+//                    status = ct.Go();
+//                }
             }
             if (!hasRows)
             {
@@ -247,6 +263,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
         private void StartPageSet(OrgInfo o)
         {
+            doc.NewPage();
             pageSetStarted = true;
             if (altnames == true)
             {
@@ -397,7 +414,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
             public void StartPageSet(string header1, string header2, string barcode)
             {
-                document.NewPage();
                 this.HeadText = header1;
                 this.HeadText2 = header2;
                 this.Barcode = barcode;
