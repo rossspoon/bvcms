@@ -594,7 +594,7 @@ namespace CmsWeb.Models
                             var m = re.Match(csv[c]);
                             rt = m.Groups["rt"].Value;
                             ac = m.Groups["ac"].Value;
-                            bd.Contribution.ContributionDesc = m.Groups["ck"].Value;
+                            bd.Contribution.CheckNo = m.Groups["ck"].Value;
                             break;
                     }
                 }
