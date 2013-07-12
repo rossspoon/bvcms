@@ -67,6 +67,7 @@ namespace CmsWeb.Models
             public int id { get; set; }
             public string name { get; set; }
             public string owner { get; set; }
+            public int ownerID { get; set; }
             public string role { get; set; }
             public int roleID { get; set; }
             public DateTime? created { get; set; }
