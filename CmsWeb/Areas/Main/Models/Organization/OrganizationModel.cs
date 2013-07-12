@@ -104,9 +104,14 @@ namespace CmsWeb.Models.OrganizationPage
 				});
 			DbUtil.Db.SubmitChanges();
 		}
-		public SelectList Schedules()
+		public SelectList SchedulesPrev()
 		{
-			var q = new SelectList(schedules.OrderBy(cc => cc.Id), "Value", "Display");
+			var q = new SelectList(schedules.OrderBy(cc => cc.Id), "ValuePrev", "Display");
+			return q;
+		}
+		public SelectList SchedulesNext()
+		{
+			var q = new SelectList(schedules.OrderBy(cc => cc.Id), "ValueNext", "Display");
 			return q;
 		}
 		public IEnumerable<Division> Divisions()
@@ -169,22 +174,19 @@ namespace CmsWeb.Models.OrganizationPage
 				return "08:00 AM";
 			}
 		}
-		public DateTime NewMeetingDate
+		public DateTime PrevMeetingDate
 		{
 			get
 			{
 				var sc = org.OrgSchedules.FirstOrDefault(); // SCHED
 				if (sc != null && sc.SchedTime != null && sc.SchedDay < 9)
-				{
-					var d = Util.Now.Date;
-					d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
-					d = d.AddDays(sc.SchedDay ?? 0);
-					if (d < Util.Now.Date)
-						d = d.AddDays(7);
-					return d;
-				}
+					return Util.Now.Date.Sunday().AddDays(sc.SchedDay ?? 0);
 				return Util.Now.Date;
 			}
+		}
+		public DateTime NextMeetingDate
+		{
+			get { return PrevMeetingDate.AddDays(7); }
 		}
 		private Settings _RegSettings;
 		public Settings RegSettings

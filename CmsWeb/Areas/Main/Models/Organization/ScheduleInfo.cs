@@ -12,24 +12,29 @@ namespace CmsWeb.Models.OrganizationPage
     public class ScheduleInfo
     {
         private OrgSchedule sc;
-        public ScheduleInfo (OrgSchedule sc)
-    	{
+
+        public ScheduleInfo(OrgSchedule sc)
+        {
             this.sc = sc;
-    	}
-        public ScheduleInfo ()
-    	{
+        }
+
+        public ScheduleInfo()
+        {
             sc = new OrgSchedule();
-    	}
+        }
+
         public int Id
         {
             get { return sc.Id; }
             set { sc.Id = value; }
         }
+
         public int SchedDay
         {
             get { return sc.SchedDay ?? 0; }
             set { sc.SchedDay = value; }
         }
+
         public string Time
         {
             get
@@ -40,29 +45,34 @@ namespace CmsWeb.Models.OrganizationPage
             }
             set { sc.SchedTime = value.ToDate(); }
         }
+
         public int AttendCreditId
         {
             get { return sc.AttendCreditId ?? 1; }
             set { sc.AttendCreditId = value; }
         }
+
         public SelectList DaysOfWeek()
         {
-            return new SelectList(new[] {
-                new { Text = "Sun", Value = "0" },
-                new { Text = "Mon", Value = "1" },
-                new { Text = "Tue", Value = "2" },
-                new { Text = "Wed", Value = "3" },
-                new { Text = "Thu", Value = "4" },
-                new { Text = "Fri", Value = "5" },
-                new { Text = "Sat", Value = "6" },
-                new { Text = "Any", Value = "10" },
+            return new SelectList(new[]
+                {
+                    new {Text = "Sun", Value = "0"},
+                    new {Text = "Mon", Value = "1"},
+                    new {Text = "Tue", Value = "2"},
+                    new {Text = "Wed", Value = "3"},
+                    new {Text = "Thu", Value = "4"},
+                    new {Text = "Fri", Value = "5"},
+                    new {Text = "Sat", Value = "6"},
+                    new {Text = "Any", Value = "10"},
                 }, "Value", "Text", SchedDay.ToString());
         }
+
         public SelectList AttendCredits()
         {
             return new SelectList(CodeValueModel.AttendCredits(),
-                "Id", "Value", AttendCreditId.ToString());
+                                  "Id", "Value", AttendCreditId.ToString());
         }
+
         public string DisplayAttendCredit
         {
             get
@@ -72,6 +82,7 @@ namespace CmsWeb.Models.OrganizationPage
                         select i.Value).Single();
             }
         }
+
         public string DisplayDay
         {
             get
@@ -81,6 +92,7 @@ namespace CmsWeb.Models.OrganizationPage
                         select i.Text).SingleOrDefault();
             }
         }
+
         public string Display
         {
             get
@@ -90,33 +102,42 @@ namespace CmsWeb.Models.OrganizationPage
                 return "{0}, {1}, {2}".Fmt(DisplayDay, Time, DisplayAttendCredit);
             }
         }
-        public string Value
+
+        public string ValuePrev
         {
             get
             {
-                var dt = NewMeetingTime;
+                var dt = PrevMeetingTime;
                 return "{0},{1},{2}".Fmt(dt.Date.ToShortDateString(), dt.ToShortTimeString(), AttendCreditId);
             }
         }
-        public DateTime NewMeetingTime
+        public string ValueNext
         {
             get
             {
-                DateTime dt;
+                var dt = NextMeetingTime;
+                return "{0},{1},{2}".Fmt(dt.Date.ToShortDateString(), dt.ToShortTimeString(), AttendCreditId);
+            }
+        }
+
+        public DateTime PrevMeetingTime
+        {
+            get
+            {
+                DateTime dt = Util.Now.Date;
                 if (sc.SchedDay < 9)
                 {
-                    dt = Util.Now.Date;
-                    dt = dt.AddDays(-(int)dt.DayOfWeek); // prev sunday
-                    dt = dt.AddDays(sc.SchedDay ?? 0);
+                    dt = Util.Now.Date.Sunday().AddDays(sc.SchedDay ?? 0);
                     if (dt > Util.Now.Date)
                         dt = dt.AddDays(-7);
                 }
-                else
-                    dt = Util.Now.Date;
-                var tm = Time.ToDate().Value.TimeOfDay;
-                dt = dt.Add(tm);
-                return dt;
+                return dt.Add(Time.ToDate().Value.TimeOfDay);
             }
+        }
+
+        public DateTime NextMeetingTime
+        {
+            get { return PrevMeetingTime.AddDays(7); }
         }
     }
 }

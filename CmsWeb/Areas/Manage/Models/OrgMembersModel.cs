@@ -122,10 +122,11 @@ namespace CmsWeb.Models
                     where o.DivOrgs.Any(di => di.DivId == DivId)
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
+                    let sctime = o.OrgSchedules.Count() == 1 ? " " + DbUtil.Db.GetScheduleDesc(o.OrgSchedules.First().MeetingTime) : ""
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),
-                        Text = o.OrganizationName
+                        Text = o.OrganizationName + sctime
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
@@ -140,12 +141,13 @@ namespace CmsWeb.Models
                     where o.DivOrgs.Any(di => di.DivId == DivId)
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
+                    let sctime = o.OrgSchedules.Count() == 1 ? " " + DbUtil.Db.GetScheduleDesc(o.OrgSchedules.First().MeetingTime) : ""
                     let cmales = o.OrganizationMembers.Count(m => m.Person.GenderId == 1 && m.MemberTypeId == member)
                     let cfemales = o.OrganizationMembers.Count(m => m.Person.GenderId == 2 && m.MemberTypeId == member)
                     select new SelectListItem
                     {
                         Value = o.OrganizationId.ToString(),
-                        Text = o.OrganizationName + " (" + cmales + "+" + cfemales + "=" + (cmales + cfemales) + ")"
+                        Text = o.OrganizationName + sctime + " (" + cmales + "+" + cfemales + "=" + (cmales + cfemales) + ")"
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });

@@ -493,11 +493,12 @@ $(function () {
     $('#RollsheetLink').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
-        $("tr.notformeeting").show();
+        $("tr.forMeeting").hide();
+        $("tr.forRollsheet").show();
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
             "Ok": function () {
-                var dt = $.GetMeetingDateTime();
+                var dt = $.GetNextMeetingDateTime();
                 if (!dt.valid)
                     return false;
                 var args = "?org=curr&dt=" + dt.date + " " + dt.time;
@@ -518,11 +519,12 @@ $(function () {
     $('#RallyRollsheetLink').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
-        $("tr.notformeeting").show();
+        $("tr.forMeeting").hide();
+        $("tr.forRollsheet").show();
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
             "Ok": function () {
-                var dt = $.GetMeetingDateTime();
+                var dt = $.GetNextMeetingDateTime();
                 if (!dt.valid)
                     return false;
                 var args = "?org=curr&dt=" + dt.date + " " + dt.time;
@@ -543,11 +545,12 @@ $(function () {
     $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");
-        $("tr.notformeeting").hide();
+        $("tr.forMeeting").show();
+        $("tr.forRollsheet").hide();
         var d = $("#NewMeetingDialog");
         d.dialog("option", "buttons", {
             "Ok": function () {
-                var dt = $.GetMeetingDateTime();
+                var dt = $.GetPrevMeetingDateTime();
                 if (!dt.valid)
                     return false;
                 var url = "?d=" + dt.date + "&t=" + dt.time +
@@ -562,15 +565,28 @@ $(function () {
         d.dialog('open');
         return false;
     });
-    $("#ScheduleList").change(function () {
+    $("#ScheduleListPrev").change(function () {
         var a = $(this).val().split(",");
-        $("#NewMeetingDate").val(a[0]);
+        $("#PrevMeetingDate").val(a[0]);
         $("#NewMeetingTime").val(a[1]);
         $("#AttendCreditList").val(a[2]);
     });
-    $.GetMeetingDateTime = function () {
+    $("#ScheduleListNext").change(function () {
+        var a = $(this).val().split(",");
+        $("#NextMeetingDate").val(a[0]);
+        $("#NewMeetingTime").val(a[1]);
+        $("#AttendCreditList").val(a[2]);
+    });
+    $.GetPrevMeetingDateTime = function() {
+        var d = $('#PrevMeetingDate').val();
+        return $.GetMeetingDateTime(d);
+    };
+    $.GetNextMeetingDateTime = function() {
+        var d = $('#NextMeetingDate').val();
+        return $.GetMeetingDateTime(d);
+    };
+    $.GetMeetingDateTime = function (d) {
         var reTime = /^ *(\d{1,2}):[0-5][0-9] *((a|p|A|P)(m|M)){0,1} *$/;
-        var d = $('#NewMeetingDate').val();
         var t = $('#NewMeetingTime').val();
         var v = true;
         if (!reTime.test(t)) {

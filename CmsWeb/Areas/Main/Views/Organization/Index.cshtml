@@ -207,55 +207,49 @@
     <div id="NewMeetingDialog" class="roundbox" style="display: none">
         <table>
             <tr>
-                <th colspan="2">
-                    <h2>Choose a Schedule</h2>
-                </th>
+                <th colspan="2"> <h2>Choose a Schedule</h2> </th>
+            </tr>
+            <tr class="forMeeting">
+                <th>Schedule: </th>
+                <td>@Html.DropDownList("ScheduleListPrev", Model.SchedulesPrev()) </td>
+            </tr>
+            <tr class="forRollsheet">
+                <th>Schedule: </th>
+                <td>@Html.DropDownList("ScheduleListNext", Model.SchedulesNext()) </td>
             </tr>
             <tr>
-                <th>Schedule:
-                </th>
-                <td>@Html.DropDownList("ScheduleList", Model.Schedules())
-                </td>
+                <th colspan="2"> <h2>Or Please select a meeting date and time</h2> </th>
+            </tr>
+            <tr class="forMeeting">
+                <th>Meeting Date: </th>
+                <td>@Html.DatePicker("PrevMeetingDate") </td>
+            </tr>
+            <tr class="forRollsheet">
+                <th>Meeting Date: </th>
+                <td>@Html.DatePicker("NextMeetingDate") </td>
             </tr>
             <tr>
-                <th colspan="2">
-                    <h2>Or Please select a meeting date and time</h2>
-                </th>
+                <th>Meeting Time: </th>
+                <td>@Html.TextBox("NewMeetingTime", Model.NewMeetingTime, new { title = "Time in Format hh:mm am or pm", @class = "timepicker" }) </td>
             </tr>
             <tr>
-                <th>Meeting Date:
-                </th>
-                <td>@Html.DatePicker("NewMeetingDate")
-                </td>
-            </tr>
-            <tr>
-                <th>Meeting Time:
-                </th>
-                <td>@Html.TextBox("NewMeetingTime", Model.NewMeetingTime, new { title = "Time in Format hh:mm am or pm", @class = "timepicker" })
-                </td>
-            </tr>
-            <tr>
-                <th>Attend Credit:
-                </th>
-                <td>@Html.DropDownList("AttendCreditList", Model.AttendCreditList())
-                </td>
+                <th>Attend Credit: </th>
+                <td>@Html.DropDownList("AttendCreditList", Model.AttendCreditList()) </td>
             </tr>
             <tr>
                 <th id="grouplabel"></th>
-                <td>@Html.CheckBox("group")
-                </td>
+                <td>@Html.CheckBox("group") </td>
             </tr>
-            <tr class="notformeeting">
+            <tr class="forRollsheet">
                 <th>Group Filter Prefix</th>
                 <td>@Html.TextBox("sgprefix")</td>
             </tr>
-            <tr class="notformeeting">
+            <tr class="forRollsheet">
                 <th>Highlight Group</th>
                 <td>@Html.TextBox("highlightsg")</td>
             </tr>
-            <tr class="notformeeting">
-                <th>Use Alt Names
-                </th>
+            <tr class="forRollsheet">
+                <th>Use Alt Names </th>
                 <td>@Html.CheckBox("altnames")
                 </td>
             </tr>
