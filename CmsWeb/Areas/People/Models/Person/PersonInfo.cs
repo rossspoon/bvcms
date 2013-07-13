@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.People.Models.Person
 					 {
 						 pp,
 						 f = pp.Family,
-						 spouse = spouse,
+						 spouse,
 						 pp.Picture,
                          statusflags, 
 					 }).FirstOrDefault();

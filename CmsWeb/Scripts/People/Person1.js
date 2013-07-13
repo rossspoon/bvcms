@@ -110,38 +110,10 @@
         url: "/Person2/PostData",
         name: "position",
         success: function (data) {
-            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
+//            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
         }
     });
 
-    $("#clipaddr").live('click', function () {
-        var inElement = $('#addrhidden')[0];
-        if (inElement.createTextRange) {
-            var range = inElement.createTextRange();
-            if (range)
-                range.execCommand('Copy');
-        }
-        return false;
-    });
-    $('#deleteperson').click(function () {
-        var href = $(this).attr("href");
-        if (confirm('Are you sure you want to delete?')) {
-            $.post(href, null, function (ret) {
-                if (ret != "ok") {
-                    $.block("delete Failed: " + ret);
-                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblock);
-                }
-                else {
-                    $.block("person deleted");
-                    $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
-                        $.unblock();
-                        window.location = "/";
-                    });
-                }
-            });
-        }
-        return false;
-    });
     $('a.deloptout').live("click", function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
@@ -165,38 +137,27 @@
         return false;
     });
 
-    $.getTable = function (f) {
-        $.ajax({
-            type: 'POST',
-            url: f.attr("action"),
-            data: f.serialize(),
-            success: function (data, status) {
-                f.html(data);
-            }
-        });
-        return false;
-    };
 
-    $(".CreateAndGo").click(function () {
-        if (confirm($(this).attr("confirm")))
-            $.post($(this).attr("href"), null, function (ret) {
-                window.location = ret;
-            });
-        return false;
-    });
+//    $(".CreateAndGo").click(function () {
+//        if (confirm($(this).attr("confirm")))
+//            $.post($(this).attr("href"), null, function (ret) {
+//                window.location = ret;
+//            });
+//        return false;
+//    });
 
-    $("form.ajax").on("click", "a.membertype", function (ev) {
+    $("form.ajax a.membertype").live("click", function (ev) {
         ev.preventDefault();
         $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
             $(this).modal("show");
             $(this).on('hidden', function () {
                 $(this).remove();
             });
-            $(this).on("click", "a.close-saved-address", function () {
-                $("#primaryaddress").html($("#primaryaddressnew").html());
-                var target = $("#addressnew").data("target");
-                $("#" + target).html($("#addressnew").html());
-            });
+//            $(this).on("click", "a.close-saved-address", function () {
+//                $("#primaryaddress").html($("#primaryaddressnew").html());
+//                var target = $("#addressnew").data("target");
+//                $("#" + target).html($("#addressnew").html());
+//            });
         });
     });
 

@@ -25,8 +25,12 @@
                     <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
                     <div class="meta">
                         <span class="age">@m.Age</span> 
-                        &bull; <span class="role">@m.PositionInFamily</span>
                         &bull; <span class="status">@m.MemberStatus</span>
+                        &bull; <span class="role">
+                                   <a class="edit-inline" id="position" data-value="@m.PositionInFamily.Value" data-pk="@m.Id" title="Family Position">
+                                       @m.PositionInFamily
+                                   </a>
+                               </span>
                     </div>
                     <span class="email email_display">@m.Email</span>
                 </a>

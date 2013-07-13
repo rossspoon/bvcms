@@ -7,7 +7,7 @@
     var id = "tab-" + a.Name;
     <li @(a.Preferred ? "class=active" : "")>
         <a href="#@id" data-toggle="tab">
-            @a.Name
+            @a.Display
         </a>
     </li>
 }

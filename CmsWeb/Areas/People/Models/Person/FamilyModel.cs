@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CmsData;
+using CmsWeb.Code;
 using CmsWeb.Models;
 
 namespace CmsWeb.Areas.People.Models.Person
@@ -62,7 +63,7 @@ namespace CmsWeb.Areas.People.Models.Person
                          Name = m.Name,
                          Age = m.Age,
                          Color = m.DeceasedDate != null ? "red" : "auto",
-                         PositionInFamily = m.FamilyPosition.Code,
+                         PositionInFamily = new CodeInfo(m.FamilyPosition.Id, "FamilyPosition"),
                          SpouseIndicator = m.PeopleId == Person.SpouseId ? "*" : "&nbsp;",
                          Email = m.EmailAddress,
                          MemberStatus = m.MemberStatus.Description

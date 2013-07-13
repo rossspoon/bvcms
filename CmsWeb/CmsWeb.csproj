@@ -1091,12 +1091,15 @@
     </Content>
     <None Include="Scripts\js\main.custom.js.bundle">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Scripts\js\main.custom.min.js.map">
       <DependentUpon>main.custom.js.bundle</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\js\main2.custom.js.bundle" />
+    <None Include="Scripts\js\main2.custom.js.bundle">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\js\main2.custom.min.js.map">
       <DependentUpon>main2.custom.js.bundle</DependentUpon>
     </Content>
@@ -2079,7 +2082,6 @@
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Email.cshtml" />
     <Content Include="Areas\People\Views\Person\Snapshot.cshtml" />
     <Content Include="Areas\People\Views\Person\Toolbar.cshtml" />
-    <Content Include="Areas\People\Views\Person\Dialogs.cshtml" />
     <Content Include="Areas\People\Views\Person\CurrentEnrollments.cshtml" />
     <Content Include="Areas\People\Views\Person\MemberProfile.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\DateTimePicker.cshtml" />

@@ -4,15 +4,20 @@
 <img src="@Model.Picture.SmallUrl" alt="" />
 <h2>@Model.Name</h2>
 <ul class="meta unstyled">
-    <li class="role"><i class="icon-user"></i><a class="edit-inline" id="position" data-value="@Model.basic.person.PositionInFamilyId" data-pk="@Model.PeopleId" title="Family Position">
-                         @Html.DisplayFor(m => m.basic.FamilyPosition)
-                     </a></li>
-@*    <li class="status"><strong>Member Status:</strong> @Model.member.MemberStatus</li>*@
-@*    <li class="affiliation"><strong>Campus Affiliation:</strong> @Model.basic.Campus</li>*@
+    <li class="role">
+        <i class="icon-user"></i>
+        <a class="edit-inline" id="position" data-value="@Model.basic.FamilyPosition.Value" data-pk="@Model.PeopleId" title="Family Position">
+             @Html.DisplayFor(m => m.basic.FamilyPosition)
+        </a>
+    </li>
     <li class="badges">
+        <span class="label label-info">@Model.member.MemberStatus</span>
         @foreach (var status in Model.StatusFlags)
         {
-            <span class="label label-success">@status</span>
+            if (status != "Member")
+            {
+                <span class="label label-success">@status</span>
+            }
         }
         @if (Model.basic.DoNotVisitFlag)
         {

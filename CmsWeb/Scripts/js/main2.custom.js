@@ -11,20 +11,18 @@ $(function () {
         $("#PageSize", f).val(size);
         return $.getTable(f);
     };
-//    $.getTable = function (f) {
-//        var q;
-//        if (f)
-//            q = f.serialize();
-//        $.post(f.attr('action'), q, function (ret) {
-//            $(f).html(ret).ready(function () {
-//                $('table.grid > tbody > tr:even', f).addClass('alt');
-//                $("a.trigger-dropdown", f).dropdown();
-//                $('.bt').button();
-//                $(".datepicker").datepicker();
-//            });
-//        });
-//        return false;
-//    };
+
+    $.getTable = function (f) {
+        $.ajax({
+            type: 'POST',
+            url: f.attr("action"),
+            data: f.serialize(),
+            success: function (data, status) {
+                f.html(data);
+            }
+        });
+        return false;
+    };
     $('table.grid > thead a.sortable').live("click", function () {
         var f = $(this).closest("form");
         var newsort = $(this).text();
