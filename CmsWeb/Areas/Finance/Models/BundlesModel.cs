@@ -24,12 +24,12 @@ namespace CmsWeb.Areas.Finance.Models
             GetCount = Count;
             Sort = "Status";
         }
-        private IQueryable<BundleHeader> _bundles;
+        private IQueryable<CmsData.View.BundleList> _bundles;
 
-        private IQueryable<BundleHeader> FetchBundles()
+        private IQueryable<CmsData.View.BundleList> FetchBundles()
         {
             if (_bundles == null)
-                _bundles = from b in DbUtil.Db.BundleHeaders select b;
+                _bundles = from b in DbUtil.Db.ViewBundleLists select b;
             return _bundles;
         }
 
@@ -38,25 +38,24 @@ namespace CmsWeb.Areas.Finance.Models
             var q = ApplySort();
             var q2 = q.Skip(StartRow).Take(PageSize);
             var q3 = from b in q2
-                     where b.RecordStatus == false
                      select new BundleInfo
                                 {
                                     BundleId = b.BundleHeaderId,
-                                    HeaderType = b.BundleHeaderType.Description,
-                                    PostingDate = b.BundleDetails.Max(bd => bd.Contribution.PostingDate),
+                                    HeaderType = b.HeaderType,
+                                    PostingDate = b.PostingDate,
                                     DepositDate = b.DepositDate,
-                                    TotalBundle = (b.TotalCash ?? 0) + (b.TotalChecks ?? 0) + (b.TotalEnvelopes ?? 0),
-                                    TotalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0),
-                                    ItemCount = b.BundleDetails.Count(),
-                                    TotalNonTaxDed = b.BundleDetails.Where(bd => bd.Contribution.ContributionFund.NonTaxDeductible == true || bd.Contribution.ContributionTypeId == ContributionTypeCode.NonTaxDed).Sum(bd => bd.Contribution.ContributionAmount ?? 0),
+                                    TotalBundle = b.TotalBundle,
+                                    TotalItems = b.TotalItems,
+                                    ItemCount = b.ItemCount ?? 0,
+                                    TotalNonTaxDed = b.TotalNonTaxDed,
                                     FundId = b.FundId,
-                                    Fund = b.Fund.FundName,
-                                    Status = b.BundleStatusType.Description,
-                                    open = b.BundleStatusId == 1
+                                    Fund = b.Fund,
+                                    Status = b.Status,
+                                    open = b.Open == 1 
                                 };
             return q3;
         }
-        public IQueryable<BundleHeader> ApplySort()
+        public IQueryable<CmsData.View.BundleList> ApplySort()
         {
             var q = FetchBundles();
             if (Direction == "asc")
@@ -64,7 +63,7 @@ namespace CmsWeb.Areas.Finance.Models
                 {
                     case "Type":
                         q = from b in q
-                            orderby b.BundleHeaderType.Description
+                            orderby b.HeaderType
                             select b;
                         break;
                     case "Deposited":
@@ -74,31 +73,28 @@ namespace CmsWeb.Areas.Finance.Models
                         break;
                     case "Total Bundle":
                         q = from b in q
-                            orderby b.TotalCash ?? 0 + b.TotalChecks ?? 0 + b.TotalEnvelopes ?? 0
+                            orderby b.TotalBundle
                             select b;
                         break;
                     case "Items":
                         q = from b in q
-                            let totalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0)
-                            orderby totalItems
+                            orderby b.TotalItems
                             select b;
                         break;
                     case "Count":
                         q = from b in q
-                            let itemCount = b.BundleDetails.Count()
-                            orderby itemCount
+                            orderby b.ItemCount
                             select b;
                         break;
                     case "Posted":
                         q = from b in q
-                            let postingDate = b.BundleDetails.Max(bd => bd.Contribution.PostingDate)
-                            orderby postingDate
+                            orderby b.PostingDate
                             select b;
                         break;
                     case "Id":
                     case "Status":
                         q = from b in q
-                            orderby b.BundleStatusType.Description descending, b.BundleHeaderId descending 
+                            orderby b.Status descending, b.BundleHeaderId descending 
                             select b;
                         break;
                 }
@@ -107,7 +103,7 @@ namespace CmsWeb.Areas.Finance.Models
                 {
                     case "Type":
                         q = from b in q
-                            orderby b.BundleHeaderType.Description descending 
+                            orderby b.HeaderType descending 
                             select b;
                         break;
                     case "Deposited":
@@ -117,30 +113,28 @@ namespace CmsWeb.Areas.Finance.Models
                         break;
                     case "Total Bundle":
                         q = from b in q
-                            orderby b.TotalCash ?? 0 + b.TotalChecks ?? 0 + b.TotalEnvelopes ?? 0 descending 
+                            orderby b.TotalBundle descending 
                             select b;
                         break;
                     case "Items":
                         q = from b in q
-                            let totalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0)
-                            orderby totalItems descending 
+                            orderby b.TotalItems descending 
                             select b;
                         break;
                     case "Count":
                         q = from b in q
-                            let itemCount = b.BundleDetails.Count()
-                            orderby itemCount descending 
+                            orderby b.ItemCount descending 
                             select b;
                         break;
                     case "Posted":
                         q = from b in q
-                            orderby b.BundleDetails.Max(bd => bd.Contribution.PostingDate) descending 
+                            orderby b.PostingDate descending 
                             select b;
                         break;
                     case "Id":
                     case "Status":
                         q = from b in q
-                            orderby b.BundleStatusType.Description descending, b.BundleHeaderId descending 
+                            orderby b.Status descending, b.BundleHeaderId descending 
                             select b;
                         break;
                 }
