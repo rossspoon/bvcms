@@ -74,7 +74,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Carrier", UpdateCheck=UpdateCheck.Never, Storage="_Carrier", DbType="varchar(50)")]
+		[Column(Name="Carrier", UpdateCheck=UpdateCheck.Never, Storage="_Carrier", DbType="nvarchar(50)")]
 		public string Carrier
 		{
 			get { return this._Carrier; }
@@ -96,7 +96,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="domain", UpdateCheck=UpdateCheck.Never, Storage="_Domain", DbType="varchar(50)")]
+		[Column(Name="domain", UpdateCheck=UpdateCheck.Never, Storage="_Domain", DbType="nvarchar(50)")]
 		public string Domain
 		{
 			get { return this._Domain; }

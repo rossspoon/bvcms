@@ -422,7 +422,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineOne", DbType="varchar(100)")]
+		[Column(Name="AddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineOne", DbType="nvarchar(100)")]
 		public string AddressLineOne
 		{
 			get { return this._AddressLineOne; }
@@ -444,7 +444,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddressLineTwo", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineTwo", DbType="varchar(100)")]
+		[Column(Name="AddressLineTwo", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineTwo", DbType="nvarchar(100)")]
 		public string AddressLineTwo
 		{
 			get { return this._AddressLineTwo; }
@@ -466,7 +466,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CityName", UpdateCheck=UpdateCheck.Never, Storage="_CityName", DbType="varchar(30)")]
+		[Column(Name="CityName", UpdateCheck=UpdateCheck.Never, Storage="_CityName", DbType="nvarchar(30)")]
 		public string CityName
 		{
 			get { return this._CityName; }
@@ -488,7 +488,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StateCode", UpdateCheck=UpdateCheck.Never, Storage="_StateCode", DbType="varchar(30)")]
+		[Column(Name="StateCode", UpdateCheck=UpdateCheck.Never, Storage="_StateCode", DbType="nvarchar(30)")]
 		public string StateCode
 		{
 			get { return this._StateCode; }
@@ -510,7 +510,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ZipCode", UpdateCheck=UpdateCheck.Never, Storage="_ZipCode", DbType="varchar(15)")]
+		[Column(Name="ZipCode", UpdateCheck=UpdateCheck.Never, Storage="_ZipCode", DbType="nvarchar(15)")]
 		public string ZipCode
 		{
 			get { return this._ZipCode; }
@@ -532,7 +532,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CountryName", UpdateCheck=UpdateCheck.Never, Storage="_CountryName", DbType="varchar(30)")]
+		[Column(Name="CountryName", UpdateCheck=UpdateCheck.Never, Storage="_CountryName", DbType="nvarchar(30)")]
 		public string CountryName
 		{
 			get { return this._CountryName; }
@@ -554,7 +554,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StreetName", UpdateCheck=UpdateCheck.Never, Storage="_StreetName", DbType="varchar(40)")]
+		[Column(Name="StreetName", UpdateCheck=UpdateCheck.Never, Storage="_StreetName", DbType="nvarchar(40)")]
 		public string StreetName
 		{
 			get { return this._StreetName; }
@@ -576,7 +576,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="HomePhone", UpdateCheck=UpdateCheck.Never, Storage="_HomePhone", DbType="varchar(20)")]
+		[Column(Name="HomePhone", UpdateCheck=UpdateCheck.Never, Storage="_HomePhone", DbType="nvarchar(20)")]
 		public string HomePhone
 		{
 			get { return this._HomePhone; }
@@ -758,7 +758,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="varchar(3000)")]
+		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="nvarchar(3000)")]
 		public string Comments
 		{
 			get { return this._Comments; }

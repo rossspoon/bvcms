@@ -27,10 +27,11 @@ namespace CmsWeb.Areas.Main.Models.Report
     public class ContactsResult : ActionResult
     {
         private int? qid;
-        public ContactsResult(int? id, bool? sortAddress)
+        public ContactsResult(int? id, bool? sortAddress, string orgname)
         {
             qid = id;
             this.sortAddress = sortAddress ?? false;
+            OrganizationName = orgname;
         }
         private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
@@ -43,6 +44,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         private DateTime dt;
         private PdfContentByte dc;
         private bool sortAddress { get; set; }
+        private string OrganizationName { get; set; }
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -96,7 +98,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.DefaultCell.Border = border;
             t.DefaultCell.Padding = 5;
             t.HeaderRows = 1;
-            pageEvents.StartPageSet("Contact Report: {0:d}".Fmt(dt));
+            if(OrganizationName.HasValue())
+                pageEvents.StartPageSet("Contacts - {0}: {1:d}".Fmt(OrganizationName, dt));
+            else
+                pageEvents.StartPageSet("Contact Report: {0:d}".Fmt(dt));
 
             var t2 = new PdfPTable(w2);
             t2.WidthPercentage = 100;

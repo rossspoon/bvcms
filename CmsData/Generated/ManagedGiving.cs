@@ -165,7 +165,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SemiEvery", UpdateCheck=UpdateCheck.Never, Storage="_SemiEvery", DbType="varchar(2)")]
+		[Column(Name="SemiEvery", UpdateCheck=UpdateCheck.Never, Storage="_SemiEvery", DbType="nvarchar(2)")]
 		public string SemiEvery
 		{
 			get { return this._SemiEvery; }
@@ -253,7 +253,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Period", UpdateCheck=UpdateCheck.Never, Storage="_Period", DbType="varchar(2)")]
+		[Column(Name="Period", UpdateCheck=UpdateCheck.Never, Storage="_Period", DbType="nvarchar(2)")]
 		public string Period
 		{
 			get { return this._Period; }
@@ -319,7 +319,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="type", UpdateCheck=UpdateCheck.Never, Storage="_Type", DbType="varchar(2)")]
+		[Column(Name="type", UpdateCheck=UpdateCheck.Never, Storage="_Type", DbType="nvarchar(2)")]
 		public string Type
 		{
 			get { return this._Type; }

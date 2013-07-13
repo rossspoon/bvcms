@@ -111,7 +111,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(500) NOT NULL")]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="nvarchar(400) NOT NULL")]
 		public string Name
 		{
 			get { return this._Name; }
@@ -133,7 +133,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Title", UpdateCheck=UpdateCheck.Never, Storage="_Title", DbType="varchar(500)")]
+		[Column(Name="Title", UpdateCheck=UpdateCheck.Never, Storage="_Title", DbType="nvarchar(500)")]
 		public string Title
 		{
 			get { return this._Title; }
@@ -155,7 +155,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Body", UpdateCheck=UpdateCheck.Never, Storage="_Body", DbType="varchar")]
+		[Column(Name="Body", UpdateCheck=UpdateCheck.Never, Storage="_Body", DbType="nvarchar")]
 		public string Body
 		{
 			get { return this._Body; }
@@ -353,7 +353,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="varchar(50)")]
+		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="nvarchar(50)")]
 		public string CreatedBy
 		{
 			get { return this._CreatedBy; }

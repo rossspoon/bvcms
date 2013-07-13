@@ -54,11 +54,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new BarCodeLabelsResult(id.Value);
         }
-        public ActionResult Contacts(int? id, bool? sortAddress)
+        public ActionResult Contacts(int? id, bool? sortAddress, string orgname)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new ContactsResult(id.Value, sortAddress);
+            return new ContactsResult(id.Value, sortAddress, orgname);
         }
 
         public ActionResult Rollsheet(int? id, string org, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight, OrgSearchModel m)

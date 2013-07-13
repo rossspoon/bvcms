@@ -207,7 +207,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FromAddr", UpdateCheck=UpdateCheck.Never, Storage="_FromAddr", DbType="varchar(100)")]
+		[Column(Name="FromAddr", UpdateCheck=UpdateCheck.Never, Storage="_FromAddr", DbType="nvarchar(100)")]
 		public string FromAddr
 		{
 			get { return this._FromAddr; }
@@ -295,7 +295,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FromName", UpdateCheck=UpdateCheck.Never, Storage="_FromName", DbType="varchar(60)")]
+		[Column(Name="FromName", UpdateCheck=UpdateCheck.Never, Storage="_FromName", DbType="nvarchar(60)")]
 		public string FromName
 		{
 			get { return this._FromName; }
@@ -408,7 +408,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="varchar(200)")]
+		[Column(Name="Error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="nvarchar(200)")]
 		public string Error
 		{
 			get { return this._Error; }

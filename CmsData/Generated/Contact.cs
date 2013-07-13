@@ -467,7 +467,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="varchar")]
+		[Column(Name="Comments", UpdateCheck=UpdateCheck.Never, Storage="_Comments", DbType="nvarchar")]
 		public string Comments
 		{
 			get { return this._Comments; }

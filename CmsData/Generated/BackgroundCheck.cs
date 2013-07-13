@@ -248,7 +248,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ServiceCode", UpdateCheck=UpdateCheck.Never, Storage="_ServiceCode", DbType="varchar(25) NOT NULL")]
+		[Column(Name="ServiceCode", UpdateCheck=UpdateCheck.Never, Storage="_ServiceCode", DbType="nvarchar(25) NOT NULL")]
 		public string ServiceCode
 		{
 			get { return this._ServiceCode; }
@@ -292,7 +292,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ReportLink", UpdateCheck=UpdateCheck.Never, Storage="_ReportLink", DbType="varchar(255)")]
+		[Column(Name="ReportLink", UpdateCheck=UpdateCheck.Never, Storage="_ReportLink", DbType="nvarchar(255)")]
 		public string ReportLink
 		{
 			get { return this._ReportLink; }
@@ -336,7 +336,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ErrorMessages", UpdateCheck=UpdateCheck.Never, Storage="_ErrorMessages", DbType="varchar")]
+		[Column(Name="ErrorMessages", UpdateCheck=UpdateCheck.Never, Storage="_ErrorMessages", DbType="nvarchar")]
 		public string ErrorMessages
 		{
 			get { return this._ErrorMessages; }

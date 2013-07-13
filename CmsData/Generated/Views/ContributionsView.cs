@@ -183,7 +183,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Fund", Storage="_Fund", DbType="varchar(256)")]
+		[Column(Name="Fund", Storage="_Fund", DbType="nvarchar(256)")]
 		public string Fund
 		{
 			get
@@ -200,7 +200,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Status", Storage="_Status", DbType="varchar(50)")]
+		[Column(Name="Status", Storage="_Status", DbType="nvarchar(50)")]
 		public string Status
 		{
 			get
@@ -217,7 +217,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Type", Storage="_Type", DbType="varchar(50)")]
+		[Column(Name="Type", Storage="_Type", DbType="nvarchar(50)")]
 		public string Type
 		{
 			get
@@ -234,7 +234,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(138)")]
+		[Column(Name="Name", Storage="_Name", DbType="nvarchar(138)")]
 		public string Name
 		{
 			get

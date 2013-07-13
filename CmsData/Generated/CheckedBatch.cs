@@ -47,7 +47,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="BatchRef", UpdateCheck=UpdateCheck.Never, Storage="_BatchRef", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="BatchRef", UpdateCheck=UpdateCheck.Never, Storage="_BatchRef", DbType="nvarchar(50) NOT NULL", IsPrimaryKey=true)]
 		public string BatchRef
 		{
 			get { return this._BatchRef; }

@@ -174,7 +174,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Number", UpdateCheck=UpdateCheck.Never, Storage="_Number", DbType="varchar(25) NOT NULL")]
+		[Column(Name="Number", UpdateCheck=UpdateCheck.Never, Storage="_Number", DbType="nvarchar(25) NOT NULL")]
 		public string Number
 		{
 			get { return this._Number; }

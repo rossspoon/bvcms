@@ -210,7 +210,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundName", UpdateCheck=UpdateCheck.Never, Storage="_FundName", DbType="varchar(256) NOT NULL")]
+		[Column(Name="FundName", UpdateCheck=UpdateCheck.Never, Storage="_FundName", DbType="nvarchar(256) NOT NULL")]
 		public string FundName
 		{
 			get { return this._FundName; }
@@ -232,7 +232,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundDescription", UpdateCheck=UpdateCheck.Never, Storage="_FundDescription", DbType="varchar(256)")]
+		[Column(Name="FundDescription", UpdateCheck=UpdateCheck.Never, Storage="_FundDescription", DbType="nvarchar(256)")]
 		public string FundDescription
 		{
 			get { return this._FundDescription; }
@@ -342,7 +342,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundIncomeDept", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeDept", DbType="varchar(25)")]
+		[Column(Name="FundIncomeDept", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeDept", DbType="nvarchar(25)")]
 		public string FundIncomeDept
 		{
 			get { return this._FundIncomeDept; }
@@ -364,7 +364,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundIncomeAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeAccount", DbType="varchar(25)")]
+		[Column(Name="FundIncomeAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeAccount", DbType="nvarchar(25)")]
 		public string FundIncomeAccount
 		{
 			get { return this._FundIncomeAccount; }
@@ -386,7 +386,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundIncomeFund", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeFund", DbType="varchar(25)")]
+		[Column(Name="FundIncomeFund", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeFund", DbType="nvarchar(25)")]
 		public string FundIncomeFund
 		{
 			get { return this._FundIncomeFund; }
@@ -408,7 +408,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundCashDept", UpdateCheck=UpdateCheck.Never, Storage="_FundCashDept", DbType="varchar(25)")]
+		[Column(Name="FundCashDept", UpdateCheck=UpdateCheck.Never, Storage="_FundCashDept", DbType="nvarchar(25)")]
 		public string FundCashDept
 		{
 			get { return this._FundCashDept; }
@@ -430,7 +430,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundCashAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundCashAccount", DbType="varchar(25)")]
+		[Column(Name="FundCashAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundCashAccount", DbType="nvarchar(25)")]
 		public string FundCashAccount
 		{
 			get { return this._FundCashAccount; }
@@ -452,7 +452,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundCashFund", UpdateCheck=UpdateCheck.Never, Storage="_FundCashFund", DbType="varchar(25)")]
+		[Column(Name="FundCashFund", UpdateCheck=UpdateCheck.Never, Storage="_FundCashFund", DbType="nvarchar(25)")]
 		public string FundCashFund
 		{
 			get { return this._FundCashFund; }

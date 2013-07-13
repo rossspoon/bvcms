@@ -7,12 +7,12 @@
         </a>
         <div class="dropdown-menu has-tip">
             <ul>
-                <li><a href='/Email/Index/@ViewData["queryid"]'> Individuals</a></li>
-                <li><a href='/Email/Index/@ViewData["queryid"]?parents=true'> Parents</a></li>
-@if ((bool?)ViewData["ParentOrgContext"] == true)
+                <li><a href='/Email/Index/@ViewBag.queryid'> Individuals</a></li>
+                <li><a href='/Email/Index/@ViewBag.queryid?parents=true'> Parents</a></li>
+@if ((bool?)ViewBag.ParentOrgContext == true)
 {
-                <li><a href='/Email/Index/@ViewData["leadersqid"]'> Leaders under this org</a></li>
-                <li><a href='/Email/Index/@ViewData["membersqid"]'> Members under this org</a></li>
+                <li><a href='/Email/Index/@ViewBag.leadersqid'> Leaders under this org</a></li>
+                <li><a href='/Email/Index/@ViewBag.membersqid'> Members under this org</a></li>
 }
             </ul>
         </div>
@@ -20,7 +20,7 @@
 @if(TwilioHelper.userSendSMS(Util.UserId))
 {
     <li>
-        <a href='/SMS/Options/@ViewData["queryid"]'>
+        <a href='/SMS/Options/@ViewBag.queryid'>
             SMS
         </a>
     </li>
@@ -31,22 +31,22 @@
         </a>
         <div class="dropdown-menu has-tip">
             <ul>
-            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" title="For mail merge"> Excel</a></li>
-            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=AllFamily' title="For mail merge"> Excel Family</a></li>
-            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=IndividualPicture' title="For picture directory word merge"> Excel Pictures</a></li>
-            <li><a href='/Export/UpdatePeople/@ViewData["queryid"]' title="For Doing a Mass Update"> Excel Update</a></li>
-            <li><a href='/bulkmail.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" title="Comma separated values text file, opens in excel, for bulk mailings"> Bulk (csv)</a></li>
-            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Library' title="For Atrium Library Import"> Excel Library</a></li>
-                <li><a href='/Export/StatusFlags/@ViewData["queryid"]' title="StatusFlags in Columns"> Status Flags Export</a></li>
-            <li><a href='/Export/ExtraValues/@ViewData["queryid"]' title="ExtraValues in Columns"> Extra Values Export</a></li>
-@if ((bool?)ViewData["OrganizationContext"] == true)
+            <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid' class="ChooseLabelType" title="For mail merge"> Excel</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=AllFamily' title="For mail merge"> Excel Family</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=IndividualPicture' title="For picture directory word merge"> Excel Pictures</a></li>
+            <li><a href='/Export/UpdatePeople/@ViewBag.queryid' title="For Doing a Mass Update"> Excel Update</a></li>
+            <li><a href='/bulkmail.aspx?id=@ViewBag.queryid' class="ChooseLabelType" title="Comma separated values text file, opens in excel, for bulk mailings"> Bulk (csv)</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Library' title="For Atrium Library Import"> Excel Library</a></li>
+                <li><a href='/Export/StatusFlags/@ViewBag.queryid' title="StatusFlags in Columns"> Status Flags Export</a></li>
+            <li><a href='/Export/ExtraValues/@ViewBag.queryid' title="ExtraValues in Columns"> Extra Values Export</a></li>
+@if ((bool?)ViewBag.OrganizationContext == true)
 { 
-            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Organization' title="Includes Org Member info"> Member Export</a></li>
-     if ((bool?)ViewData["OrgMemberContext"] == true)
+            <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Organization' title="Includes Org Member info"> Member Export</a></li>
+     if ((bool?)ViewBag.OrgMemberContext == true)
      { 
             <li><a href='/ExportExcel.aspx?format=Groups' title="Includes Org Member and Small Group columns"> Groups Export</a></li>
      } 
-            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Promotion' title="Just for Promotion Mail Merge"> Promotion Export</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Promotion' title="Just for Promotion Mail Merge"> Promotion Export</a></li>
  } 
             </ul>
         </div>
@@ -57,30 +57,38 @@
         </a>
         <div class="dropdown-menu has-tip">
             <ul>
-                <li><a href='/Reports/Prospect/@ViewData["queryid"]' target="_blank"> Inreach/Outreach</a></li>
-                <li><a href='/Reports/Prospect/@ViewData["queryid"]?Form=true' target="_blank"> Inreach/Outreach with Form</a></li>
-                <li><a href='/Reports/Contacts/@ViewData["queryid"]' target="_blank" title="Report for Robo-calling Contacts"> Contact Report</a></li>
-                <li class="hideAlt"><a href='/Reports/Contacts/@ViewData["queryid"]?sortAddress=true' target="_blank">Contact Report (by addr)</a></li>
-                <li><a href='/Reports/WeeklyAttendance/@ViewData["queryid"]' target="_blank" title="General Attendance Stats"> Weekly Attend</a></li>
-                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Involvement' target="_blank" title="Personal, Contact and Enrollment Info"> Involvement</a></li>
-                <li><a href='/Reports/Family/@ViewData["queryid"]' target="_blank"> Family Report</a></li>
-                <li><a href="/Reports/PictureDirectory/@ViewData["queryid"]" target="_blank"> Picture Directory</a></li>
-                <li><a href="/Reports/FamilyDirectory/@ViewData["queryid"]" target="_blank"> Family Directory</a></li>
-                <li><a href="/Reports/FamilyDirectoryCompact/@ViewData["queryid"]" target="_blank"> Compact Directory</a></li>
-            @if ((bool?)ViewData["OrganizationContext"] == true)
+                <li><a href='/Reports/Prospect/@ViewBag.queryid' target="_blank"> Inreach/Outreach</a></li>
+                <li><a href='/Reports/Prospect/@ViewBag.queryid?Form=true' target="_blank"> Inreach/Outreach with Form</a></li>
+            @if ((bool?) ViewBag.OrganizationContext == true)
+            {
+                <li><a href='/Reports/Contacts/@ViewBag.queryid?orgname=@ViewBag.orgname' target="_blank" title="Report for Robo-calling Contacts"> Contact Report</a></li>
+                <li class="hideAlt"><a href='/Reports/Contacts/@ViewBag.queryid?sortAddress=true&orgname=@ViewBag.orgname' target="_blank">Contact Report (by addr)</a></li>
+            }
+            else
+            {
+                <li><a href='/Reports/Contacts/@ViewBag.queryid' target="_blank" title="Report for Robo-calling Contacts"> Contact Report</a></li>
+                <li class="hideAlt"><a href='/Reports/Contacts/@ViewBag.queryid' target="_blank">Contact Report (by addr)</a></li>
+            }
+                <li><a href='/Reports/WeeklyAttendance/@ViewBag.queryid' target="_blank" title="General Attendance Stats"> Weekly Attend</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Involvement' target="_blank" title="Personal, Contact and Enrollment Info"> Involvement</a></li>
+                <li><a href='/Reports/Family/@ViewBag.queryid' target="_blank"> Family Report</a></li>
+                <li><a href="/Reports/PictureDirectory/@ViewBag.queryid" target="_blank"> Picture Directory</a></li>
+                <li><a href="/Reports/FamilyDirectory/@ViewBag.queryid" target="_blank"> Family Directory</a></li>
+                <li><a href="/Reports/FamilyDirectoryCompact/@ViewBag.queryid" target="_blank"> Compact Directory</a></li>
+            @if ((bool?)ViewBag.OrganizationContext == true)
             { 
                 <li><a id="RollsheetLink" href='#' title="Rollsheet Report"> Rollsheet Report</a></li>
                 <li><a id="RallyRollsheetLink" href='#' title="Rally Rollsheet Report"> Rally Rollsheet</a></li>
-                <li><a href='/Reports/Roster1/@ViewData["queryid"]?oid=@Util2.CurrentOrgId' target="_blank"> Roster Report</a></li>
-                <li><a href='/Reports/Registration/@ViewData["queryid"]?oid=@Util2.CurrentOrgId' target="_blank"> Registration Report</a></li>
+                <li><a href='/Reports/Roster1/@ViewBag.queryid?oid=@Util2.CurrentOrgId' target="_blank"> Roster Report</a></li>
+                <li><a href='/Reports/Registration/@ViewBag.queryid?oid=@Util2.CurrentOrgId' target="_blank"> Registration Report</a></li>
             }
             else
             { 
-                <li><a href='/Reports/Registration/@ViewData["queryid"]' target="_blank"> Registration Rpt</a></li>
+                <li><a href='/Reports/Registration/@ViewBag.queryid' target="_blank"> Registration Rpt</a></li>
             }    
-                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Attend' target="_blank" title="Contains attendance information for their class"> BF Attendance</a></li>
-                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Children' target="_blank" title="Contains emergency contact, who brought child info"> Children</a></li>
-                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Church' target="_blank" title="Contains other Church Info"> Other Churches</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Attend' target="_blank" title="Contains attendance information for their class"> BF Attendance</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Children' target="_blank" title="Contains emergency contact, who brought child info"> Children</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewBag.queryid&format=Church' target="_blank" title="Contains other Church Info"> Other Churches</a></li>
             </ul>
         </div>
     </li>
@@ -90,13 +98,13 @@
         </a>
         <div class="dropdown-menu has-tip">
             <ul>
-            <li><a href='/Reports/RollLabels/@ViewData["queryid"]' class="ChooseLabelType" title="Labels (pdf for Datamax label printer)" target="_blank"> Roll Labels</a></li>
-            <li><a href='/Reports/BarCodeLabels/@ViewData["queryid"]' target="_blank" title="Labels for Choir Attendance"> Barcode Labels</a></li>
-            <li><a href='/Reports/Avery/@ViewData["queryid"]' title="Avery Name Labels" target="_blank">  Name Labels (with phones)</a></li>
-            <li><a href='/Reports/NameLabels/@ViewData["queryid"]' title="Avery Name Labels (no phones)" target="_blank">  Name Labels</a></li>
-            <li><a href='/Reports/Avery3/@ViewData["queryid"]' title="Avery 3 Across Labels (person per row)" target="_blank">  Avery Labels 3</a></li>
-            <li><a href='/Reports/AveryAddress/@ViewData["queryid"]' class="ChooseLabelType" title="Address Labels"> Avery Address</a></li>
-			<li><a href="/Reports/EmployerAddress/@ViewData["queryid"]" target="_blank"> Avery Employer</a></li>
+            <li><a href='/Reports/RollLabels/@ViewBag.queryid' class="ChooseLabelType" title="Labels (pdf for Datamax label printer)" target="_blank"> Roll Labels</a></li>
+            <li><a href='/Reports/BarCodeLabels/@ViewBag.queryid' target="_blank" title="Labels for Choir Attendance"> Barcode Labels</a></li>
+            <li><a href='/Reports/Avery/@ViewBag.queryid' title="Avery Name Labels" target="_blank">  Name Labels (with phones)</a></li>
+            <li><a href='/Reports/NameLabels/@ViewBag.queryid' title="Avery Name Labels (no phones)" target="_blank">  Name Labels</a></li>
+            <li><a href='/Reports/Avery3/@ViewBag.queryid' title="Avery 3 Across Labels (person per row)" target="_blank">  Avery Labels 3</a></li>
+            <li><a href='/Reports/AveryAddress/@ViewBag.queryid' class="ChooseLabelType" title="Address Labels"> Avery Address</a></li>
+			<li><a href="/Reports/EmployerAddress/@ViewBag.queryid" target="_blank"> Avery Employer</a></li>
             </ul>
         </div>
     </li>
@@ -106,8 +114,8 @@
         </a>
         <div class="dropdown-menu has-tip">
             <ul>
-            <li><a id="TagAll" href='@ViewData["TagAction"]'> Add All</a></li>
-            <li><a id="UnTagAll" href='@ViewData["UnTagAction"]'> Remove All</a></li>
+            <li><a id="TagAll" href='@ViewBag.TagAction'> Add All</a></li>
+            <li><a id="UnTagAll" href='@ViewBag.TagAction'> Remove All</a></li>
             </ul>
         </div>
     </li>
@@ -117,19 +125,19 @@
         </a>
         <div class="dropdown-menu has-tip">
             <ul>
-            <li><a id="AddContact" href='@ViewData["AddContact"]'> Add Contact</a></li>
-            <li><a id="AddTasks" href='@ViewData["AddTasks"]'> Add Tasks</a></li>
+            <li><a id="AddContact" href='@ViewBag.AddContact'> Add Contact</a></li>
+            <li><a id="AddTasks" href='@ViewBag.AddTasks'> Add Tasks</a></li>
 @if (User.IsInRole("Admin"))
 {
-            <li><a href='/Manage/ExtraValues/Add/@ViewData["queryid"]' class="ChooseExtraValues"> Add Extra Values</a></li>
-            <li><a href='/Manage/ExtraValues/Delete/@ViewData["queryid"]' class="ChooseExtraValues"> Delete Extra Values</a></li>
-            <li><a href="/Reports/ExtraValuesGrid/@ViewData["queryid"]">Extra Values Grid</a></li>
+            <li><a href='/Manage/ExtraValues/Add/@ViewBag.queryid' class="ChooseExtraValues"> Add Extra Values</a></li>
+            <li><a href='/Manage/ExtraValues/Delete/@ViewBag.queryid' class="ChooseExtraValues"> Delete Extra Values</a></li>
+            <li><a href="/Reports/ExtraValuesGrid/@ViewBag.queryid">Extra Values Grid</a></li>
 }
 @if (User.IsInRole("Developer"))
 {
-            <li><a href="/Reports/ExtraValuesGrid2/@ViewData["queryid"]" class="hideAlt">Extra Values Grid2</a></li>
+            <li><a href="/Reports/ExtraValuesGrid2/@ViewBag.queryid" class="hideAlt">Extra Values Grid2</a></li>
 }
-            <li><a href='/Task/NotesExcel/@ViewData["queryid"]'> Export Task Notes</a></li>
+            <li><a href='/Task/NotesExcel/@ViewBag.queryid'> Export Task Notes</a></li>
             </ul>
         </div>
     </li>

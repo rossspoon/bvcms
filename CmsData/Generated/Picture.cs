@@ -120,7 +120,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="varchar(50)")]
+		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="nvarchar(50)")]
 		public string CreatedBy
 		{
 			get { return this._CreatedBy; }

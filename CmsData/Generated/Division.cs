@@ -137,7 +137,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50)")]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="nvarchar(50)")]
 		public string Name
 		{
 			get { return this._Name; }
@@ -206,7 +206,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar")]
+		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="nvarchar")]
 		public string EmailMessage
 		{
 			get { return this._EmailMessage; }
@@ -228,7 +228,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailSubject", UpdateCheck=UpdateCheck.Never, Storage="_EmailSubject", DbType="varchar(100)")]
+		[Column(Name="EmailSubject", UpdateCheck=UpdateCheck.Never, Storage="_EmailSubject", DbType="nvarchar(100)")]
 		public string EmailSubject
 		{
 			get { return this._EmailSubject; }
@@ -250,7 +250,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar")]
+		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="nvarchar")]
 		public string Instructions
 		{
 			get { return this._Instructions; }
@@ -272,7 +272,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar")]
+		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="nvarchar")]
 		public string Terms
 		{
 			get { return this._Terms; }

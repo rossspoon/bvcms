@@ -144,7 +144,7 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
             return View("CurrentEnrollments", m);
         }
-        [POST("PrevEnrollGrid/{id}/{page?}/{size?}/{sort?}/{dir?}")]
+        [POST("Person2/PrevEnrollGrid/{id}/{page?}/{size?}/{sort?}/{dir?}")]
         public ActionResult PrevEnrollGrid(int id, int? page, int? size, string sort, string dir)
         {
             var m = new PreviousEnrollments(id);
@@ -268,20 +268,20 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("/Task/List/{0}".Fmt(t.Id));
         }
-        [POST("Snapshot/{id}")]
+        [POST("Person2/Snapshot/{id}")]
         public ActionResult Snapshot(int id)
         {
             var m = new PersonModel(id);
             return View(m);
         }
-        [POST("RelatedFamilies/{id}")]
+        [POST("Person2/RelatedFamilies/{id}")]
         public ActionResult RelatedFamilies(int id)
         {
             var m = new PersonModel(id);
             return View(m);
         }
 
-        [POST("PostData")]
+        [POST("Person2/PostData")]
         public ActionResult PostData(int pk, string name, string value)
         {
             var p = DbUtil.Db.LoadPersonById(pk);

@@ -109,7 +109,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_AddressX", DbType="varchar(50)")]
+		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_AddressX", DbType="nvarchar(50)")]
 		public string AddressX
 		{
 			get { return this._AddressX; }
@@ -131,7 +131,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Address2", UpdateCheck=UpdateCheck.Never, Storage="_Address2", DbType="varchar(50)")]
+		[Column(Name="Address2", UpdateCheck=UpdateCheck.Never, Storage="_Address2", DbType="nvarchar(50)")]
 		public string Address2
 		{
 			get { return this._Address2; }
@@ -153,7 +153,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="City", UpdateCheck=UpdateCheck.Never, Storage="_City", DbType="varchar(50)")]
+		[Column(Name="City", UpdateCheck=UpdateCheck.Never, Storage="_City", DbType="nvarchar(50)")]
 		public string City
 		{
 			get { return this._City; }
@@ -175,7 +175,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="varchar(50)")]
+		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="nvarchar(50)")]
 		public string State
 		{
 			get { return this._State; }
@@ -197,7 +197,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="varchar(50)")]
+		[Column(Name="Zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="nvarchar(50)")]
 		public string Zip
 		{
 			get { return this._Zip; }
@@ -285,7 +285,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Type", UpdateCheck=UpdateCheck.Never, Storage="_Type", DbType="varchar(50)")]
+		[Column(Name="Type", UpdateCheck=UpdateCheck.Never, Storage="_Type", DbType="nvarchar(50)")]
 		public string Type
 		{
 			get { return this._Type; }

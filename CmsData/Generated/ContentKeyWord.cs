@@ -76,7 +76,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Word", UpdateCheck=UpdateCheck.Never, Storage="_Word", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Word", UpdateCheck=UpdateCheck.Never, Storage="_Word", DbType="nvarchar(50) NOT NULL", IsPrimaryKey=true)]
 		public string Word
 		{
 			get { return this._Word; }

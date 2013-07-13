@@ -84,7 +84,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StatId", UpdateCheck=UpdateCheck.Never, Storage="_StatId", DbType="varchar(5) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="StatId", UpdateCheck=UpdateCheck.Never, Storage="_StatId", DbType="nvarchar(5) NOT NULL", IsPrimaryKey=true)]
 		public string StatId
 		{
 			get { return this._StatId; }
@@ -128,7 +128,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(75) NOT NULL")]
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="nvarchar(75) NOT NULL")]
 		public string Description
 		{
 			get { return this._Description; }

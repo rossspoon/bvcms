@@ -148,7 +148,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="event", UpdateCheck=UpdateCheck.Never, Storage="_EventX", DbType="varchar(20)")]
+		[Column(Name="event", UpdateCheck=UpdateCheck.Never, Storage="_EventX", DbType="nvarchar(20)")]
 		public string EventX
 		{
 			get { return this._EventX; }
@@ -170,7 +170,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="reason", UpdateCheck=UpdateCheck.Never, Storage="_Reason", DbType="varchar(300)")]
+		[Column(Name="reason", UpdateCheck=UpdateCheck.Never, Storage="_Reason", DbType="nvarchar(300)")]
 		public string Reason
 		{
 			get { return this._Reason; }
@@ -192,7 +192,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="bouncetype", UpdateCheck=UpdateCheck.Never, Storage="_Bouncetype", DbType="varchar(20)")]
+		[Column(Name="bouncetype", UpdateCheck=UpdateCheck.Never, Storage="_Bouncetype", DbType="nvarchar(20)")]
 		public string Bouncetype
 		{
 			get { return this._Bouncetype; }
@@ -214,7 +214,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="varchar(100)")]
+		[Column(Name="email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="nvarchar(100)")]
 		public string Email
 		{
 			get { return this._Email; }

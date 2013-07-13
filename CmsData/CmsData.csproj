@@ -342,6 +342,7 @@
     <Compile Include="Generated\Functions\Pledges0.cs" />
     <Compile Include="Generated\Functions\RecentAbsents2.cs" />
     <Compile Include="Generated\Functions\StatusFlag.cs" />
+    <Compile Include="Generated\Views\BundleList.cs" />
     <Compile Include="Generated\Views\OrganizationLeader.cs" />
     <Compile Include="Generated\Views\OrganizationStructure.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />

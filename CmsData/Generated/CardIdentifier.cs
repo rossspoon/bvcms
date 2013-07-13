@@ -56,7 +56,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="varchar(80) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="nvarchar(80) NOT NULL", IsPrimaryKey=true)]
 		public string Id
 		{
 			get { return this._Id; }
