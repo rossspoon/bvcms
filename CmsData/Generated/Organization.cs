@@ -735,7 +735,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(200)")]
+		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="nvarchar(200)")]
 		public string Location
 		{
 			get { return this._Location; }
@@ -757,7 +757,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OrganizationName", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationName", DbType="varchar(100) NOT NULL")]
+		[Column(Name="OrganizationName", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationName", DbType="nvarchar(100) NOT NULL")]
 		public string OrganizationName
 		{
 			get { return this._OrganizationName; }
@@ -939,7 +939,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LeaderName", UpdateCheck=UpdateCheck.Never, Storage="_LeaderName", DbType="varchar(50)")]
+		[Column(Name="LeaderName", UpdateCheck=UpdateCheck.Never, Storage="_LeaderName", DbType="nvarchar(50)")]
 		public string LeaderName
 		{
 			get { return this._LeaderName; }
@@ -1005,7 +1005,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PendingLoc", UpdateCheck=UpdateCheck.Never, Storage="_PendingLoc", DbType="varchar(40)")]
+		[Column(Name="PendingLoc", UpdateCheck=UpdateCheck.Never, Storage="_PendingLoc", DbType="nvarchar(40)")]
 		public string PendingLoc
 		{
 			get { return this._PendingLoc; }
@@ -1209,7 +1209,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar")]
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="nvarchar")]
 		public string Description
 		{
 			get { return this._Description; }
@@ -1341,7 +1341,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ValidateOrgs", UpdateCheck=UpdateCheck.Never, Storage="_ValidateOrgs", DbType="varchar(60)")]
+		[Column(Name="ValidateOrgs", UpdateCheck=UpdateCheck.Never, Storage="_ValidateOrgs", DbType="nvarchar(60)")]
 		public string ValidateOrgs
 		{
 			get { return this._ValidateOrgs; }
@@ -1363,7 +1363,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PhoneNumber", UpdateCheck=UpdateCheck.Never, Storage="_PhoneNumber", DbType="varchar(25)")]
+		[Column(Name="PhoneNumber", UpdateCheck=UpdateCheck.Never, Storage="_PhoneNumber", DbType="nvarchar(25)")]
 		public string PhoneNumber
 		{
 			get { return this._PhoneNumber; }
@@ -1429,7 +1429,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="WorshipGroupCodes", UpdateCheck=UpdateCheck.Never, Storage="_WorshipGroupCodes", DbType="varchar(100)")]
+		[Column(Name="WorshipGroupCodes", UpdateCheck=UpdateCheck.Never, Storage="_WorshipGroupCodes", DbType="nvarchar(100)")]
 		public string WorshipGroupCodes
 		{
 			get { return this._WorshipGroupCodes; }
@@ -1539,7 +1539,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="NotifyIds", UpdateCheck=UpdateCheck.Never, Storage="_NotifyIds", DbType="varchar(50)")]
+		[Column(Name="NotifyIds", UpdateCheck=UpdateCheck.Never, Storage="_NotifyIds", DbType="nvarchar(50)")]
 		public string NotifyIds
 		{
 			get { return this._NotifyIds; }
@@ -1605,7 +1605,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RegSetting", UpdateCheck=UpdateCheck.Never, Storage="_RegSetting", DbType="varchar")]
+		[Column(Name="RegSetting", UpdateCheck=UpdateCheck.Never, Storage="_RegSetting", DbType="nvarchar")]
 		public string RegSetting
 		{
 			get { return this._RegSetting; }
@@ -1627,7 +1627,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OrgPickList", UpdateCheck=UpdateCheck.Never, Storage="_OrgPickList", DbType="varchar(300)")]
+		[Column(Name="OrgPickList", UpdateCheck=UpdateCheck.Never, Storage="_OrgPickList", DbType="nvarchar(300)")]
 		public string OrgPickList
 		{
 			get { return this._OrgPickList; }
@@ -1715,7 +1715,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LimitToRole", UpdateCheck=UpdateCheck.Never, Storage="_LimitToRole", DbType="varchar(20)")]
+		[Column(Name="LimitToRole", UpdateCheck=UpdateCheck.Never, Storage="_LimitToRole", DbType="nvarchar(20)")]
 		public string LimitToRole
 		{
 			get { return this._LimitToRole; }
@@ -1762,7 +1762,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MemberJoinScript", UpdateCheck=UpdateCheck.Never, Storage="_MemberJoinScript", DbType="varchar(50)")]
+		[Column(Name="MemberJoinScript", UpdateCheck=UpdateCheck.Never, Storage="_MemberJoinScript", DbType="nvarchar(50)")]
 		public string MemberJoinScript
 		{
 			get { return this._MemberJoinScript; }
@@ -1784,7 +1784,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddToSmallGroupScript", UpdateCheck=UpdateCheck.Never, Storage="_AddToSmallGroupScript", DbType="varchar(50)")]
+		[Column(Name="AddToSmallGroupScript", UpdateCheck=UpdateCheck.Never, Storage="_AddToSmallGroupScript", DbType="nvarchar(50)")]
 		public string AddToSmallGroupScript
 		{
 			get { return this._AddToSmallGroupScript; }
@@ -1806,7 +1806,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RemoveFromSmallGroupScript", UpdateCheck=UpdateCheck.Never, Storage="_RemoveFromSmallGroupScript", DbType="varchar(50)")]
+		[Column(Name="RemoveFromSmallGroupScript", UpdateCheck=UpdateCheck.Never, Storage="_RemoveFromSmallGroupScript", DbType="nvarchar(50)")]
 		public string RemoveFromSmallGroupScript
 		{
 			get { return this._RemoveFromSmallGroupScript; }

@@ -45,7 +45,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="Username", Storage="_Username", DbType="varchar(50) NOT NULL")]
+		[Column(Name="Username", Storage="_Username", DbType="nvarchar(50) NOT NULL")]
 		public string Username
 		{
 			get
@@ -79,7 +79,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(50)")]
+		[Column(Name="Name", Storage="_Name", DbType="nvarchar(50)")]
 		public string Name
 		{
 			get
@@ -96,7 +96,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name2", Storage="_Name2", DbType="varchar(50)")]
+		[Column(Name="Name2", Storage="_Name2", DbType="nvarchar(50)")]
 		public string Name2
 		{
 			get
@@ -164,7 +164,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(100)")]
+		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="nvarchar(100)")]
 		public string EmailAddress
 		{
 			get
@@ -215,7 +215,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Roles", Storage="_Roles", DbType="varchar(500)")]
+		[Column(Name="Roles", Storage="_Roles", DbType="nvarchar(500)")]
 		public string Roles
 		{
 			get

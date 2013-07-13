@@ -265,7 +265,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Username", UpdateCheck=UpdateCheck.Never, Storage="_Username", DbType="varchar(50) NOT NULL")]
+		[Column(Name="Username", UpdateCheck=UpdateCheck.Never, Storage="_Username", DbType="nvarchar(50) NOT NULL")]
 		public string Username
 		{
 			get { return this._Username; }
@@ -287,7 +287,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Comment", UpdateCheck=UpdateCheck.Never, Storage="_Comment", DbType="varchar(255)")]
+		[Column(Name="Comment", UpdateCheck=UpdateCheck.Never, Storage="_Comment", DbType="nvarchar(255)")]
 		public string Comment
 		{
 			get { return this._Comment; }
@@ -309,7 +309,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Password", UpdateCheck=UpdateCheck.Never, Storage="_Password", DbType="varchar(128) NOT NULL")]
+		[Column(Name="Password", UpdateCheck=UpdateCheck.Never, Storage="_Password", DbType="nvarchar(128) NOT NULL")]
 		public string Password
 		{
 			get { return this._Password; }
@@ -331,7 +331,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PasswordQuestion", UpdateCheck=UpdateCheck.Never, Storage="_PasswordQuestion", DbType="varchar(255)")]
+		[Column(Name="PasswordQuestion", UpdateCheck=UpdateCheck.Never, Storage="_PasswordQuestion", DbType="nvarchar(255)")]
 		public string PasswordQuestion
 		{
 			get { return this._PasswordQuestion; }
@@ -353,7 +353,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PasswordAnswer", UpdateCheck=UpdateCheck.Never, Storage="_PasswordAnswer", DbType="varchar(255)")]
+		[Column(Name="PasswordAnswer", UpdateCheck=UpdateCheck.Never, Storage="_PasswordAnswer", DbType="nvarchar(255)")]
 		public string PasswordAnswer
 		{
 			get { return this._PasswordAnswer; }
@@ -617,7 +617,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailAddress", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddress", DbType="varchar(100)", IsDbGenerated=true)]
+		[Column(Name="EmailAddress", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddress", DbType="nvarchar(100)", IsDbGenerated=true)]
 		public string EmailAddress
 		{
 			get { return this._EmailAddress; }
@@ -661,7 +661,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CurrentCart", UpdateCheck=UpdateCheck.Never, Storage="_CurrentCart", DbType="varchar(100)")]
+		[Column(Name="CurrentCart", UpdateCheck=UpdateCheck.Never, Storage="_CurrentCart", DbType="nvarchar(100)")]
 		public string CurrentCart
 		{
 			get { return this._CurrentCart; }
@@ -705,7 +705,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Host", UpdateCheck=UpdateCheck.Never, Storage="_Host", DbType="varchar(100)")]
+		[Column(Name="Host", UpdateCheck=UpdateCheck.Never, Storage="_Host", DbType="nvarchar(100)")]
 		public string Host
 		{
 			get { return this._Host; }
@@ -727,7 +727,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="TempPassword", UpdateCheck=UpdateCheck.Never, Storage="_TempPassword", DbType="varchar(128)")]
+		[Column(Name="TempPassword", UpdateCheck=UpdateCheck.Never, Storage="_TempPassword", DbType="nvarchar(128)")]
 		public string TempPassword
 		{
 			get { return this._TempPassword; }
@@ -749,7 +749,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50)")]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="nvarchar(50)")]
 		public string Name
 		{
 			get { return this._Name; }
@@ -771,7 +771,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(50)")]
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="nvarchar(50)")]
 		public string Name2
 		{
 			get { return this._Name2; }
@@ -815,7 +815,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DefaultGroup", UpdateCheck=UpdateCheck.Never, Storage="_DefaultGroup", DbType="varchar(50)")]
+		[Column(Name="DefaultGroup", UpdateCheck=UpdateCheck.Never, Storage="_DefaultGroup", DbType="nvarchar(50)")]
 		public string DefaultGroup
 		{
 			get { return this._DefaultGroup; }

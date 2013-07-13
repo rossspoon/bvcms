@@ -57,7 +57,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Url", UpdateCheck=UpdateCheck.Never, Storage="_Url", DbType="varchar(150) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Url", UpdateCheck=UpdateCheck.Never, Storage="_Url", DbType="nvarchar(150) NOT NULL", IsPrimaryKey=true)]
 		public string Url
 		{
 			get { return this._Url; }
@@ -79,7 +79,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Data", UpdateCheck=UpdateCheck.Never, Storage="_Data", DbType="varchar")]
+		[Column(Name="Data", UpdateCheck=UpdateCheck.Never, Storage="_Data", DbType="nvarchar")]
 		public string Data
 		{
 			get { return this._Data; }
@@ -101,7 +101,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ETag", UpdateCheck=UpdateCheck.Never, Storage="_ETag", DbType="varchar(150)")]
+		[Column(Name="ETag", UpdateCheck=UpdateCheck.Never, Storage="_ETag", DbType="nvarchar(150)")]
 		public string ETag
 		{
 			get { return this._ETag; }

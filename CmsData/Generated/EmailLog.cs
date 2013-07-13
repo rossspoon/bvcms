@@ -84,7 +84,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="fromaddr", UpdateCheck=UpdateCheck.Never, Storage="_Fromaddr", DbType="varchar(50)")]
+		[Column(Name="fromaddr", UpdateCheck=UpdateCheck.Never, Storage="_Fromaddr", DbType="nvarchar(50)")]
 		public string Fromaddr
 		{
 			get { return this._Fromaddr; }
@@ -106,7 +106,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="toaddr", UpdateCheck=UpdateCheck.Never, Storage="_Toaddr", DbType="varchar(150)")]
+		[Column(Name="toaddr", UpdateCheck=UpdateCheck.Never, Storage="_Toaddr", DbType="nvarchar(150)")]
 		public string Toaddr
 		{
 			get { return this._Toaddr; }
@@ -150,7 +150,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="subject", UpdateCheck=UpdateCheck.Never, Storage="_Subject", DbType="varchar(180)")]
+		[Column(Name="subject", UpdateCheck=UpdateCheck.Never, Storage="_Subject", DbType="nvarchar(180)")]
 		public string Subject
 		{
 			get { return this._Subject; }

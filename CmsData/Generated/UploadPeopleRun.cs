@@ -209,7 +209,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="varchar(200)")]
+		[Column(Name="error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="nvarchar(200)")]
 		public string Error
 		{
 			get { return this._Error; }

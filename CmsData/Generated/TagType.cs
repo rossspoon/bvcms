@@ -69,7 +69,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50) NOT NULL")]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="nvarchar(50) NOT NULL")]
 		public string Name
 		{
 			get { return this._Name; }

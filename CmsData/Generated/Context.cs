@@ -1565,6 +1565,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.BundleList> ViewBundleLists
+	    {
+		    get { return this.GetTable< View.BundleList>(); }
+
+	    }
+
 	    public Table< View.Church> ViewChurches
 	    {
 		    get { return this.GetTable< View.Church>(); }
@@ -1697,7 +1703,7 @@ namespace CmsData
             [Parameter(DbType="int")] int? divid,
             [Parameter(DbType="int")] int? orgid,
             [Parameter(DbType="bit")] bool? not,
-            [Parameter(DbType="varchar")] string ids
+            [Parameter(DbType="nvarchar")] string ids
             )
 		{
 			return this.CreateMethodCallQuery< View.AttendMemberTypeAsOf>(this, 
@@ -1729,7 +1735,7 @@ namespace CmsData
 
 		[Function(Name="dbo.CheckinMatch", IsComposable = true)]
 		public IQueryable< View.CheckinMatch > CheckinMatch(
-            [Parameter(DbType="varchar")] string id
+            [Parameter(DbType="nvarchar")] string id
             )
 		{
 			return this.CreateMethodCallQuery< View.CheckinMatch>(this, 
@@ -1792,7 +1798,7 @@ namespace CmsData
             [Parameter(DbType="int")] int? days,
             [Parameter(DbType="int")] int? cnt,
             [Parameter(DbType="int")] int? fundid,
-            [Parameter(DbType="varchar")] string op
+            [Parameter(DbType="nvarchar")] string op
             )
 		{
 			return this.CreateMethodCallQuery< View.ContributionCountTable>(this, 
@@ -1865,7 +1871,7 @@ namespace CmsData
 
 		[Function(Name="dbo.CsvTable", IsComposable = true)]
 		public IQueryable< View.CsvTable > CsvTable(
-            [Parameter(DbType="varchar")] string csv
+            [Parameter(DbType="nvarchar")] string csv
             )
 		{
 			return this.CreateMethodCallQuery< View.CsvTable>(this, 
@@ -1876,11 +1882,11 @@ namespace CmsData
 
 		[Function(Name="dbo.FindPerson", IsComposable = true)]
 		public IQueryable< View.FindPerson > FindPerson(
-            [Parameter(DbType="varchar")] string first,
-            [Parameter(DbType="varchar")] string last,
+            [Parameter(DbType="nvarchar")] string first,
+            [Parameter(DbType="nvarchar")] string last,
             [Parameter(DbType="datetime")] DateTime? dob,
-            [Parameter(DbType="varchar")] string email,
-            [Parameter(DbType="varchar")] string phone
+            [Parameter(DbType="nvarchar")] string email,
+            [Parameter(DbType="nvarchar")] string phone
             )
 		{
 			return this.CreateMethodCallQuery< View.FindPerson>(this, 
@@ -1895,17 +1901,17 @@ namespace CmsData
 
 		[Function(Name="dbo.FindPerson2", IsComposable = true)]
 		public IQueryable< View.FindPerson2 > FindPerson2(
-            [Parameter(DbType="varchar")] string first,
-            [Parameter(DbType="varchar")] string goesby,
-            [Parameter(DbType="varchar")] string last,
+            [Parameter(DbType="nvarchar")] string first,
+            [Parameter(DbType="nvarchar")] string goesby,
+            [Parameter(DbType="nvarchar")] string last,
             [Parameter(DbType="int")] int? m,
             [Parameter(DbType="int")] int? d,
             [Parameter(DbType="int")] int? y,
-            [Parameter(DbType="varchar")] string email,
-            [Parameter(DbType="varchar")] string email2,
-            [Parameter(DbType="varchar")] string phone1,
-            [Parameter(DbType="varchar")] string phone2,
-            [Parameter(DbType="varchar")] string phone3
+            [Parameter(DbType="nvarchar")] string email,
+            [Parameter(DbType="nvarchar")] string email2,
+            [Parameter(DbType="nvarchar")] string phone1,
+            [Parameter(DbType="nvarchar")] string phone2,
+            [Parameter(DbType="nvarchar")] string phone3
             )
 		{
 			return this.CreateMethodCallQuery< View.FindPerson2>(this, 
@@ -1926,13 +1932,13 @@ namespace CmsData
 
 		[Function(Name="dbo.FindPerson3", IsComposable = true)]
 		public IQueryable< View.FindPerson3 > FindPerson3(
-            [Parameter(DbType="varchar")] string first,
-            [Parameter(DbType="varchar")] string last,
+            [Parameter(DbType="nvarchar")] string first,
+            [Parameter(DbType="nvarchar")] string last,
             [Parameter(DbType="datetime")] DateTime? dob,
-            [Parameter(DbType="varchar")] string email,
-            [Parameter(DbType="varchar")] string phone1,
-            [Parameter(DbType="varchar")] string phone2,
-            [Parameter(DbType="varchar")] string phone3
+            [Parameter(DbType="nvarchar")] string email,
+            [Parameter(DbType="nvarchar")] string phone1,
+            [Parameter(DbType="nvarchar")] string phone2,
+            [Parameter(DbType="nvarchar")] string phone3
             )
 		{
 			return this.CreateMethodCallQuery< View.FindPerson3>(this, 
@@ -2116,7 +2122,7 @@ namespace CmsData
 		public IQueryable< View.GivingCurrentPercentOfFormer > GivingCurrentPercentOfFormer(
             [Parameter(DbType="datetime")] DateTime? dt1,
             [Parameter(DbType="datetime")] DateTime? dt2,
-            [Parameter(DbType="varchar")] string comp,
+            [Parameter(DbType="nvarchar")] string comp,
             [Parameter(DbType="float")] double? pct
             )
 		{
@@ -2299,8 +2305,8 @@ namespace CmsData
 
 		[Function(Name="dbo.Split", IsComposable = true)]
 		public IQueryable< View.Split > Split(
-            [Parameter(DbType="varchar")] string InputText,
-            [Parameter(DbType="varchar")] string Delimiter
+            [Parameter(DbType="nvarchar")] string InputText,
+            [Parameter(DbType="nvarchar")] string Delimiter
             )
 		{
 			return this.CreateMethodCallQuery< View.Split>(this, 
@@ -2312,7 +2318,7 @@ namespace CmsData
 
 		[Function(Name="dbo.StatusFlags", IsComposable = true)]
 		public IQueryable< View.StatusFlag > StatusFlags(
-            [Parameter(DbType="varchar")] string flags
+            [Parameter(DbType="nvarchar")] string flags
             )
 		{
 			return this.CreateMethodCallQuery< View.StatusFlag>(this, 
@@ -2424,8 +2430,8 @@ namespace CmsData
 		[Function(Name="dbo.AddressMatch", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? AddressMatch(
-            [Parameter(Name = "var1", DbType="varchar")] string var1,
-            [Parameter(Name = "var2", DbType="varchar")] string var2
+            [Parameter(Name = "var1", DbType="nvarchar")] string var1,
+            [Parameter(Name = "var2", DbType="nvarchar")] string var2
             )
 		{
 			return ((int?)(this.ExecuteMethodCall(this, 
@@ -2504,7 +2510,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.AttendDesc", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string AttendDesc(
             [Parameter(Name = "id", DbType="int")] int? id
             )
@@ -2516,7 +2522,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.MemberDesc", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string MemberDesc(
             [Parameter(Name = "id", DbType="int")] int? id
             )
@@ -2538,7 +2544,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.PrimaryCountry", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string PrimaryCountry(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2606,7 +2612,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.BaptismAgeRange", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string BaptismAgeRange(
             [Parameter(Name = "age", DbType="int")] int? age
             )
@@ -2614,18 +2620,6 @@ namespace CmsData
 			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 age
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.Tool_VarbinaryToVarcharHex", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string ToolVarbinaryToVarcharHex(
-            [Parameter(Name = "VarbinaryValue", DbType="varbinary")] byte[] VarbinaryValue
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                VarbinaryValue
                 ).ReturnValue));
 		}
 
@@ -2712,7 +2706,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.PrimaryAddress2", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string PrimaryAddress2(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2802,7 +2796,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.PrimaryCity", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string PrimaryCity(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2814,7 +2808,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.PrimaryZip", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string PrimaryZip(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2885,6 +2879,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.Tool_VarbinaryToVarcharHex", IsComposable = true)]
+		[return: Parameter(DbType = "nvarchar")]
+		public string ToolVarbinaryToVarcharHex(
+            [Parameter(Name = "VarbinaryValue", DbType="varbinary")] byte[] VarbinaryValue
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                VarbinaryValue
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.PrimaryBadAddressFlag", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? PrimaryBadAddressFlag(
@@ -2934,7 +2940,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.PrimaryAddress", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string PrimaryAddress(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2948,7 +2954,7 @@ namespace CmsData
 		[Function(Name="dbo.LastNameCount", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? LastNameCount(
-            [Parameter(Name = "last", DbType="varchar")] string last
+            [Parameter(Name = "last", DbType="nvarchar")] string last
             )
 		{
 			return ((int?)(this.ExecuteMethodCall(this, 
@@ -2958,7 +2964,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.PrimaryState", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string PrimaryState(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2970,7 +2976,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.HomePhone", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string HomePhone(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2982,7 +2988,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.MemberStatusDescription", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string MemberStatusDescription(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3006,7 +3012,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.UserName", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string UserName(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3060,7 +3066,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.OrganizationLeaderName", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string OrganizationLeaderName(
             [Parameter(Name = "orgid", DbType="int")] int? orgid
             )
@@ -3074,7 +3080,7 @@ namespace CmsData
 		[Function(Name="dbo.UserPeopleIdFromEmail", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? UserPeopleIdFromEmail(
-            [Parameter(Name = "email", DbType="varchar")] string email
+            [Parameter(Name = "email", DbType="nvarchar")] string email
             )
 		{
 			return ((int?)(this.ExecuteMethodCall(this, 
@@ -3084,7 +3090,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.DayAndTime", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string DayAndTime(
             [Parameter(Name = "dt", DbType="datetime")] DateTime? dt
             )
@@ -3176,7 +3182,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.UserRoleList", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string UserRoleList(
             [Parameter(Name = "uid", DbType="int")] int? uid
             )
@@ -3254,7 +3260,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.GetScheduleDesc", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string GetScheduleDesc(
             [Parameter(Name = "meetingtime", DbType="datetime")] DateTime? meetingtime
             )
@@ -3280,7 +3286,7 @@ namespace CmsData
 		[Function(Name="dbo.FindResCode", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? FindResCode(
-            [Parameter(Name = "zipcode", DbType="varchar")] string zipcode
+            [Parameter(Name = "zipcode", DbType="nvarchar")] string zipcode
             )
 		{
 			return ((int?)(this.ExecuteMethodCall(this, 
@@ -3340,7 +3346,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.UEmail", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string UEmail(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3352,7 +3358,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.DecToBase", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string DecToBase(
             [Parameter(Name = "val", DbType="bigint")] long? val,
             [Parameter(Name = "baseX", DbType="int")] int? baseX
@@ -3366,7 +3372,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.FirstMeetingDateLastLear", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string FirstMeetingDateLastLear(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3448,9 +3454,9 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.FmtPhone", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string FmtPhone(
-            [Parameter(Name = "PhoneNumber", DbType="varchar")] string PhoneNumber
+            [Parameter(Name = "PhoneNumber", DbType="nvarchar")] string PhoneNumber
             )
 		{
 			return ((string)(this.ExecuteMethodCall(this, 
@@ -3479,7 +3485,7 @@ namespace CmsData
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? LastChanged(
             [Parameter(Name = "pid", DbType="int")] int? pid,
-            [Parameter(Name = "field", DbType="varchar")] string field
+            [Parameter(Name = "field", DbType="nvarchar")] string field
             )
 		{
 			return ((DateTime?)(this.ExecuteMethodCall(this, 
@@ -3514,9 +3520,9 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.GetDigits", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string GetDigits(
-            [Parameter(Name = "Str", DbType="varchar")] string Str
+            [Parameter(Name = "Str", DbType="nvarchar")] string Str
             )
 		{
 			return ((string)(this.ExecuteMethodCall(this, 
@@ -3526,7 +3532,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.ParentNamesAndCells", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string ParentNamesAndCells(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3538,7 +3544,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.StatusFlag", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string StatusFlag(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3550,9 +3556,9 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.SpaceToNull", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string SpaceToNull(
-            [Parameter(Name = "s", DbType="varchar")] string s
+            [Parameter(Name = "s", DbType="nvarchar")] string s
             )
 		{
 			return ((string)(this.ExecuteMethodCall(this, 
@@ -3594,7 +3600,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.UName2", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string UName2(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -3618,7 +3624,7 @@ namespace CmsData
 		}
 
 		[Function(Name="dbo.UName", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
+		[return: Parameter(DbType = "nvarchar")]
 		public string UName(
             [Parameter(Name = "pid", DbType="int")] int? pid
             )

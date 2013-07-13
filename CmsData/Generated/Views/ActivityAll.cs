@@ -33,7 +33,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="Machine", Storage="_Machine", DbType="varchar(50)")]
+		[Column(Name="Machine", Storage="_Machine", DbType="nvarchar(50)")]
 		public string Machine
 		{
 			get
@@ -67,7 +67,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(50) NOT NULL")]
+		[Column(Name="Name", Storage="_Name", DbType="nvarchar(50) NOT NULL")]
 		public string Name
 		{
 			get
@@ -101,7 +101,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Activity", Storage="_Activity", DbType="varchar(200)")]
+		[Column(Name="Activity", Storage="_Activity", DbType="nvarchar(200)")]
 		public string Activity
 		{
 			get

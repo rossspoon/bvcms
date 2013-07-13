@@ -29,13 +29,13 @@ namespace CmsData
 		
 		private string _Error;
 		
-		private int _Running;
-		
 		private int? _LastSet;
 		
 		private int? _CurrSet;
 		
 		private string _Sets;
+		
+		private int _Running;
 		
    		
     	
@@ -64,9 +64,6 @@ namespace CmsData
 		partial void OnErrorChanging(string value);
 		partial void OnErrorChanged();
 		
-		partial void OnRunningChanging(int value);
-		partial void OnRunningChanged();
-		
 		partial void OnLastSetChanging(int? value);
 		partial void OnLastSetChanged();
 		
@@ -75,6 +72,9 @@ namespace CmsData
 		
 		partial void OnSetsChanging(string value);
 		partial void OnSetsChanged();
+		
+		partial void OnRunningChanging(int value);
+		partial void OnRunningChanged();
 		
     #endregion
 		public ContributionsRun()
@@ -197,7 +197,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="varchar(200)")]
+		[Column(Name="error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="nvarchar(200)")]
 		public string Error
 		{
 			get { return this._Error; }
@@ -212,28 +212,6 @@ namespace CmsData
 					this._Error = value;
 					this.SendPropertyChanged("Error");
 					this.OnErrorChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="running", UpdateCheck=UpdateCheck.Never, Storage="_Running", DbType="int NOT NULL", IsDbGenerated=true)]
-		public int Running
-		{
-			get { return this._Running; }
-
-			set
-			{
-				if (this._Running != value)
-				{
-				
-                    this.OnRunningChanging(value);
-					this.SendPropertyChanging();
-					this._Running = value;
-					this.SendPropertyChanged("Running");
-					this.OnRunningChanged();
 				}
 
 			}
@@ -285,7 +263,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Sets", UpdateCheck=UpdateCheck.Never, Storage="_Sets", DbType="varchar(50)")]
+		[Column(Name="Sets", UpdateCheck=UpdateCheck.Never, Storage="_Sets", DbType="nvarchar(50)")]
 		public string Sets
 		{
 			get { return this._Sets; }
@@ -300,6 +278,28 @@ namespace CmsData
 					this._Sets = value;
 					this.SendPropertyChanged("Sets");
 					this.OnSetsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="running", UpdateCheck=UpdateCheck.Never, Storage="_Running", DbType="int NOT NULL", IsDbGenerated=true)]
+		public int Running
+		{
+			get { return this._Running; }
+
+			set
+			{
+				if (this._Running != value)
+				{
+				
+                    this.OnRunningChanging(value);
+					this.SendPropertyChanging();
+					this._Running = value;
+					this.SendPropertyChanged("Running");
+					this.OnRunningChanged();
 				}
 
 			}

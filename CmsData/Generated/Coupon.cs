@@ -113,7 +113,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="nvarchar(50) NOT NULL", IsPrimaryKey=true)]
 		public string Id
 		{
 			get { return this._Id; }
@@ -298,7 +298,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(80)")]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="nvarchar(80)")]
 		public string Name
 		{
 			get { return this._Name; }
@@ -367,7 +367,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DivOrg", UpdateCheck=UpdateCheck.Never, Storage="_DivOrg", DbType="varchar(34)", IsDbGenerated=true)]
+		[Column(Name="DivOrg", UpdateCheck=UpdateCheck.Never, Storage="_DivOrg", DbType="nvarchar(34)", IsDbGenerated=true)]
 		public string DivOrg
 		{
 			get { return this._DivOrg; }

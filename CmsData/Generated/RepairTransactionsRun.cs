@@ -29,9 +29,9 @@ namespace CmsData
 		
 		private string _Error;
 		
-		private int _Running;
-		
 		private int? _Orgid;
+		
+		private int _Running;
 		
    		
     	
@@ -60,11 +60,11 @@ namespace CmsData
 		partial void OnErrorChanging(string value);
 		partial void OnErrorChanged();
 		
-		partial void OnRunningChanging(int value);
-		partial void OnRunningChanged();
-		
 		partial void OnOrgidChanging(int? value);
 		partial void OnOrgidChanged();
+		
+		partial void OnRunningChanging(int value);
+		partial void OnRunningChanged();
 		
     #endregion
 		public RepairTransactionsRun()
@@ -187,7 +187,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="varchar(200)")]
+		[Column(Name="error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="nvarchar(200)")]
 		public string Error
 		{
 			get { return this._Error; }
@@ -202,28 +202,6 @@ namespace CmsData
 					this._Error = value;
 					this.SendPropertyChanged("Error");
 					this.OnErrorChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="running", UpdateCheck=UpdateCheck.Never, Storage="_Running", DbType="int NOT NULL", IsDbGenerated=true)]
-		public int Running
-		{
-			get { return this._Running; }
-
-			set
-			{
-				if (this._Running != value)
-				{
-				
-                    this.OnRunningChanging(value);
-					this.SendPropertyChanging();
-					this._Running = value;
-					this.SendPropertyChanged("Running");
-					this.OnRunningChanged();
 				}
 
 			}
@@ -246,6 +224,28 @@ namespace CmsData
 					this._Orgid = value;
 					this.SendPropertyChanged("Orgid");
 					this.OnOrgidChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="running", UpdateCheck=UpdateCheck.Never, Storage="_Running", DbType="int NOT NULL", IsDbGenerated=true)]
+		public int Running
+		{
+			get { return this._Running; }
+
+			set
+			{
+				if (this._Running != value)
+				{
+				
+                    this.OnRunningChanging(value);
+					this.SendPropertyChanging();
+					this._Running = value;
+					this.SendPropertyChanged("Running");
+					this.OnRunningChanged();
 				}
 
 			}

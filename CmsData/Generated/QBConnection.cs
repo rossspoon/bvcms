@@ -187,7 +187,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Token", UpdateCheck=UpdateCheck.Never, Storage="_Token", DbType="varchar NOT NULL")]
+		[Column(Name="Token", UpdateCheck=UpdateCheck.Never, Storage="_Token", DbType="nvarchar NOT NULL")]
 		public string Token
 		{
 			get { return this._Token; }
@@ -209,7 +209,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Secret", UpdateCheck=UpdateCheck.Never, Storage="_Secret", DbType="varchar NOT NULL")]
+		[Column(Name="Secret", UpdateCheck=UpdateCheck.Never, Storage="_Secret", DbType="nvarchar NOT NULL")]
 		public string Secret
 		{
 			get { return this._Secret; }
@@ -231,7 +231,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RealmID", UpdateCheck=UpdateCheck.Never, Storage="_RealmID", DbType="varchar NOT NULL")]
+		[Column(Name="RealmID", UpdateCheck=UpdateCheck.Never, Storage="_RealmID", DbType="nvarchar NOT NULL")]
 		public string RealmID
 		{
 			get { return this._RealmID; }

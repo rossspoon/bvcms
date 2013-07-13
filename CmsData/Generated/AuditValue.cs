@@ -86,7 +86,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MemberName", UpdateCheck=UpdateCheck.Never, Storage="_MemberName", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="MemberName", UpdateCheck=UpdateCheck.Never, Storage="_MemberName", DbType="nvarchar(50) NOT NULL", IsPrimaryKey=true)]
 		public string MemberName
 		{
 			get { return this._MemberName; }

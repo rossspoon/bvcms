@@ -52,7 +52,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="varchar(80) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="nvarchar(80) NOT NULL", IsPrimaryKey=true)]
 		public string Address
 		{
 			get { return this._Address; }

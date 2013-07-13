@@ -81,7 +81,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Preference", UpdateCheck=UpdateCheck.Never, Storage="_PreferenceX", DbType="varchar(30) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Preference", UpdateCheck=UpdateCheck.Never, Storage="_PreferenceX", DbType="nvarchar(30) NOT NULL", IsPrimaryKey=true)]
 		public string PreferenceX
 		{
 			get { return this._PreferenceX; }
@@ -103,7 +103,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Value", UpdateCheck=UpdateCheck.Never, Storage="_ValueX", DbType="varchar(50)")]
+		[Column(Name="Value", UpdateCheck=UpdateCheck.Never, Storage="_ValueX", DbType="nvarchar(50)")]
 		public string ValueX
 		{
 			get { return this._ValueX; }

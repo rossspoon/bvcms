@@ -67,7 +67,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="PostalCode", UpdateCheck=UpdateCheck.Never, Storage="_PostalCode", DbType="varchar(15) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="PostalCode", UpdateCheck=UpdateCheck.Never, Storage="_PostalCode", DbType="nvarchar(15) NOT NULL", IsPrimaryKey=true)]
 		public string PostalCode
 		{
 			get { return this._PostalCode; }
@@ -89,7 +89,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CityName", UpdateCheck=UpdateCheck.Never, Storage="_CityName", DbType="varchar(20)")]
+		[Column(Name="CityName", UpdateCheck=UpdateCheck.Never, Storage="_CityName", DbType="nvarchar(20)")]
 		public string CityName
 		{
 			get { return this._CityName; }
@@ -111,7 +111,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StateCode", UpdateCheck=UpdateCheck.Never, Storage="_StateCode", DbType="varchar(20)")]
+		[Column(Name="StateCode", UpdateCheck=UpdateCheck.Never, Storage="_StateCode", DbType="nvarchar(20)")]
 		public string StateCode
 		{
 			get { return this._StateCode; }
@@ -133,7 +133,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CountryName", UpdateCheck=UpdateCheck.Never, Storage="_CountryName", DbType="varchar(30)")]
+		[Column(Name="CountryName", UpdateCheck=UpdateCheck.Never, Storage="_CountryName", DbType="nvarchar(30)")]
 		public string CountryName
 		{
 			get { return this._CountryName; }

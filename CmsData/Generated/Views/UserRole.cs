@@ -29,7 +29,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(50)")]
+		[Column(Name="Name", Storage="_Name", DbType="nvarchar(50)")]
 		public string Name
 		{
 			get
@@ -46,7 +46,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(100)")]
+		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="nvarchar(100)")]
 		public string EmailAddress
 		{
 			get

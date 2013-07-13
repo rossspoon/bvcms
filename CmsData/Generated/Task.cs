@@ -398,7 +398,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Notes", UpdateCheck=UpdateCheck.Never, Storage="_Notes", DbType="varchar")]
+		[Column(Name="Notes", UpdateCheck=UpdateCheck.Never, Storage="_Notes", DbType="nvarchar")]
 		public string Notes
 		{
 			get { return this._Notes; }
@@ -464,7 +464,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Project", UpdateCheck=UpdateCheck.Never, Storage="_Project", DbType="varchar(50)")]
+		[Column(Name="Project", UpdateCheck=UpdateCheck.Never, Storage="_Project", DbType="nvarchar(50)")]
 		public string Project
 		{
 			get { return this._Project; }
@@ -577,7 +577,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(50)")]
+		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="nvarchar(50)")]
 		public string Location
 		{
 			get { return this._Location; }
@@ -599,7 +599,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(100)")]
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="nvarchar(100)")]
 		public string Description
 		{
 			get { return this._Description; }

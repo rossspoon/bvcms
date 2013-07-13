@@ -158,7 +158,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Activity", UpdateCheck=UpdateCheck.Never, Storage="_Activity", DbType="varchar(200)")]
+		[Column(Name="Activity", UpdateCheck=UpdateCheck.Never, Storage="_Activity", DbType="nvarchar(200)")]
 		public string Activity
 		{
 			get { return this._Activity; }
@@ -180,7 +180,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(410)")]
+		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="nvarchar(410)")]
 		public string PageUrl
 		{
 			get { return this._PageUrl; }
@@ -202,7 +202,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Machine", UpdateCheck=UpdateCheck.Never, Storage="_Machine", DbType="varchar(50)")]
+		[Column(Name="Machine", UpdateCheck=UpdateCheck.Never, Storage="_Machine", DbType="nvarchar(50)")]
 		public string Machine
 		{
 			get { return this._Machine; }

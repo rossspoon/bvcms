@@ -50,7 +50,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="areacode", Storage="_Areacode", DbType="varchar(3)")]
+		[Column(Name="areacode", Storage="_Areacode", DbType="nvarchar(3)")]
 		public string Areacode
 		{
 			get
@@ -67,7 +67,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="NAME", Storage="_Name", DbType="varchar(30)")]
+		[Column(Name="NAME", Storage="_Name", DbType="nvarchar(30)")]
 		public string Name
 		{
 			get
@@ -84,7 +84,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="phone", Storage="_Phone", DbType="varchar(15)")]
+		[Column(Name="phone", Storage="_Phone", DbType="nvarchar(15)")]
 		public string Phone
 		{
 			get

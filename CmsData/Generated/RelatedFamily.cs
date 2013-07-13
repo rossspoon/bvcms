@@ -174,7 +174,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FamilyRelationshipDesc", UpdateCheck=UpdateCheck.Never, Storage="_FamilyRelationshipDesc", DbType="varchar(256) NOT NULL")]
+		[Column(Name="FamilyRelationshipDesc", UpdateCheck=UpdateCheck.Never, Storage="_FamilyRelationshipDesc", DbType="nvarchar(256) NOT NULL")]
 		public string FamilyRelationshipDesc
 		{
 			get { return this._FamilyRelationshipDesc; }

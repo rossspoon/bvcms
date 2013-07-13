@@ -47,7 +47,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(40) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="nvarchar(40) NOT NULL", IsPrimaryKey=true)]
 		public string Name
 		{
 			get { return this._Name; }

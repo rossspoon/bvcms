@@ -62,7 +62,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="OrganizationName", Storage="_OrganizationName", DbType="varchar(70)")]
+		[Column(Name="OrganizationName", Storage="_OrganizationName", DbType="nvarchar(70)")]
 		public string OrganizationName
 		{
 			get
@@ -79,7 +79,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="LeaderName", Storage="_LeaderName", DbType="varchar(60)")]
+		[Column(Name="LeaderName", Storage="_LeaderName", DbType="nvarchar(60)")]
 		public string LeaderName
 		{
 			get
@@ -130,7 +130,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name2", Storage="_Name2", DbType="varchar(50)")]
+		[Column(Name="Name2", Storage="_Name2", DbType="nvarchar(50)")]
 		public string Name2
 		{
 			get
@@ -147,7 +147,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="HomePhone", Storage="_HomePhone", DbType="varchar(15)")]
+		[Column(Name="HomePhone", Storage="_HomePhone", DbType="nvarchar(15)")]
 		public string HomePhone
 		{
 			get
@@ -164,7 +164,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="CellPhone", Storage="_CellPhone", DbType="varchar(15)")]
+		[Column(Name="CellPhone", Storage="_CellPhone", DbType="nvarchar(15)")]
 		public string CellPhone
 		{
 			get
@@ -181,7 +181,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(50)")]
+		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="nvarchar(50)")]
 		public string EmailAddress
 		{
 			get

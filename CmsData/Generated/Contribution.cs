@@ -336,7 +336,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ContributionDesc", UpdateCheck=UpdateCheck.Never, Storage="_ContributionDesc", DbType="varchar(256)")]
+		[Column(Name="ContributionDesc", UpdateCheck=UpdateCheck.Never, Storage="_ContributionDesc", DbType="nvarchar(256)")]
 		public string ContributionDesc
 		{
 			get { return this._ContributionDesc; }
@@ -471,7 +471,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="BankAccount", UpdateCheck=UpdateCheck.Never, Storage="_BankAccount", DbType="varchar(250)")]
+		[Column(Name="BankAccount", UpdateCheck=UpdateCheck.Never, Storage="_BankAccount", DbType="nvarchar(250)")]
 		public string BankAccount
 		{
 			get { return this._BankAccount; }
@@ -518,7 +518,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CheckNo", UpdateCheck=UpdateCheck.Never, Storage="_CheckNo", DbType="varchar(20)")]
+		[Column(Name="CheckNo", UpdateCheck=UpdateCheck.Never, Storage="_CheckNo", DbType="nvarchar(20)")]
 		public string CheckNo
 		{
 			get { return this._CheckNo; }

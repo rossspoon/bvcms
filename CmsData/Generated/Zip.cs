@@ -51,7 +51,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="ZipCode", UpdateCheck=UpdateCheck.Never, Storage="_ZipCode", DbType="varchar(10) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="ZipCode", UpdateCheck=UpdateCheck.Never, Storage="_ZipCode", DbType="nvarchar(10) NOT NULL", IsPrimaryKey=true)]
 		public string ZipCode
 		{
 			get { return this._ZipCode; }

@@ -81,7 +81,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FromEmail", UpdateCheck=UpdateCheck.Never, Storage="_FromEmail", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		[Column(Name="FromEmail", UpdateCheck=UpdateCheck.Never, Storage="_FromEmail", DbType="nvarchar(50) NOT NULL", IsPrimaryKey=true)]
 		public string FromEmail
 		{
 			get { return this._FromEmail; }

@@ -56,7 +56,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="RoleName", UpdateCheck=UpdateCheck.Never, Storage="_RoleName", DbType="varchar(50)")]
+		[Column(Name="RoleName", UpdateCheck=UpdateCheck.Never, Storage="_RoleName", DbType="nvarchar(50)")]
 		public string RoleName
 		{
 			get { return this._RoleName; }

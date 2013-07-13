@@ -79,7 +79,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="querystring", UpdateCheck=UpdateCheck.Never, Storage="_Querystring", DbType="varchar(2000)")]
+		[Column(Name="querystring", UpdateCheck=UpdateCheck.Never, Storage="_Querystring", DbType="nvarchar(2000)")]
 		public string Querystring
 		{
 			get { return this._Querystring; }

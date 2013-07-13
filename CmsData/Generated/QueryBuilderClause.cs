@@ -239,7 +239,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Field", UpdateCheck=UpdateCheck.Never, Storage="_Field", DbType="varchar(32)")]
+		[Column(Name="Field", UpdateCheck=UpdateCheck.Never, Storage="_Field", DbType="nvarchar(32)")]
 		public string Field
 		{
 			get { return this._Field; }
@@ -261,7 +261,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Comparison", UpdateCheck=UpdateCheck.Never, Storage="_Comparison", DbType="varchar(20)")]
+		[Column(Name="Comparison", UpdateCheck=UpdateCheck.Never, Storage="_Comparison", DbType="nvarchar(20)")]
 		public string Comparison
 		{
 			get { return this._Comparison; }
@@ -283,7 +283,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="TextValue", UpdateCheck=UpdateCheck.Never, Storage="_TextValue", DbType="varchar(100)")]
+		[Column(Name="TextValue", UpdateCheck=UpdateCheck.Never, Storage="_TextValue", DbType="nvarchar(100)")]
 		public string TextValue
 		{
 			get { return this._TextValue; }
@@ -327,7 +327,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CodeIdValue", UpdateCheck=UpdateCheck.Never, Storage="_CodeIdValue", DbType="varchar(3000)")]
+		[Column(Name="CodeIdValue", UpdateCheck=UpdateCheck.Never, Storage="_CodeIdValue", DbType="nvarchar(3000)")]
 		public string CodeIdValue
 		{
 			get { return this._CodeIdValue; }
@@ -481,7 +481,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SavedBy", UpdateCheck=UpdateCheck.Never, Storage="_SavedBy", DbType="varchar(50)")]
+		[Column(Name="SavedBy", UpdateCheck=UpdateCheck.Never, Storage="_SavedBy", DbType="nvarchar(50)")]
 		public string SavedBy
 		{
 			get { return this._SavedBy; }
@@ -503,7 +503,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(150)")]
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="nvarchar(150)")]
 		public string Description
 		{
 			get { return this._Description; }
@@ -569,7 +569,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Quarters", UpdateCheck=UpdateCheck.Never, Storage="_Quarters", DbType="varchar(50)")]
+		[Column(Name="Quarters", UpdateCheck=UpdateCheck.Never, Storage="_Quarters", DbType="nvarchar(50)")]
 		public string Quarters
 		{
 			get { return this._Quarters; }
@@ -591,7 +591,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SavedQueryIdDesc", UpdateCheck=UpdateCheck.Never, Storage="_SavedQueryIdDesc", DbType="varchar(100)")]
+		[Column(Name="SavedQueryIdDesc", UpdateCheck=UpdateCheck.Never, Storage="_SavedQueryIdDesc", DbType="nvarchar(100)")]
 		public string SavedQueryIdDesc
 		{
 			get { return this._SavedQueryIdDesc; }
@@ -613,7 +613,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Tags", UpdateCheck=UpdateCheck.Never, Storage="_Tags", DbType="varchar(500)")]
+		[Column(Name="Tags", UpdateCheck=UpdateCheck.Never, Storage="_Tags", DbType="nvarchar(500)")]
 		public string Tags
 		{
 			get { return this._Tags; }

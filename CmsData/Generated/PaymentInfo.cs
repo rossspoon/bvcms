@@ -242,7 +242,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ccv", UpdateCheck=UpdateCheck.Never, Storage="_Ccv", DbType="varchar(5)")]
+		[Column(Name="ccv", UpdateCheck=UpdateCheck.Never, Storage="_Ccv", DbType="nvarchar(5)")]
 		public string Ccv
 		{
 			get { return this._Ccv; }
@@ -286,7 +286,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MaskedAccount", UpdateCheck=UpdateCheck.Never, Storage="_MaskedAccount", DbType="varchar(30)")]
+		[Column(Name="MaskedAccount", UpdateCheck=UpdateCheck.Never, Storage="_MaskedAccount", DbType="nvarchar(30)")]
 		public string MaskedAccount
 		{
 			get { return this._MaskedAccount; }
@@ -308,7 +308,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MaskedCard", UpdateCheck=UpdateCheck.Never, Storage="_MaskedCard", DbType="varchar(30)")]
+		[Column(Name="MaskedCard", UpdateCheck=UpdateCheck.Never, Storage="_MaskedCard", DbType="nvarchar(30)")]
 		public string MaskedCard
 		{
 			get { return this._MaskedCard; }
@@ -330,7 +330,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Expires", UpdateCheck=UpdateCheck.Never, Storage="_Expires", DbType="varchar(10)")]
+		[Column(Name="Expires", UpdateCheck=UpdateCheck.Never, Storage="_Expires", DbType="nvarchar(10)")]
 		public string Expires
 		{
 			get { return this._Expires; }
@@ -374,7 +374,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PreferredGivingType", UpdateCheck=UpdateCheck.Never, Storage="_PreferredGivingType", DbType="varchar(2)")]
+		[Column(Name="PreferredGivingType", UpdateCheck=UpdateCheck.Never, Storage="_PreferredGivingType", DbType="nvarchar(2)")]
 		public string PreferredGivingType
 		{
 			get { return this._PreferredGivingType; }
@@ -396,7 +396,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PreferredPaymentType", UpdateCheck=UpdateCheck.Never, Storage="_PreferredPaymentType", DbType="varchar(2)")]
+		[Column(Name="PreferredPaymentType", UpdateCheck=UpdateCheck.Never, Storage="_PreferredPaymentType", DbType="nvarchar(2)")]
 		public string PreferredPaymentType
 		{
 			get { return this._PreferredPaymentType; }
@@ -418,7 +418,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Routing", UpdateCheck=UpdateCheck.Never, Storage="_Routing", DbType="varchar(10)")]
+		[Column(Name="Routing", UpdateCheck=UpdateCheck.Never, Storage="_Routing", DbType="nvarchar(10)")]
 		public string Routing
 		{
 			get { return this._Routing; }
@@ -440,7 +440,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="varchar(50)")]
+		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="nvarchar(50)")]
 		public string FirstName
 		{
 			get { return this._FirstName; }
@@ -462,7 +462,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MiddleInitial", UpdateCheck=UpdateCheck.Never, Storage="_MiddleInitial", DbType="varchar(10)")]
+		[Column(Name="MiddleInitial", UpdateCheck=UpdateCheck.Never, Storage="_MiddleInitial", DbType="nvarchar(10)")]
 		public string MiddleInitial
 		{
 			get { return this._MiddleInitial; }
@@ -484,7 +484,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="varchar(50)")]
+		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="nvarchar(50)")]
 		public string LastName
 		{
 			get { return this._LastName; }
@@ -506,7 +506,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Suffix", UpdateCheck=UpdateCheck.Never, Storage="_Suffix", DbType="varchar(10)")]
+		[Column(Name="Suffix", UpdateCheck=UpdateCheck.Never, Storage="_Suffix", DbType="nvarchar(10)")]
 		public string Suffix
 		{
 			get { return this._Suffix; }
@@ -528,7 +528,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="varchar(50)")]
+		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="nvarchar(50)")]
 		public string Address
 		{
 			get { return this._Address; }
@@ -550,7 +550,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="City", UpdateCheck=UpdateCheck.Never, Storage="_City", DbType="varchar(50)")]
+		[Column(Name="City", UpdateCheck=UpdateCheck.Never, Storage="_City", DbType="nvarchar(50)")]
 		public string City
 		{
 			get { return this._City; }
@@ -572,7 +572,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="varchar(10)")]
+		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="nvarchar(10)")]
 		public string State
 		{
 			get { return this._State; }
@@ -594,7 +594,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="varchar(15)")]
+		[Column(Name="Zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="nvarchar(15)")]
 		public string Zip
 		{
 			get { return this._Zip; }
@@ -616,7 +616,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Phone", UpdateCheck=UpdateCheck.Never, Storage="_Phone", DbType="varchar(25)")]
+		[Column(Name="Phone", UpdateCheck=UpdateCheck.Never, Storage="_Phone", DbType="nvarchar(25)")]
 		public string Phone
 		{
 			get { return this._Phone; }
