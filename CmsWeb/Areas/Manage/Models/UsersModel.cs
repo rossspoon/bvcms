@@ -54,7 +54,7 @@ namespace CmsWeb.Models
 						 online = online,
 						 peopleid = u.PeopleId,
 						 activity = u.LastActivityDate,
-						 roles = string.Join(", ", u.Roles)
+						 roles = string.Join(", ", u.Roles.OrderBy(rr => rr))
 					 };
 			return q3;
 		}
