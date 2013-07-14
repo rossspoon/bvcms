@@ -63,7 +63,9 @@ namespace CmsWeb.Areas.People.Models.Person
                          Name = m.Name,
                          Age = m.Age,
                          Color = m.DeceasedDate != null ? "red" : "auto",
-                         PositionInFamily = new CodeInfo(m.FamilyPosition.Id, "FamilyPosition"),
+                         PositionInFamily = m.PositionInFamilyId == CmsData.Codes.PositionInFamily.PrimaryAdult ? 
+                            (m.FamiliesHeaded.Any() ? "Head" : (m.PeopleId == m.Family.HeadOfHouseholdSpouseId ? "Spouse" : "Head2")) :
+                            m.FamilyPosition.Description,
                          SpouseIndicator = m.PeopleId == Person.SpouseId ? "*" : "&nbsp;",
                          Email = m.EmailAddress,
                          MemberStatus = m.MemberStatus.Description

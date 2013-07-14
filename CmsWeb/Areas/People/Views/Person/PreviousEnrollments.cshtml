@@ -4,7 +4,9 @@
     var pOrgType = "Other";
     var rownum = 0;
 }
-@Html.Partial("Pager3", Model.Pager)
+<div class="pagination pagination-mini">
+    @Html.Partial("Pager3", Model.Pager)
+</div>
 <table class="enrollments table table-condensed table-hover">
     <thead>
         <tr>
@@ -62,6 +64,8 @@
         }
     </tbody>
 </table>
-@Html.Partial("Pager3", Model.Pager)
+<div class="pagination pagination-mini">
+    @Html.Partial("Pager3", Model.Pager)
+</div>
 
 

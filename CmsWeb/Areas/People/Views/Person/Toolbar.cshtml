@@ -3,8 +3,6 @@
 <div class="btn-group">
     <button class="btn btn-inverse"><i class="icon-envelope-alt"></i></button>
     <button class="btn btn-inverse"><i class="icon-cloud-download"></i></button>
-    @* Dave: I changed this to make the entire button clickable instead of just the cog link 
-        so I also had to change the margin-left back to auto from -105 *@
     <button class="btn btn-inverse dropdown" data-toggle="dropdown" class="dropdown-toggle">
         <i class="icon-cog"></i>
     </button>
@@ -15,10 +13,10 @@
             <li><a class="manageUser" href="/Person/EditUser/@uname">Manage User: @uname</a></li>
         }
         <li class="divider"></li>
-        <li><a id="split" href="/Person2/Split/@Model.displayperson.PeopleId">Put in own family</a></li>
-        <li><a id="merge" href="/Person2/Merge/@Model.displayperson.PeopleId">Merge this duplicate</a></li>
-        <li><a id="deletePerson" href="/Person2/Delete/@Model.displayperson.PeopleId">Delete this duplicate</a></li>
+        <li><a id="split" href="/Person2/Split/@Model.PeopleId">Put in own family</a></li>
+        <li><a id="merge" href="/Person2/Merge/@Model.PeopleId">Merge this duplicate</a></li>
+        <li><a id="deletePerson" href="/Person2/Delete/@Model.PeopleId">Delete this duplicate</a></li>
         <li><a id="recordDeath" href="#">Mark As Deceased</a></li>
     </ul>
 </div>
-<p class="record_added muted"><small>Record added @Model.displayperson.basic.Created.FormatDate()</small></p>
+<p class="record_added muted"><small>Record added @Model.basic.Created.FormatDate()</small></p>

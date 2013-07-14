@@ -364,6 +364,14 @@ namespace UtilityExtensions
             csz += " " + FmtZip(zip);
             return csz.Trim();
         }
+        public static string FormatCSZ5(string city, string st, string zip)
+        {
+            string csz = city ?? string.Empty;
+            if (st.HasValue())
+                csz += ", " + st;
+            csz += " " + Zip5(zip);
+            return csz.Trim();
+        }
         public static string FmtFone(this string phone, string prefix)
         {
             phone = phone.FmtFone();

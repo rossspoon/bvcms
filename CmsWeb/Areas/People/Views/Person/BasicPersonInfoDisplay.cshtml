@@ -22,14 +22,11 @@
 </div>
 <div class="row-fluid">
     <fieldset class="span12 display form-columns">
-        @if (Model.DoNotContactAny)
-        {
-            @Html.DisplayFor(m => m.DoNotContact)
-        }
         @Html.DisplayFor(m => m.PrimaryEmail)
         @Html.DisplayFor(m => m.Mobile)
         @Html.DisplayFor(m => m.AltEmail)
         @Html.DisplayFor(m => m.Work)
+        @Html.DisplayFor(m => m, "DoNotContact")
     </fieldset>
 </div>
 @FormAction()

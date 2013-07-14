@@ -108,7 +108,16 @@
         }],
         type: "select",
         url: "/Person2/PostData",
-        name: "position",
+        name: "position"
+//        success: function (data) {
+//            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
+//        }
+    });
+    $('#campus').editable({
+        source: "/Person2/Campuses",
+        type: "select",
+        url: "/Person2/PostData",
+        name: "campus",
         success: function (data) {
 //            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
         }
@@ -137,15 +146,6 @@
         return false;
     });
 
-
-//    $(".CreateAndGo").click(function () {
-//        if (confirm($(this).attr("confirm")))
-//            $.post($(this).attr("href"), null, function (ret) {
-//                window.location = ret;
-//            });
-//        return false;
-//    });
-
     $("form.ajax a.membertype").live("click", function (ev) {
         ev.preventDefault();
         $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
@@ -170,8 +170,8 @@
     $("#pendingLink").click(function () {
         $.showTable($('#pending form'));
     });
-    $("#attendanceLink").click(function () {
-        $.showTable($('#attendance-tab form'));
+    $("#attendsLink").click(function () {
+        $.showTable($('#attends form'));
     });
     $("#contacts-link").click(function () {
         $("#contacts-tab form").each(function () {
@@ -205,7 +205,6 @@
     $("#optouts-link").click(function () {
         $.showTable($("#optouts-tab form"));
     });
-    $('#family table.grid > tbody > tr:even').addClass('alt');
     $("#recreg-link").click(function (ev) {
         ev.preventDefault();
         var f = $('#recreg-tab form');
@@ -219,11 +218,11 @@
         return false;
     });
 
-    $("form").on('click', '#future', function (ev) {
+    $('#future').live("click", function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(f).attr("action"), q, function (ret) {
+        $.post($("#FutureLink").val(), q, function (ret) {
             $(f).html(ret);
         });
     });

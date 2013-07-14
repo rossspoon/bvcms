@@ -1,20 +1,20 @@
 ﻿@using CmsData
 @using UtilityExtensions
-@model CmsWeb.Areas.People.Models.Person.PersonInfo
+@model CmsWeb.Areas.People.Models.Person.PersonModel
 <img src="@Model.Picture.SmallUrl" alt="" />
 <h2>@Model.Name</h2>
 <ul class="meta unstyled">
     <li class="role">
-        <i class="icon-user"></i>
-        <a class="edit-inline" id="position" data-value="@Model.basic.FamilyPosition.Value" data-pk="@Model.PeopleId" title="Family Position">
-             @Html.DisplayFor(m => m.basic.FamilyPosition)
-        </a>
+        @Model.PrimaryAddr.AddrCityStateZipLine()<br/>
+        @Model.Email &bull; @Model.Cell &bull; @Model.HomePhone
     </li>
     <li class="badges">
-        <span class="label label-info">@Model.member.MemberStatus</span>
+        <span id="campus" class="edit-inline-label label label-info" data-value="@Model.basic.Campus.Value" data-pk="@Model.PeopleId" title="Campus">@Html.DisplayFor(m => m.basic.Campus)</span>
+        <span id="position" class="edit-inline-label label label-info" data-value="@Model.basic.FamilyPosition.Value" data-pk="@Model.PeopleId" title="Family Position">@Html.DisplayFor(m => m.basic.FamilyPosition)</span>
+        <span class="label label-success">@Model.member.MemberStatus</span>
         @foreach (var status in Model.StatusFlags)
         {
-            if (status != "Member")
+            if (Model.member.MemberStatus != status)
             {
                 <span class="label label-success">@status</span>
             }

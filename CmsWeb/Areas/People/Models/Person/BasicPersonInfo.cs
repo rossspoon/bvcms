@@ -94,6 +94,10 @@ namespace CmsWeb.Areas.People.Models.Person
         [DisplayName("Family Position")]
         public CodeInfo FamilyPosition { get; set; }
 
+        [UIHint("InlineCode")]
+        [DisplayName("Campus")]
+        public CodeInfo Campus { get; set; }
+
         [UIHint("Date")]
         public string Birthday { get; set; }
 
@@ -115,8 +119,6 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Text")]
         public string Grade { get; set; }
 
-        [UIHint("Text")]
-        [DisplayName("Do Not Contact")]
         public string DoNotContact
         {
             get
@@ -128,10 +130,12 @@ namespace CmsWeb.Areas.People.Models.Person
                     list.Add("by Mail");
                 if (DoNotVisitFlag)
                     list.Add("in Person");
-                return string.Join(", ", list);
+                var s = string.Join(", ", list);
+                if (!s.HasValue())
+                    s = "N/A";
+                return s;
             }
         }
-
         [UIHint("Email")]
         [DisplayName("Primary Email")]
         public EmailInfo PrimaryEmail { get; set; }
@@ -139,21 +143,24 @@ namespace CmsWeb.Areas.People.Models.Person
         [DisplayName("Alternate Email")]
         public EmailInfo AltEmail { get; set; }
 
-
         [UIHint("Text")]
         [DisplayName("Home Phone")]
         public string HomePhone { get; set; }
+
         [UIHint("CellPhone")]
+        [DisplayName("Cell Phone")]
         public CellPhoneInfo Mobile { get; set; }
+
         [UIHint("Text")]
         public string Work { get; set; }
 
-        public DateTime? Created { get; set; }
         public bool DoNotCallFlag { get; set; }
         public bool DoNotVisitFlag { get; set; }
         public bool DoNotMailFlag { get; set; }
+
+        public DateTime? Created { get; set; }
+
         public bool ReceiveSMS { get; set; }
-        public int? CampusId { get; set; }
         public int MemberStatusId { get; set; }
         public DateTime? JoinDate { get; set; }
         public string Spouse { get; set; }
@@ -164,10 +171,10 @@ namespace CmsWeb.Areas.People.Models.Person
 
 
 
-        public string Campus
-        {
-            get { return cv.AllCampuses0().ItemValue(CampusId ?? 0); }
-        }
+//        public string Campus
+//        {
+//            get { return cv.AllCampuses0().ItemValue(CampusId ?? 0); }
+//        }
 
         public CodeInfo MemberStatus { get; set; }
         public string DoNotCall
@@ -195,7 +202,7 @@ namespace CmsWeb.Areas.People.Models.Person
             {
                 Age = p.Age.ToString(),
                 Birthday = p.DOB,
-                CampusId = p.CampusId ?? 0,
+                Campus = new CodeInfo(p.CampusId, "Campus"),
                 Mobile = new CellPhoneInfo(p.CellPhone.FmtFone(), p.ReceiveSMS),
                 DeceasedDate = p.DeceasedDate,
                 DoNotCallFlag = p.DoNotCallFlag,
@@ -235,13 +242,13 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public void UpdatePerson()
         {
-            if (CampusId == 0)
-                CampusId = null;
+            var campusid = Campus.Value.ToInt2();
+            if (campusid == 0)
+                campusid = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             var psb = new StringBuilder();
             var fsb = new StringBuilder();
             p.UpdateValue(psb, "DOB", Birthday);
-            p.UpdateValue(psb, "CampusId", CampusId);
             p.UpdateValue(psb, "DeceasedDate", DeceasedDate);
             p.UpdateValue(psb, "DoNotCallFlag", DoNotCallFlag);
             p.UpdateValue(psb, "DoNotMailFlag", DoNotMailFlag);
@@ -268,6 +275,7 @@ namespace CmsWeb.Areas.People.Models.Person
             p.UpdateValue(psb, "SuffixCode", Suffix);
             p.UpdateValue(psb, "EmployerOther", Employer);
             p.UpdateValue(psb, "TitleCode", Title.Value);
+            p.UpdateValue(psb, "CampusId", campusid);
             p.UpdateValue(psb, "WeddingDate", WeddingDate.ToDate());
             p.UpdateValue(psb, "WorkPhone", Work.GetDigits());
             if (p.DeceasedDateChanged)

@@ -1,7 +1,7 @@
 ﻿@using CmsWeb.Areas.People.Models.Person
 @model PersonModel
 @{
-    var fm = new FamilyModel(Model.displayperson.PeopleId);
+    var fm = new FamilyModel(Model.PeopleId);
 }
 <div class="sidebar_title group">
     <h2>Family Members</h2>
@@ -10,7 +10,7 @@
             <i class="icon-plus-sign"></i>
         </a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="/SearchAdd2/Dialog/Family/@Model.displayperson.PeopleId" class="searchadd">Add Family Member</a></li>
+            <li><a href="/SearchAdd2/Dialog/Family/@Model.PeopleId" class="searchadd">Add Family Member</a></li>
         </ul>
     </div>
 </div>
@@ -18,7 +18,7 @@
     <ul id="family_members" class="nav nav-stacked nav-tabs">
         @foreach (var m in fm.Members())
         {
-            var active = m.Id == Model.displayperson.PeopleId ? "class=active" : "";
+            var active = m.Id == Model.PeopleId ? "class=active" : "";
             <li @active>
                 <a href="/Person2/Index/@m.Id">
                     <img src="@m.Pictures.ThumbUrl" class="headshot"/>
@@ -26,11 +26,7 @@
                     <div class="meta">
                         <span class="age">@m.Age</span> 
                         &bull; <span class="status">@m.MemberStatus</span>
-                        &bull; <span class="role">
-                                   <a class="edit-inline" id="position" data-value="@m.PositionInFamily.Value" data-pk="@m.Id" title="Family Position">
-                                       @m.PositionInFamily
-                                   </a>
-                               </span>
+                        &bull; <span class="role">@m.PositionInFamily</span>
                     </div>
                     <span class="email email_display">@m.Email</span>
                 </a>

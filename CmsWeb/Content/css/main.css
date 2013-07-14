@@ -72,3 +72,13 @@ table.expanding tr.details td {
 table.expanding tr.oddrow > td {
     background-color: #f9f9f9;
 }
+.edit-inline-label {
+  cursor: pointer;
+}
+.edit-inline-label:after {
+  font-family: FontAwesome;
+  content: "\f040";
+  display: inline-block;
+  color: #CCC;
+  margin-left: 5px;
+}

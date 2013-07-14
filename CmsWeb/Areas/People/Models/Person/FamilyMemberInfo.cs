@@ -8,7 +8,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public string Name { get; set; }
         public int? Age { get; set; }
         public string Color { get; set; }
-        public CodeInfo PositionInFamily { get; set; }
+        public string PositionInFamily { get; set; }
         public string SpouseIndicator { get; set; }
         public string Email { get; set; }
         public string MemberStatus { get; set; }
