@@ -58,8 +58,8 @@ namespace CmsWeb.Areas.People.Models.Person
             {
                 switch (Name)
                 {
-                    case "PersonalAddr": return "Personal Address";
-                    case "FamilyAddr": return "Family Address";
+                    case "PersonalAddr": return "Personal";
+                    case "FamilyAddr": return "Family";
                 }
                 return "Address";
             }
@@ -90,6 +90,15 @@ namespace CmsWeb.Areas.People.Models.Person
             if (Address2.HasValue())
                 sb.AppendLine(Address2);
             sb.AppendLine(Util.FormatCSZ(City, State.Value, Zip));
+            return sb.ToString();
+        }
+        public string AddrCityStateZipLine()
+        {
+            var sb = new StringBuilder();
+            sb.Append(Address1);
+            if (Address2.HasValue())
+                sb.Append(", " + Address2);
+            sb.Append(", " + Util.FormatCSZ5(City, State.Value, Zip));
             return sb.ToString();
         }
         public string MapAddrCityStateZip()

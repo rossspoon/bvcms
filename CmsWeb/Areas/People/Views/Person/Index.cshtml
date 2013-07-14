@@ -13,7 +13,7 @@
     <link href="@Fingerprint.Tag("/Content/css/person.css")" rel="stylesheet" />
 }
 @Html.Hidden("newlook", "true")
-@Html.Hidden("PeopleId", Model.displayperson.PeopleId)
+@Html.Hidden("PeopleId", Model.PeopleId)
 
 @* Dave: I put this negative margin in to scoot the section up a bit *@
 <div class="container" style="margin-top:-1em;">
@@ -22,7 +22,7 @@
             <div class="row-fluid">
                 <div class="span12" id="profile-header">
                     <div class="span8">
-                        @Html.Partial("Snapshot", Model.displayperson)
+                        @Html.Partial("Snapshot", Model)
                     </div>
                     <div class="span4" id="profile-actions">
                         @Html.Partial("Toolbar", Model)
@@ -44,7 +44,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="personal">
                                 <form class="form form-horizontal form-columns ajax" method="post">
-                                    @Html.Partial("BasicPersonInfoDisplay", Model.displayperson.basic)
+                                    @Html.Partial("BasicPersonInfoDisplay", Model.basic)
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="enrollment">
@@ -52,29 +52,30 @@
                                     <li class="active"><a href="#current" data-toggle="tab">Current</a></li>
                                     <li><a id="previousLink" href="#previous" data-toggle="tab">Previous</a></li>
                                     <li><a id="pendingLink" href="#pending" data-toggle="tab">Pending</a></li>
-                                    <li><a href="#attends" data-toggle="tab">Attendance</a></li>
-                                    <li><a href="#registrations" data-toggle="tab">Registrations</a></li>
+                                    <li><a id="attendsLink" href="#attends" data-toggle="tab">Attendance</a></li>
+                                    <li><a id="registrationsLink" href="#registrations" data-toggle="tab">Registrations</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="current">
-                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
+                                        <form action="/Person2/EnrollGrid/@Model.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="previous">
-                                        <form action="/Person2/PrevEnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
+                                        <form action="/Person2/PrevEnrollGrid/@Model.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="pending">
-                                        <form action="/Person2/PendingEnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
+                                        <form action="/Person2/PendingEnrollGrid/@Model.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="attends">
-                                        <form action="/Person2/AttendanceHistory/@Model.displayperson.PeopleId" class="non-modal ajax">
+                                        @Html.Hidden("FutureLink", "/Person2/AttendanceGrid/Future/" + Model.PeopleId)
+                                        <form action="/Person2/AttendanceGrid/@Model.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="registrations">
                                         <h2>Registrations</h2>
-                                        <form action="/Person2/Registrations/@Model.displayperson.PeopleId" class="non-modal ajax">
+                                        <form action="/Person2/Registrations/@Model.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                 </div>
@@ -108,54 +109,5 @@
             </div>
         </div>
     </div>
-    @*
-
-<section id="person" class="twelve columns omega">
-    <header class="container">
-        @Html.Partial("Snapshot", Model)
-        <ul id="badges">
-            <li>Do Not Visit</li>
-            <li>Do Not Call</li>
-        </ul>
-    </header>
-    <nav id="nav-tabs">
-        <ul class="nav nav-tabs">
-            <li><a href="#personal">Personal</a></li>
-            <li><a href="#involvement">Involvement</a></li>
-            <li><a href="#member-profile">Member Profile</a></li>
-            <li><a href="#giving">Giving</a></li>
-            <li><a href="#account">Account</a></li>
-            <li><a href="#comments" class="omega">Comments</a></li>
-        </ul>
-    </nav>
-    <div id="personal" class="pane">
-        <form method="post" class="DisplayEdit">
-            @Html.DisplayFor(m => m.displayperson.basic)
-        </form>
-    </div>
-    <div id="involvement" class="pane">
-        <ul class="nav nav-tabs">
-            <li><a href="#current-tab"><span>Current</span></a></li>
-            <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
-            <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
-            <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
-            <li><a id="recreg-link" href="#recreg-tab"><span>Registration</span></a></li>
-        </ul>
-        <div id="current-tab">
-            <form action="/People/Person/EnrollGrid/@Model.displayperson.PeopleId">
-            </form>
-        </div>
-    </div>
-    <div id="member-profile" class="pane">
-        <form method="post" class="DisplayEdit">
-            @Html.Partial("MemberProfile")
-        </form>
-    </div>
-</section>
-*@
-@section PopupsPlaceholder
-{
-    @Html.Partial("Dialogs")
-}
 </div>
 

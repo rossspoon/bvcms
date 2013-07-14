@@ -1,49 +1,47 @@
 ﻿@model CmsWeb.Models.PagerModel2
-<div class="pagination pagination-mini">
-    <ul>
-        @if (Model.Page > 1)
-        {
-            <li>@Model.PageLink("Prev", Model.Page - 1)</li>
-        }
-        else
-        {
-            <li class="disabled"><a>Prev</a></li>
-        }
-        @if (Model.Page < Model.LastPage())
-        {
-            <li>@Model.PageLink("Next", Model.Page + 1)</li>
-        }
-        else
-        {
-            <li class="disabled"><a>Next</a></li>
-        }
+<ul>
+    @if (Model.Page > 1)
+    {
+        <li>@Model.PageLink("Prev", Model.Page - 1)</li>
+    }
+    else
+    {
+        <li class="disabled"><a>Prev</a></li>
+    }
+    @if (Model.Page < Model.LastPage())
+    {
+        <li>@Model.PageLink("Next", Model.Page + 1)</li>
+    }
+    else
+    {
+        <li class="disabled"><a>Next</a></li>
+    }
 
-        @foreach (var p in Model.PageList())
-        {
-            if (p == 0)
-            { 
-                <li class="disabled"><a>&hellip;</a></li>
-            }
-            if (p > 0 && Model.Page != p)
-            { 
-                <li>@Model.PageLink(p.ToString(), p)</li>
-            }
-            if (Model.Page == p)
-            { 
-                <li class="active"><a>@p</a></li>
-            }
+    @foreach (var p in Model.PageList())
+    {
+        if (p == 0)
+        { 
+        <li class="disabled"><a>&hellip;</a></li>
         }
-        @if (Model.ShowPageSize)
-        {
-            <li class="disabled"><a>&nbsp;Page Size:</a></li>
-            foreach (var i in Model.PageSizeList())
-            {
-                @Model.PageSizeItem(i.Text, 1, i.Text.ToInt(), i.Selected)
-            }
+        if (p > 0 && Model.Page != p)
+        { 
+        <li>@Model.PageLink(p.ToString(), p)</li>
         }
-        else
-        {
-            <li class="disabled"><a>@Model.ShowCount()</a></li>
+        if (Model.Page == p)
+        { 
+        <li class="active"><a>@p</a></li>
         }
-    </ul>
-</div>
+    }
+    @if (Model.ShowPageSize)
+    {
+        <li class="disabled"><a>&nbsp;Page Size:</a></li>
+        foreach (var i in Model.PageSizeList())
+        {
+        @Model.PageSizeItem(i.Text, 1, i.Text.ToInt(), i.Selected)
+        }
+    }
+    else
+    {
+        <li class="disabled"><a>@Model.ShowCount()</a></li>
+    }
+</ul>

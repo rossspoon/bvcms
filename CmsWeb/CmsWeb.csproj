@@ -336,6 +336,8 @@
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
     <Compile Include="Areas\Org\Controllers\VolunteersController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchAddController.cs" />
+    <Compile Include="Areas\People\Models\Person\AttendHistoryModel.cs" />
+    <Compile Include="Areas\People\Models\Person\AttendInfo.cs" />
     <Compile Include="Areas\People\Models\Person\PendingEnrollments.cs" />
     <Compile Include="Areas\People\Models\Person\OrgMemberInfo.cs" />
     <Compile Include="Areas\People\Models\Person\PreviousEnrollments.cs" />
@@ -362,9 +364,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\People\Models\Person\MemberNotesInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Areas\People\Models\Person\PersonInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\People\Models\Person\PersonModel.cs">
@@ -958,6 +957,9 @@
     <Content Include="Areas\People\Views\Person\PendingEnrollments.cshtml" />
     <Content Include="Areas\Manage\Views\CheckinLabels\Index.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid2.cshtml" />
+    <Content Include="Areas\People\Views\Person\AttendanceGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\EditorTemplates\DoNotContact.cshtml" />
+    <Content Include="Areas\People\Views\Person\DisplayTemplates\DoNotContact.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
@@ -1483,7 +1485,6 @@
     <Content Include="Scripts\js\dropdown.js" />
     <Content Include="Scripts\jQuery\jquery.joyride-1.0.5.js" />
     <Content Include="Scripts\js\tutorial.js" />
-    <Compile Include="Code\uservoice_sso.cs" />
     <Compile Include="Code\Word2Pdf.cs" />
     <Compile Include="Areas\Finance\Controllers\QuickBooksController.cs" />
     <Compile Include="Models\HomeModel.cs" />
@@ -2000,40 +2001,11 @@
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRangeResults.cshtml" />
     <Content Include="Areas\People\Views\Web.config" />
     <Content Include="Areas\People\Views\Person\AddressEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\AttendanceGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoDisplay.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\BusinessCard.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\ChangesGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\CommentsDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\CommentsEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\ContactsDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\ContactsMadeGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\ContactsReceivedGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\CurrentRegistrations.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\CurrentRegistrationsHtml.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\DuplicateRow.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\DuplicatesGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\ExtraValue.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\ExtrasGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\FamilyGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\GrowthDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\GrowthEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\IncompleteTasksGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\Index.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\MemberDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\MemberEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\MemberNotesDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\MemberNotesEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\OptoutsGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\PendingEnrollGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\PendingTasksGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\PrevEnrollGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\RecRegDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\RecRegEdit.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\UserDialog.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\UserInfoGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\VolunteerDisplay.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\Index.cshtml" />
     <Content Include="Areas\Search\Views\Web.config" />
     <Content Include="Areas\Search\Views\Organization\DivisionIds.cshtml" />
@@ -2077,7 +2049,6 @@
     <Content Include="Areas\Setup\Views\Twilio\RemoveDialog.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\UserDialog.cshtml" />
     <Content Include="Areas\People\Views\Person\RelatedFamilies.cshtml" />
-    <Content Include="Areas\People\Views\Person\FamilyContact.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\Email.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Email.cshtml" />
     <Content Include="Areas\People\Views\Person\Snapshot.cshtml" />

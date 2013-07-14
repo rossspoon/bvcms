@@ -14,22 +14,20 @@
         @Html.EditorFor(m => m.Birthday)
         @Html.EditorFor(m => m.Marital)
         @Html.EditorFor(m => m.WeddingDate)
-        @Html.EditorFor(m => m.Occupation, "Typeahead", new { link="/Person2/Occupations" })
-        @Html.EditorFor(m => m.Employer, "Typeahead", new { link="/Person2/Employers" })
-        @Html.EditorFor(m => m.School, "Typeahead", new { link="/Person2/Schools" })
+        @Html.EditorFor(m => m.Occupation, "Typeahead", new { link = "/Person2/Occupations" })
+        @Html.EditorFor(m => m.Employer, "Typeahead", new { link = "/Person2/Employers" })
+        @Html.EditorFor(m => m.School, "Typeahead", new { link = "/Person2/Schools" })
         @Html.EditorFor(m => m.Grade)
     </fieldset>
 </div>
 <div class="row-fluid">
     <fieldset class="span12">
-        @if (Model.DoNotContactAny)
-        {
-            @Html.EditorFor(m => m.DoNotContact)
-        }
         @Html.EditorFor(m => m.PrimaryEmail)
         @Html.EditorFor(m => m.Mobile)
         @Html.EditorFor(m => m.AltEmail)
         @Html.EditorFor(m => m.Work)
+        @Html.EditorFor(m => m.HomePhone)
+        @Html.EditorFor(m => m, "DoNotContact")
     </fieldset>
 </div>
 @FormAction()

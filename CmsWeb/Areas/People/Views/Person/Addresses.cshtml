@@ -2,7 +2,7 @@
 @using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.PersonModel
 
-@helper ListItem(AddressInfo a, string icon)
+@helper ListItem(AddressInfo a)
 {
     var id = "tab-" + a.Name;
     <li @(a.Preferred ? "class=active" : "")>
@@ -13,14 +13,14 @@
 }
 <div id="contact" class="tabbable group">
     <div class="sidebar_title">
-        <h2>Contact Information</h2>
+        <h2>Addresses</h2>
     </div>
     <ul class="nav nav-tabs">
-        @ListItem(Model.displayperson.FamilyAddr, "home")
-        @ListItem(Model.displayperson.PersonalAddr, "suitcase")
+        @ListItem(Model.FamilyAddr)
+        @ListItem(Model.PersonalAddr)
     </ul>
     <div class="tab-content">
-        @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
-        @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
+        @Html.Partial("DisplayTemplates/Address", Model.FamilyAddr)
+        @Html.Partial("DisplayTemplates/Address", Model.PersonalAddr)
     </div>
 </div>
