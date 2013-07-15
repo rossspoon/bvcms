@@ -44,6 +44,8 @@ namespace CmsWeb.Code
 
         public static string NormalizeExpires(string expires)
         {
+            if (expires == null)
+                return null;
             expires = expires.Trim();
             var re = new Regex(@"\A(?<mm>\d\d)(/|-| )?(20)?(?<yy>\d\d)\Z");
             var m = re.Match(expires);
