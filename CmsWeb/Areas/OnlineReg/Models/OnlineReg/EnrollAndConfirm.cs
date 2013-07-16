@@ -312,9 +312,22 @@ AmountDue: {4:C}<br/>
                 }
                 else
                 {
-                    var os = settings[masterorgid.Value];
-                    EmailSubject = Util.PickFirst(os.Subject, "no subject");
-                    message = Util.PickFirst(os.Body, "no body");
+                    try
+                    {
+                        var os = settings[masterorgid.Value];
+                        EmailSubject = Util.PickFirst(os.Subject, "no subject");
+                        message = Util.PickFirst(os.Body, "no body");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (masterorgid == null)
+                            throw new Exception("masterorgid was null");
+                        if (settings == null)
+                            throw new Exception("settings was null");
+                        if (settings[masterorgid.Value] == null)
+                            throw new Exception("setting not found for masterorgid " + masterorgid.Value);
+                        throw;
+                    }
                 }
                 var NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
 
