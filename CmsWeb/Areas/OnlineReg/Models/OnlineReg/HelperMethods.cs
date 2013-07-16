@@ -98,7 +98,7 @@ namespace CmsWeb.Models
         }
         private bool Filled(Organization o)
         {
-            if(o != null)
+            if (o != null)
                 if ((o.ClassFilled ?? false) || (o.Limit > 0 && o.Limit <= o.MemberCount))
                     return true;
             return false;
@@ -205,13 +205,26 @@ namespace CmsWeb.Models
             {
                 if (masterorgid.HasValue)
                 {
-                    if (settings != null && org != null && settings[masterorgid.Value] != null)
+                    try
                     {
-                        var accountcode = settings[masterorgid.Value].AccountingCode;
-                        if (accountcode.HasValue())
-                            return "{0} ({1})".Fmt(masterorg.OrganizationName, accountcode);
+                        if (settings != null && org != null && settings[masterorgid.Value] != null)
+                        {
+                            var accountcode = settings[masterorgid.Value].AccountingCode;
+                            if (accountcode.HasValue())
+                                return "{0} ({1})".Fmt(masterorg.OrganizationName, accountcode);
+                        }
+                        return masterorg.OrganizationName;
                     }
-                    return masterorg.OrganizationName;
+                    catch (Exception ex)
+                    {
+                        if (masterorgid == null)
+                            throw new Exception("masterorgid was null");
+                        if (settings == null)
+                            throw new Exception("settings was null");
+                        if (settings[masterorgid.Value] == null)
+                            throw new Exception("setting not found for masterorgid " + masterorgid.Value);
+                        throw;
+                    }
                 }
                 if (settings != null && org != null && settings[org.OrganizationId] != null)
                 {
@@ -311,8 +324,8 @@ namespace CmsWeb.Models
                 if (masterorgid.HasValue)
                     if (settings.ContainsKey(masterorgid.Value))
                         return Util.PickFirst(settings[masterorgid.Value].Terms, "");
-                if(orgid.HasValue)
-                    if(settings.ContainsKey(orgid.Value))
+                if (orgid.HasValue)
+                    if (settings.ContainsKey(orgid.Value))
                         return Util.PickFirst(settings[org.OrganizationId].Terms, "");
                 return "";
             }
