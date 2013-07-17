@@ -64,6 +64,9 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 UpdateModel(om);
                 om.ShirtSize = om.ShirtSize.MaxString(20);
+                var rr = om.Person.SetRecReg();
+                if(om.ShirtSize.HasValue())
+                    rr.ShirtSize = om.ShirtSize;
                 DbUtil.Db.SubmitChanges();
             }
             catch (Exception)
