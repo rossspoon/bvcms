@@ -1,0 +1,80 @@
+﻿<script>
+    (function () {
+        var cx = '012864427410831580707:fj9oufx9opi';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+    })();
+</script>
+<div id="supportfeedback" class="sb">
+    <img src="/images/saf.png">
+</div>
+<div id="supportDialog">
+    <div style="background: url('/images/saf-bg.png') repeat-y; position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
+        <div style="overflow: auto; position: absolute; top: 5px; bottom: 5px; left: 5px; width: 315px;">
+            <gcse:searchresults></gcse:searchresults>
+        </div>
+        <div style="position: absolute; top: 10px; bottom: 5px; right: 10px; width: 455px;">
+            <gcse:searchbox></gcse:searchbox>
+            <b>For Best Search Results:</b> Use keywords without additional verbage.<br>
+            <br>
+            <form>
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td colspan="2">
+                            <select class="support" id="reqSelect" disabled action="" name="urgency">
+                                <option>URGENT! I'm stressed out and I'm not sure why!</option>
+                                <option>URGENT! I'm stressed out and I know why!</option>
+                                <option>URGENT! I'm stressed out and...</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 5px; white-space: nowrap;">
+                            <a href="#" supporthelp="yes" contentid="goodSupport">Sending a good support request
+                            </a>
+                        </td>
+                        <td style="padding-bottom: 5px; text-align: right; white-space: nowrap;">
+                            <a href="#" supporthelp="yes" contentid="goodBug">Sending a good bug report
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea name="request" disabled cols="68" rows="22" id="reqBody"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="sendSupport" disabled type="button" value="Send it fast before I mentally break down!">
+                        </td>
+                        <td style="text-align: right;">
+                            <input id="cancelSupport" type="button" value="Nevermind!">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="supportHelp"></div>
+<div id="goodSupport" style="display: none;">
+    This is an example of a good support request.<br>
+    <br>
+    <input type="button" supportcancelhelp="yes" value="Close" />
+</div>
+<div id="goodBug" style="display: none;">
+    This is an example of a good bug report.
+		<br>
+    <input type="button" supportcancelhelp="yes" value="Close" />
+</div>

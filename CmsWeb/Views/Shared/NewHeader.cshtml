@@ -175,6 +175,7 @@
                                 <li>@Helper.AnchorLink("Email Support", "mailto:support@bvcms.com?Subject=Support request from {0} at {1}".Fmt(Util.UserFullName, @Util.CmsHost2), "_blank")</li>
                                 @if (innewlook)
                                 {
+                                    <li>@Html.ActionLink("Toggle New Support", "ToggleSupport", "Home", new { Area = "" }, null)</li>
                                     <li>@Html.ActionLink("Use Old Look", "UseOldLook", "Home", new { Area = "" }, null)</li>
                                     if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
                                     {

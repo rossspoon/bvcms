@@ -1,5 +1,4 @@
-﻿@using CmsWeb.Areas.People.Models.Person
-@using UtilityExtensions
+﻿@using CmsWeb.Areas.People.Models
 @model CmsWeb.Areas.People.Models.Person.PersonModel
 
 @helper ListItem(AddressInfo a)
@@ -23,4 +22,5 @@
         @Html.Partial("DisplayTemplates/Address", Model.FamilyAddr)
         @Html.Partial("DisplayTemplates/Address", Model.PersonalAddr)
     </div>
+    <div class="primaryaddressline" style="display:none">@Model.PrimaryAddr.AddrCityStateZipLine()</div>
 </div>

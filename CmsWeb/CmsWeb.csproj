@@ -103,6 +103,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="ImageResizer">
+      <HintPath>..\packages\ImageResizer.3.3.3\lib\ImageResizer.dll</HintPath>
+    </Reference>
     <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.AsyncServices.dll</HintPath>
@@ -333,6 +336,7 @@
     <Compile Include="Areas\Org\Models\OrgMemberModel.cs" />
     <Compile Include="Areas\Org\Models\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Org\OrgAreaRegistration.cs" />
+    <Compile Include="Areas\People\Controllers\AddressController.cs" />
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
     <Compile Include="Areas\Org\Controllers\VolunteersController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchAddController.cs" />
@@ -342,7 +346,7 @@
     <Compile Include="Areas\People\Models\Person\OrgMemberInfo.cs" />
     <Compile Include="Areas\People\Models\Person\PreviousEnrollments.cs" />
     <Compile Include="Areas\People\Models\Person\PictureResult.cs" />
-    <Compile Include="Areas\People\Models\Person\AddressInfo.cs">
+    <Compile Include="Areas\People\Models\AddressInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\People\Models\Person\BasicPersonInfo.cs">
@@ -948,7 +952,7 @@
     <Content Include="Areas\Search\Views\SearchAdd\NewAddress.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenAddress.cshtml" />
     <Content Include="Areas\People\Views\Person\DeletedPerson.cshtml" />
-    <Content Include="Areas\People\Views\Person\AddressSaved.cshtml" />
+    <Content Include="Areas\People\Views\Address\Saved.cshtml" />
     <Content Include="Areas\Main\Views\Organization\DialogAddMES.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address2.cshtml" />
     <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
@@ -1791,6 +1795,7 @@
     <Content Include="Views\Shared\EditorTemplates\HiddenCodeInfo.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Typeahead.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\datepicker.cshtml" />
+    <Content Include="Views\Shared\Support.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -2000,7 +2005,7 @@
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRange.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRangeResults.cshtml" />
     <Content Include="Areas\People\Views\Web.config" />
-    <Content Include="Areas\People\Views\Person\AddressEdit.cshtml" />
+    <Content Include="Areas\People\Views\Address\Edit.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoDisplay.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoEdit.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\ExtraValue.cshtml" />

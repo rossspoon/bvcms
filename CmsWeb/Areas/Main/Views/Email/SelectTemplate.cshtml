@@ -1,12 +1,13 @@
 ﻿@using CmsWeb
 @using CmsData
+@using CmsWeb.Models
 @using UtilityExtensions
 @model CmsWeb.Areas.Main.Models.EmailTemplatesModel
 @{
     ViewBag.Title = "SelectTemplate";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-	 const int WRAP_COUNT = 3;
-	 var wrapAt = WRAP_COUNT;
+    const int WRAP_COUNT = 3;
+    var wrapAt = WRAP_COUNT;
 }
 @section scripts
 {
@@ -35,7 +36,7 @@
 		<hr />
 		<table width="100%" cellspacing="20">
         @{
-            var empty = Model.fetchTemplateByName( "Empty Template" );
+            var empty = Model.fetchTemplateByName("Empty Template");
             if (empty != null)
             {
 		        <tr>
@@ -75,57 +76,106 @@
 		<table width="100%" cellspacing="20">
 		<tr>
 		@foreach (var t in Model.fetchTemplates())
-		{
-			<td width="@( 100/WRAP_COUNT )%" class="center">
+  {
+			<td width="@( 100 / WRAP_COUNT)%" class="center">
 				@t.Name<br />
 				<div bvtemplate class="templateItem" template="@t.Id">
 					<img alt="portrait" border="0" width="100" height="150" src="/Image.aspx?id=@t.ThumbID" />
 				</div>
 			</td>
-			wrapAt--;
-			if( wrapAt == 0 ) {
-				wrapAt = WRAP_COUNT;
+      wrapAt--;
+      if (wrapAt == 0)
+      {
+          wrapAt = WRAP_COUNT;
 				@:</tr><tr>
 			}
-		}
+  }
 		@for (var i = 0; i < wrapAt; i++)
-		{
+  {
 			<td>&nbsp;</td>
-		}
+  }
 		</tr>
 		</table>
 
 	</td>
+    @{
+        List<ContentModel.SavedDraft> sdMine = new List<ContentModel.SavedDraft>();
+        List<ContentModel.SavedDraft> sdRole = new List<ContentModel.SavedDraft>();
+        List<ContentModel.SavedDraft> sdShared = new List<ContentModel.SavedDraft>();
+
+        foreach (var t in Model.fetchDrafts())
+        {
+            if (t.ownerID == Util.UserId)
+            {
+                sdMine.Add(t);
+            }
+            else if (Tag.IsInTag("SHaredDrafts", t.ownerID, Util.UserPeopleId ?? 0))
+            {
+                sdShared.Add(t);
+            }
+            else if( t.roleID != 0 )
+            {
+                sdRole.Add(t);
+            }
+        }
+    }
 	<td class="top" style="text-align:center;">
-        <b>My Saved Drafts</b>
+        <b>My Drafts</b>
         <hr />                    		
 		<table width="100%">
-		    @{
-                bool mine = true;
-		        foreach (var t in Model.fetchDrafts())
-		        {
-                    if( t.OwnerID != Util.UserId && !Tag.IsInTag( "SHaredDrafts", t.OwnerID, Util.UserPeopleId ?? 0 ) ) { continue; }
-                    
-                    if( t.OwnerID != Util.UserId && mine == true )
-                    {
-                        mine = false;
-                        <tr><td>&nbsp;</td></tr>
-                        <tr>
-                            <td style="text-align:center;">
-                                <b>Saved Drafts By Others</b>
-                                <hr />                  
-                            </td>
-                        </tr>
-                    }
-		            <tr>
-			            <td style="padding:3px !important;">
-				            <a href="#" bvtemplate template="@t.Id">@t.Name</a>
-			            </td>
-		            </tr>
-		        }
+		    @foreach (var t in sdMine)
+            {
+                <tr>
+			        <td style="padding:3px !important; text-align:left; vertical-align:top;">
+                        <a href="#" bvtemplate template="@t.id">@t.name</a>
+                    </td>
+                    <td style="padding:3px !important; text-align:right; vertical-align:top;">
+                        @if (t.roleID != 0)
+                        {
+                            <text>Role: </text>@t.role
+                        }
+		            </td>
+	            </tr>
             }
-		</table>
-
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td colspan="2">
+                    <b>Team Drafts</b>
+                    <hr />                  
+                </td>
+            </tr>
+            @foreach (var t in sdRole)
+            {
+                <tr>
+			        <td style="padding:3px !important; text-align:left; vertical-align:top;">
+                        <a href="#" bvtemplate template="@t.id">@t.name</a>
+                    </td>
+                    <td style="padding:3px !important; text-align:right; vertical-align:top;">
+                        @if (t.roleID != 0)
+                        {
+                            <text>Role: </text>@t.role
+                        }
+		            </td>
+	            </tr>
+            }
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td colspan="2">
+                    <b>Shared With Me By Others</b>
+                    <hr />                  
+                </td>
+            </tr>
+            @foreach (var t in sdShared)
+            {
+                <tr>
+			        <td style="padding:3px !important; text-align:left; vertical-align:top;">
+                        <a href="#" bvtemplate template="@t.id">@t.name</a>
+                    </td>
+                    <td style="padding:3px !important; text-align:right; vertical-align:top;">
+                       By: @t.owner
+		            </td>
+	            </tr>
+            }
 
 	</td>
 </tr>

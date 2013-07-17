@@ -60,7 +60,7 @@
         });
         return false;
     });
-    $("a.editaddr").click(function (ev) {
+    $("#contact a.editaddr").live("click", function (ev) {
         ev.preventDefault();
         $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
             $(this).modal("show");
@@ -68,9 +68,10 @@
                 $(this).remove();
             });
             $(this).on("click", "a.close-saved-address", function () {
-                $("#primaryaddress").html($("#primaryaddressnew").html());
-                var target = $("#addressnew").data("target");
-                $("#" + target).html($("#addressnew").html());
+                $.post($(this).attr("href"), {}, function(ret) {
+                    $("#contact").html(ret);
+                    $("#primaryaddressline").html($("#contact div.primaryaddressline").html());
+                });
             });
         });
     });

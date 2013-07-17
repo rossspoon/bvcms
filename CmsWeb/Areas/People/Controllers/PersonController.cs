@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using CmsData;
+using CmsWeb.Areas.People.Models;
 using CmsWeb.Areas.People.Models.Person;
 using UtilityExtensions;
 using System.Text;
@@ -35,6 +37,7 @@ namespace CmsWeb.Areas.People.Controllers
         }
 
         [GET("Person2/Index/{id:int}")]
+        [GET("Person2/{id:int}")]
         [GET("{id:int}")]
         public ActionResult Index(int? id)
         {
@@ -42,7 +45,10 @@ namespace CmsWeb.Areas.People.Controllers
                 return Content("no id");
             if (!DbUtil.Db.UserPreference("newlook3", "false").ToBool()
                 || !DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
-                return Redirect(Request.RawUrl.ToLower().Replace("person2", "person"));
+            {
+                var url = Regex.Replace(Request.RawUrl, @"(.*)/(Person2(/Index)*)/(\d*)", "$1/Person/Index/$4", RegexOptions.IgnoreCase);
+                return Redirect(url);
+            }
             var m = new PersonModel(id.Value);
             if (m.Person == null)
                 return Content("person not found");
@@ -180,6 +186,13 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.LogActivity("Viewing Attendance History for: {0}".Fmt(Session["ActivePerson"]));
             UpdateModel(m.Pager);
             return View("AttendanceGrid", m);
+        }
+
+        [POST("Person2/Addresses/{id}")]
+        public ActionResult Addresses(int id)
+        {
+            var m = new PersonModel(id);
+            return View(m);
         }
 
         //		[HttpPost]
@@ -398,42 +411,6 @@ namespace CmsWeb.Areas.People.Controllers
             var m = new PersonModel(id);
             m.Reverse(field, value, pf);
             return View("ChangesGrid", m);
-        }
-
-        [POST("Person2/AddressEdit/{type}/{id}")]
-        public ActionResult AddressEdit(int id, string type)
-        {
-            var m = AddressInfo.GetAddressInfo(id, type);
-            return View(m);
-        }
-
-        [POST("Person2/AddressEditAgain")]
-        public ActionResult AddressEditAgain(AddressInfo m)
-        {
-            return View("AddressEdit", m);
-        }
-
-        [POST("Person2/AddressUpdate/{noCheck?}")]
-        public ActionResult AddressUpdate(AddressInfo m, string noCheck)
-        {
-            if (noCheck.HasValue() == false)
-                m.ValidateAddress(ModelState);
-            if (!ModelState.IsValid)
-                return View("AddressEdit", m);
-            if (m.Error.HasValue())
-            {
-                ModelState.Clear();
-                return View("AddressEdit", m);
-            }
-            m.UpdateAddress(ModelState);
-            return View("AddressSaved", m);
-        }
-
-        [POST("Person2/AddressSave")]
-        public ActionResult AddressSave(AddressInfo m)
-        {
-            m.UpdateAddress(ModelState, forceSave: true);
-            return View("AddressEdit", m);
         }
 
         //		[HttpPost]

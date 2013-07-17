@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CmsWeb.Areas.People.Models.Person;
+using CmsWeb.Areas.People.Models;
 using CmsWeb.Code;
 using UtilityExtensions;
 using CmsData;

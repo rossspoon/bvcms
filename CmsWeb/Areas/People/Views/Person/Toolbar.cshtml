@@ -6,6 +6,7 @@
     <button class="btn btn-inverse dropdown" data-toggle="dropdown" class="dropdown-toggle">
         <i class="icon-cog"></i>
     </button>
+    @* Dave: this dropdown is too far to left, not aligned *@
     <ul class="dropdown-menu" role="menu">
         <li><a href="#">Add New User</a></li>
         @foreach (var uname in Model.Person.Users.Select(uu => uu.Username))
