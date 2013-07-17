@@ -578,6 +578,7 @@
     <Content Include="Content\styles\person.min.css">
       <DependentUpon>person.css</DependentUpon>
     </Content>
+    <Content Include="Content\styles\Support.css" />
     <Content Include="images\chosen-sprite.png" />
     <Content Include="Content\css\chosen.css" />
     <Content Include="Content\css\font-awesome-ie7.min.css" />
