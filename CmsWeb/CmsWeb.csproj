@@ -746,6 +746,8 @@
     <Content Include="ckeditor2\skins\kama\images\toolbar_start.gif" />
     <Content Include="ckeditor2\styles.js" />
     <Content Include="Content\autocomplete\jquery-ui-1.10.2.custom.css" />
+    <Content Include="images\saf-bg.png" />
+    <Content Include="images\saf.png" />
     <Content Include="Scripts\Admin\Divisions.min.js">
       <DependentUpon>Divisions.js</DependentUpon>
     </Content>
@@ -907,11 +909,9 @@
     </Content>
     <Content Include="Scripts\js\main.custom.js">
       <DependentUpon>main.custom.js.bundle</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\main.custom.min.js">
       <DependentUpon>main.custom.js.bundle</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\main2.custom.js">
       <DependentUpon>main2.custom.js.bundle</DependentUpon>
@@ -922,6 +922,7 @@
     <Content Include="Scripts\js\RegSettings.min.js">
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\js\Support.js" />
     <Content Include="Scripts\js\Tags.min.js">
       <DependentUpon>Tags.js</DependentUpon>
     </Content>
@@ -1102,7 +1103,6 @@
     </None>
     <Content Include="Scripts\js\main.custom.min.js.map">
       <DependentUpon>main.custom.js.bundle</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\js\main2.custom.js.bundle">
       <SubType>Designer</SubType>

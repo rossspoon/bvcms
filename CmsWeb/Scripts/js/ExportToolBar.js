@@ -41,6 +41,10 @@
         $('div.dropdown-menu').hide();
         var d = $("#TagAllDialog").dialog("open");
         $("#TagAllRun").click(function (ev) {
+            if ($("#tagalltagname").val().length === 0) {
+                alert("need tagname");
+                return false;
+            }
             ev.preventDefault();
             d.dialog("close");
             var q = $(this).closest("form").serialize();
