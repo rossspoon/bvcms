@@ -16,6 +16,8 @@ using System.IO;
 using System.Data.SqlClient;
 using System.Net.Mail;
 using CmsWeb.Models;
+using System.Configuration;
+using System.Data;
 
 namespace CmsWeb.Controllers
 {
@@ -190,6 +192,62 @@ namespace CmsWeb.Controllers
             return Content("ok");
         }
 
+        public static string[] SupportPeople = { "Unclaimed", "Bethany", "David", "Karen", "Kyle", "Steven" };
+        public static string SQLSupportInsert = "INSERT INTO [dbo].[SupportRequests] ( Created, Who, Host, Urgency, Request, Subject ) OUTPUT INSERTED.ID VALUES ( @c, @w, @h, @u, @r, @s )";
+
+        public ActionResult SendSupportRequest( string urgency, string request )
+        {
+            var cs = ConfigurationManager.ConnectionStrings["CmsLogging"];
+            if (cs == null) return Content("Database not available!");
+
+            var who = Util.UserFullName + " <" + Util.UserEmail + ">";
+            var from = "support-system@bvcms.com";
+            var to = "support@bvcms.com";
+            var subject = "Support Request: " + Util.UserFullName + " @ " + Util.Host + ".bvcms.com - " + DateTime.Now.ToString("g");
+
+            var cn = new SqlConnection(cs.ConnectionString);
+            cn.Open();
+            var cmd = new SqlCommand(SQLSupportInsert, cn);
+
+            cmd.Parameters.AddWithValue( "@c", DateTime.Now );
+            cmd.Parameters.AddWithValue( "@w", who );
+            cmd.Parameters.AddWithValue( "@h", Util.Host );
+            cmd.Parameters.AddWithValue( "@u", urgency );
+            cmd.Parameters.AddWithValue( "@r", request );
+            cmd.Parameters.AddWithValue( "@s", subject);
+
+            int lastID = (int)cmd.ExecuteScalar();
+            cn.Close();
+
+            var body = "Request ID: " + lastID + "<br>https://" + Util.Host + ".bvcms.com<br>" + urgency + "<br>Claim: " + CreateDibs(lastID) + "<br><br>" + request;
+
+            var smtp = Util.Smtp();
+            var email = new MailMessage(from, to, subject, body);
+            email.ReplyToList.Add(who);
+            email.ReplyToList.Add("support@bvcms.com");
+            email.IsBodyHtml = true;
+
+            smtp.Send(email);
+
+            return Content("OK");
+        }
+#if DEBUG
+        private static string DibClick = "<a href='http://test.bvcms.com/ExternalServices/BVCMSSupportLink?requestID={0}&supportPersonID={1}'>{2}</a>";
+#else
+        private static string DibClick = "<a href='https://bellevue.bvcms.com/ExternalServices/BVCMSSupportLink?requestID={0}&supportPersonID={1}'>{2}</a>";
+#endif
+
+        private string CreateDibs( int requestID )
+        {
+            List<string> dibLinks = new List<string>();
+
+            for (int iX = 1; iX < SupportPeople.Length; iX++)
+            {
+                dibLinks.Add(DibClick.Fmt(requestID, iX, SupportPeople[iX]));
+            }
+
+            return String.Join(" - ", dibLinks);
+        }
     }
 }
 
