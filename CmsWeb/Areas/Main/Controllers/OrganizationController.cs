@@ -607,6 +607,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         public ContentResult TagAll(int id, string tagname, bool? cleartagfirst)
         {
+            if (!tagname.HasValue())
+                return Content("no tag name");
             DbUtil.Db.SetNoLock();
             var q = DbUtil.Db.PeopleQuery(id);
             if (Util2.CurrentTagName == tagname && !(cleartagfirst ?? false))
