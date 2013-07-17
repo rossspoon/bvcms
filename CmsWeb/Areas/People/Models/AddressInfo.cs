@@ -11,7 +11,7 @@ using CmsData;
 using CmsWeb.Code;
 using UtilityExtensions;
 
-namespace CmsWeb.Areas.People.Models.Person
+namespace CmsWeb.Areas.People.Models
 {
     public class AddressInfo
     {

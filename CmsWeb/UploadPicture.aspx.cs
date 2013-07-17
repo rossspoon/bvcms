@@ -6,6 +6,7 @@
  */
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using CmsData;
 using UtilityExtensions;
 using System.IO;
@@ -26,7 +27,10 @@ namespace CmsWeb
                 person.Picture = new Picture();
             if (!IsPostBack)
                 HiddenField1.Value = "large";
-            HyperLink2.NavigateUrl = "~/Person/Index/" + id.ToString();
+            if (DbUtil.Db.UserPreference("newlook3", "false").ToBool() && DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
+                HyperLink2.NavigateUrl = "~/Person2/" + id.ToString();
+            else
+                HyperLink2.NavigateUrl = "~/Person/Index/" + id.ToString();
             HyperLink2.Text = "Return to: " + person.Name;
         }
 

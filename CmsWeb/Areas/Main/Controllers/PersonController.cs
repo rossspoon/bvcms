@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
@@ -36,8 +37,11 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Content("no id");
             if (DbUtil.Db.UserPreference("newlook3", "false").ToBool()
                 && DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
-                return Redirect(Request.RawUrl.ToLower().Replace("person", "person2"));
-			var m = new PersonModel(id);
+            {
+                var url = Regex.Replace(Request.RawUrl, @"(.*)/(Person/Index)/(\d*)", "$1/Person2/$3", RegexOptions.IgnoreCase);
+                return Redirect(url);
+            }
+            var m = new PersonModel(id);
 			if (User.IsInRole("Access"))
 			{
 				if (m == null)

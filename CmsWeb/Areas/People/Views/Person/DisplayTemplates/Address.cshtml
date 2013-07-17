@@ -1,6 +1,6 @@
 ﻿@using CmsData
 @using UtilityExtensions
-@model CmsWeb.Areas.People.Models.Person.AddressInfo
+@model CmsWeb.Areas.People.Models.AddressInfo
 <div class="tab-pane@(Model.Preferred ? " active" : "")" id="tab-@Model.Name">
     <div class="btn-group">
         <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -15,7 +15,7 @@
         </ul>
     </div>
     <p style="min-height: 5em;">
-        <a href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId" class="editaddr editable-click">@Model.Address1 <i class="icon-pencil pull-right"></i>
+        <a href="/Address/Edit/@Model.Name/@Model.PeopleId" class="editaddr editable-click">@Model.Address1 <i class="icon-pencil pull-right"></i>
             <br />
             @if (Model.Address2.HasValue())
             {

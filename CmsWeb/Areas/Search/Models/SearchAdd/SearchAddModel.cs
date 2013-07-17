@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Web;
-using CmsWeb.Areas.People.Models.Person;
+using CmsWeb.Areas.People.Models;
 using CmsWeb.Code;
 using CmsWeb.Models;
 using UtilityExtensions;

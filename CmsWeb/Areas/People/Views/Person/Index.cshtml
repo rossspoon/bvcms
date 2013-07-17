@@ -15,16 +15,17 @@
 @Html.Hidden("newlook", "true")
 @Html.Hidden("PeopleId", Model.PeopleId)
 
-@* Dave: I put this negative margin in to scoot the section up a bit *@
+@* Dave: I put this negative margin in to scoot the rest of the page up a bit *@
 <div class="container" style="margin-top:-1em;">
     <div class="row-fluid">
         <div class="span9">
             <div class="row-fluid">
                 <div class="span12" id="profile-header">
-                    <div class="span8">
+                    @* Dave: I had to change this from span8 *@
+                    <div class="span9">
                         @Html.Partial("Snapshot", Model)
                     </div>
-                    <div class="span4" id="profile-actions">
+                    <div class="span3" id="profile-actions">
                         @Html.Partial("Toolbar", Model)
                     </div>
                 </div>
