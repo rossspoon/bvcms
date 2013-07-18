@@ -1,6 +1,7 @@
 ﻿td.right, th.right {
     text-align: right;
 }
+
 td.noborder, th.noborder {
     border: none!important;
 }
@@ -13,9 +14,9 @@ td.center, th.center {
     text-align: center;
 }
 
-  /* Dave: I am overriding this to make it look like bootstrap's divider */
+/* Dave: I am overriding this to make it look like bootstrap's divider */
 .dropdown-menu .divider {
-  /*margin: -0.25em 1px;*/
+    /*margin: -0.25em 1px;*/
     margin: auto;
 }
 
@@ -28,12 +29,13 @@ td.center, th.center {
 .control-group {
     margin-bottom: auto;
 }
+
 .form-horizontal .control-group {
     margin-bottom: auto;
 }
 
-.editable-click, 
-a.editable-click, 
+.editable-click,
+a.editable-click,
 a.editable-click:hover {
     text-decoration: none;
     border-bottom: none;
@@ -45,6 +47,7 @@ form.form-horizontal.onecol .control-group {
     *width: auto;
     margin-bottom: 1em;
 }
+
 .section span {
     font-style: italic;
     font-size: 110%;
@@ -63,22 +66,46 @@ table.expanding tr.details td {
     padding: 0;
 }
 
-    table.enrollments tr.details td:first-child {
-        padding-left: 1em;
-    }
+table.enrollments tr.details td:first-child {
+    padding-left: 1em;
+}
 
 /* Dave: I am using this to do my own table striping in this special case 
     todo: test remove this*/
 table.expanding tr.oddrow > td {
     background-color: #f9f9f9;
 }
+
 .edit-inline-label {
-  cursor: pointer;
+    cursor: pointer;
 }
-.edit-inline-label:after {
-  font-family: FontAwesome;
-  content: "\f040";
-  display: inline-block;
-  color: #CCC;
-  margin-left: 5px;
+
+    .edit-inline-label:after {
+        font-family: FontAwesome;
+        content: "\f040";
+        display: inline-block;
+        color: #CCC;
+        margin-left: 5px;
+    }
+
+#profile-header div.portrait {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 90px;
+    height: 120px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+#sidebar #family_members li a div.headshot {
+    width: 38px;
+    border-width: 1px;
+    height: 50px;
+    float: left;
+    margin-right: 10px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center top;
 }
