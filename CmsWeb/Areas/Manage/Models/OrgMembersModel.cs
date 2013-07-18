@@ -25,6 +25,7 @@ namespace CmsWeb.Models
         public int DivId { get; set; }
         public bool EmailAllNotices { get; set; }
         public string Grades { get; set; }
+        public string SmallGroup { get; set; }
         public string Sort { get; set; }
         public string Dir { get; set; }
 
@@ -166,6 +167,7 @@ namespace CmsWeb.Models
                         where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
                         where SourceId == 0 || om.OrganizationId == SourceId
                         where glist.Length == 0 || glist.Contains(om.Grade.Value)
+                        where !SmallGroup.HasValue() || om.OrgMemMemTags.Any(mm => mm.MemberTag.Name == SmallGroup)
                         where !MembersOnly || om.MemberTypeId == MemberTypeCode.Member
                         select om;
                 _members = q;

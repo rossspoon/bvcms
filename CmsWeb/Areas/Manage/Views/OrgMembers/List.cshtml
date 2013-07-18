@@ -22,10 +22,16 @@
             <td></td>
             <td>@Html.CheckBox("MembersOnly") Exclude Teachers</td>
         </tr>
+        <tr>
+            <td>SmallGroup:</td>
+            <td>@Html.TextBox("SmallGroup")</td>
+            <td colspan="2"></td>
+        </tr>
         <tr><td colspan="4">&nbsp;</td></tr>
         <tr>
             <td colspan="2"><b>Count: @Model.Count()</b></td>
             <td colspan="2">
+                <button class="bt" id="refresh" name="refresh">Refresh</button>
                 <input type="submit" class="bt" id="move" name="move" value="Move" />
                 <a href="#" id="EmailNotices" class="bt">Email Room Notices(@Model.MovedCount())</a>
                 @Html.CheckBox("EmailAllNotices") Email All
