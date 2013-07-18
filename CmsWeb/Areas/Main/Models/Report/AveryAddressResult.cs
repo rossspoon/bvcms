@@ -48,6 +48,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                 case "Individual":
                     q = ctl.FetchIndividualList(sort, id.Value);
                     break;
+                case "GroupAddress":
+                    q = ctl.GroupByAddress(id.Value);
+                    break;
                 case "Family":
                 case "FamilyMembers":
                     q = ctl.FetchFamilyList(sort, id.Value);
@@ -105,7 +108,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 var c = new PdfPCell(t.DefaultCell);
                 var ph = new Paragraph();
-                ph.AddLine(m.LabelName, font);
+                if(format == "GroupAddress")
+                    ph.AddLine(m.LabelName + " " + m.LastName, font);
+                else
+                    ph.AddLine(m.LabelName, font);
                 ph.AddLine(m.Address, font);
                 ph.AddLine(m.Address2, font);
                 ph.AddLine(m.CityStateZip, font);

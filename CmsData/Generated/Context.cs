@@ -3543,6 +3543,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.StatusFlagsAll", IsComposable = true)]
+		[return: Parameter(DbType = "nvarchar")]
+		public string StatusFlagsAll(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.StatusFlag", IsComposable = true)]
 		[return: Parameter(DbType = "nvarchar")]
 		public string StatusFlag(

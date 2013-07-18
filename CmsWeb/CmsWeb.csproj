@@ -7,6 +7,11 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TeamCity|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -102,9 +107,6 @@
     <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="ImageResizer">
-      <HintPath>..\packages\ImageResizer.3.3.3\lib\ImageResizer.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1178,7 +1180,9 @@
     <Content Include="Scripts\Org\OrgSearch.min.js.map">
       <DependentUpon>OrgSearch.js</DependentUpon>
     </Content>
-    <None Include="Scripts\querybuilder.js.bundle" />
+    <None Include="Scripts\querybuilder.js.bundle">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\querybuilder.js">
       <DependentUpon>querybuilder.js.bundle</DependentUpon>
     </Content>
@@ -1797,6 +1801,9 @@
     <Content Include="Views\Shared\EditorTemplates\Typeahead.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\datepicker.cshtml" />
     <Content Include="Views\Shared\Support.cshtml" />
+    <None Include="Web.TeamCity.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -13,6 +14,7 @@ namespace CmsWeb.Models
         public PagerModel2 Pager { get; set; }
         public bool isdev { get; set; }
         public bool onlyMine { get; set; }
+        public bool statusFlags { get; set; }
         public string search { get; set; }
         public bool showscratchpads { get; set; }
 
@@ -21,7 +23,7 @@ namespace CmsWeb.Models
             onlyMine = DbUtil.Db.UserPreference("savedSearchOnlyMine", "true").ToBool();
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
-            Pager.Sort = "Name";
+            Pager.Sort = "Description";
         }
         private int? _count;
         public int Count()
@@ -38,6 +40,7 @@ namespace CmsWeb.Models
             isdev = Roles.IsUserInRole("Developer");
             _queries = from c in DbUtil.Db.QueryBuilderClauses
                        where c.SavedBy == Util.UserName || ((c.IsPublic || isdev) && !onlyMine)
+                       where statusFlags == false || SqlMethods.Like(c.Description, "F[0-9][0-9]%")
                        where c.SavedBy != null || (c.GroupId == null && c.Field == "Group" && isdev && c.Clauses.Count() > 0)
                        where !c.Description.Contains("scratchpad") || showscratchpads
                        where c.Description.Contains(search) || c.SavedBy == search || !search.HasValue()

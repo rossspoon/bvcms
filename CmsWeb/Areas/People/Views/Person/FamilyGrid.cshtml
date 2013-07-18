@@ -21,7 +21,7 @@
             var active = m.Id == Model.PeopleId ? "class=active" : "";
             <li @active>
                 <a href="/Person2/Index/@m.Id">
-                    <img src="@m.Pictures.ThumbUrl" class="headshot"/>
+                    <div class="headshot" style="background-image:url(@m.Pictures.ThumbUrl);"></div>
                     <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
                     <div class="meta">
                         <span class="age">@m.Age</span> 

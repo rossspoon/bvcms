@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using CmsData;
 using UtilityExtensions;
 using System.ComponentModel;
@@ -45,6 +46,33 @@ namespace CmsWeb.Models
                          HomePhone = p.HomePhone,
                      };
             q2 = ApplySort(q2, sortExpression);
+            return q2;
+        }
+        public IEnumerable<MailingInfo> GroupByAddress(int QueryId)
+        {
+            var q = DbUtil.Db.PeopleQuery(QueryId);
+            var q2 = from p in q
+                     where p.DeceasedDate == null
+                     where p.PrimaryBadAddrFlag != 1
+                     where p.DoNotMailFlag == false
+                     group p by p.FamilyId into g
+                     let one = g.First().Family.HeadOfHousehold
+                     let last = one.LastName
+                     orderby one.ZipCode
+                     select new MailingInfo
+                     {
+                         Address = one.PrimaryAddress,
+                         Address2 = one.PrimaryAddress2,
+                         CityStateZip = Util.FormatCSZ4(one.PrimaryCity, one.PrimaryState, one.PrimaryZip),
+                         City = one.PrimaryCity,
+                         State = one.PrimaryState,
+                         Zip = one.PrimaryZip,
+                         LabelName = Regex.Replace(string.Join(", ", g.Select(vv => vv.PreferredName)), "(.*)(,)([^,]*$)", "$1 &$3", RegexOptions.IgnoreCase),
+                         Name = one.Name,
+                         LastName = one.LastName,
+                         CellPhone = "",
+                         HomePhone = one.HomePhone,
+                     };
             return q2;
         }
 

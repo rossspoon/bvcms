@@ -119,7 +119,10 @@ $(function () {
             SavedQueryDesc: $('#SaveQueryDesc').val(),
             IsPublic: $('#IsPublic').is(':checked')
         }, function (ret) {
-            $("#Description").text(ret);
+            if (ret.startsWith("error:")) {
+                alert(ret);
+            } else
+                $("#Description").text(ret);
         });
         return false;
     });

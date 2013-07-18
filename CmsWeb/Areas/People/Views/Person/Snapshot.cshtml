@@ -3,7 +3,7 @@
 @model CmsWeb.Areas.People.Models.Person.PersonModel
 @* Dave: Need a new design for uploading a picture, or seeing larger version *@
 <a id="Picture" href="/UploadPicture.aspx?id=@Model.PeopleId" title="Click to see larger version or upload new">
-    <img src="@Model.Picture.SmallUrl" alt="" title="Click to see larger version or upload new"/>
+    <div class="portrait" style="background-image:url(@Model.Picture.SmallUrl);"></div>
 </a>
 <div class="profile">
     <h2 id="nameline">@Model.Name</h2>

@@ -179,10 +179,10 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new QueryModel();
             UpdateModel(m);
             m.LoadScratchPad();
-            m.SaveQuery();
-            var c = new ContentResult();
-            c.Content = m.Description;
-            return c;
+            var ret = m.SaveQuery();
+            if (ret.HasValue())
+                return Content(ret);
+            return Content(m.Description);
         }
         public void Results2Async()
         {
