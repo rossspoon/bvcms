@@ -57,6 +57,7 @@ namespace CmsWeb
             switch (labelNameFormat)
             {
                 case "Individual":
+                case "GroupAddress":
                     dg.DataSource = ExportPeople.FetchExcelList(qid.Value, maxExcelRows);
                     dg.DataBind();
                     dg.RenderControl(new HtmlTextWriter(r.Output));
