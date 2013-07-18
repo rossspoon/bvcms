@@ -3,7 +3,8 @@
     var pager = Html.Partial("Pager2", Model.Pager);
 }
 Only Mine: @Html.CheckBoxFor(m => m.onlyMine)
-Search: @Html.TextBoxFor(m => m.search)
+Search: @Html.TextBoxFor(m => m.search)<br/>
+Status Flags: @Html.CheckBoxFor(m => m.statusFlags)
 <button id="filter" class="bt" value="Filter">Filter</button>
 <table cellpadding="4" class="grid">
 <thead>

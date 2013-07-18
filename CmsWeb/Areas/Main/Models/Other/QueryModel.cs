@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
@@ -468,22 +469,34 @@ namespace CmsWeb.Models
             gc.ReorderClauses();
             UpdateCondition(c);
         }
-        public void SaveQuery()
+        public string SaveQuery()
         {
+            var admin = HttpContext.Current.User.IsInRole("Admin");
             var saveto = Db.QueryBuilderClauses.FirstOrDefault(c =>
-                (c.SavedBy == Util.UserName || c.SavedBy == "public") && c.Description == SavedQueryDesc);
+                (c.SavedBy == Util.UserName || admin) && c.Description == SavedQueryDesc);
+            var isStatusFlag = Regex.IsMatch(SavedQueryDesc, @"\AF\d\d:", RegexOptions.IgnoreCase);
+            if (isStatusFlag)
+            {
+                var prefix = SavedQueryDesc.Substring(0, 4);
+                var exis = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description.StartsWith(prefix));
+                if (exis != null)
+                    if ((!admin && exis.SavedBy != Util.UserName) || exis.Description != SavedQueryDesc)
+                        return "error: StatusFlag {0} already exists".Fmt(prefix);
+            }
             if (saveto == null)
             {
                 saveto = new QueryBuilderClause();
                 Db.QueryBuilderClauses.InsertOnSubmit(saveto);
+                saveto.SavedBy = Util.UserName;
             }
             saveto.CopyFromAll(Qb, DbUtil.Db); // save Qb on top of existing
-            if (saveto.SavedBy != "public")
+            if (!admin)
                 saveto.SavedBy = Util.UserName;
             saveto.Description = SavedQueryDesc;
             saveto.IsPublic = IsPublic;
             Db.SubmitChanges();
             Description = SavedQueryDesc;
+            return "";
         }
         public void AddConditionToGroup()
         {
