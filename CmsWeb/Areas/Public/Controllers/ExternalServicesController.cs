@@ -114,7 +114,7 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 var from = "support-system@bvcms.com";
                 var to = "support@bvcms.com";
-                var body = supportPerson + " is going to respond to this support request.<br><br>BVCMS Support System";
+                var body = supportPerson + " is going to respond to this support request.";
 
                 var smtp = Util.Smtp();
                 var email = new MailMessage(from, to, subject, body);

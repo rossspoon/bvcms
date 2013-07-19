@@ -52,8 +52,9 @@ namespace CmsWeb.Areas.People.Controllers
             var m = new PersonModel(id.Value);
             if (m.Person == null)
                 return Content("person not found");
-            if (!m.Person.CanUserSee)
-                return Content("no access");
+			if (!User.IsInRole("Access"))
+				if (m.Person == null || !m.Person.CanUserSee)
+					return Content("no access");
 
             if (Util2.OrgMembersOnly)
             {

@@ -15,12 +15,24 @@
         </ul>
     </div>
     <p style="min-height: 5em;">
-        <a href="/Address/Edit/@Model.Name/@Model.PeopleId" class="editaddr editable-click">@Model.Address1 <i class="icon-pencil pull-right"></i>
-            <br />
-            @if (Model.Address2.HasValue())
+        @if (Model.CanUserEditAddress)
+        {
+            <a href="/Address/Edit/@Model.Name/@Model.PeopleId" class="editaddr editable-click">@Model.Address1 <i class="icon-pencil pull-right"></i>
+                <br />
+                @if (Model.Address2.HasValue())
+                {
+                    @Model.Address2<br />
+                }
+                @Model.CityStateZip()</a>
+        }
+        else
+        {
+            @Model.Address1<br />
+            if (Model.Address2.HasValue())
             {
                 @Model.Address2<br />
             }
-            @Model.CityStateZip()</a>
+            @Model.CityStateZip()
+        }
     </p>
 </div>

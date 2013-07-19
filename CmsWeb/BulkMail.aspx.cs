@@ -27,6 +27,7 @@ namespace CmsWeb
             switch (labelNameFormat)
             {
                 case "Individual":
+                case "GroupAddress":
                     q = ctl.FetchIndividualList(sort, qid.Value);
                     break;
                 case "FamilyMembers":

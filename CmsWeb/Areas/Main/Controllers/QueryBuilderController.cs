@@ -254,6 +254,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         public ContentResult TagAll(string tagname, bool? cleartagfirst)
         {
+            if (!tagname.HasValue())
+                return Content("error: no tag name");
             var m = new QueryModel();
             m.LoadScratchPad();
             if (Util2.CurrentTagName == tagname && !(cleartagfirst ?? false))

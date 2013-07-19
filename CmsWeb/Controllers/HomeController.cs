@@ -204,7 +204,7 @@ namespace CmsWeb.Controllers
         public static string[] SupportPeople = { "Unclaimed", "Bethany", "David", "Karen", "Kyle", "Steven" };
         public static string SQLSupportInsert = "INSERT INTO [dbo].[SupportRequests] ( Created, Who, Host, Urgency, Request, Subject ) OUTPUT INSERTED.ID VALUES ( @c, @w, @h, @u, @r, @s )";
 
-        public ActionResult SendSupportRequest( string urgency, string request )
+        public ActionResult SendSupportRequest( string urgency, string request, string search )
         {
             var cs = ConfigurationManager.ConnectionStrings["CmsLogging"];
             if (cs == null) return Content("Database not available!");
@@ -228,7 +228,13 @@ namespace CmsWeb.Controllers
             int lastID = (int)cmd.ExecuteScalar();
             cn.Close();
 
-            var body = "Request ID: " + lastID + "<br>https://" + Util.Host + ".bvcms.com<br>" + urgency + "<br>Claim: " + CreateDibs(lastID) + "<br><br>" + request;
+            var body = "<b>Request ID:</b> " + lastID + "<br>" +
+                "<b>Request By:</b> " + Util.UserFullName + " (" + Util.UserEmail + ")<br>" +
+                "<b>Host:</b> https://" + Util.Host + ".bvcms.com<br>" +
+                "<b>Urgency:</b> " + urgency + "<br>" +
+                "<b>Last Search:</b> " + search + "<br>" +
+                "<b>Claim:</b> " + CreateDibs(lastID) + "<br><br>" +
+                request;
 
             var smtp = Util.Smtp();
             var email = new MailMessage(from, to, subject, body);
@@ -238,8 +244,17 @@ namespace CmsWeb.Controllers
 
             smtp.Send(email);
 
+            var responseSubject = "Your BVCMS support request has been received";
+            var responseBody = "Your support request has been received. We will respond to you as quickly as possible.<br><br>BVCMS Support Team";
+
+            var response = new MailMessage("support@bvcms.com", Util.UserEmail, responseSubject, responseBody);
+            response.IsBodyHtml = true;
+
+            smtp.Send(response);
+
             return Content("OK");
         }
+
 #if DEBUG
         private static string DibClick = "<a href='http://test.bvcms.com/ExternalServices/BVCMSSupportLink?requestID={0}&supportPersonID={1}'>{2}</a>";
 #else

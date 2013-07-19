@@ -63,6 +63,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             switch (format)
             {
                 case "Individual":
+                case "GroupAddress":
                     q = ctl.FetchIndividualList(sort, qid.Value);
                     break;
                 case "FamilyMembers":

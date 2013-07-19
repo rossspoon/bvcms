@@ -33,7 +33,10 @@
 
 @helper FormAction()
 {
-    <div class="form-actions">
-        <a href="/Person2/BasicEdit/@Model.PeopleId" class="edit-basic btn pull-right ajax">Edit</a>
-    </div>
+     if (Model.person.CanUserEditBasic)
+     {
+         <div class="form-actions">
+             <a href="/Person2/BasicEdit/@Model.PeopleId" class="edit-basic btn pull-right ajax">Edit</a>
+         </div>
+     }
 }
