@@ -76,6 +76,7 @@ namespace CmsData.API
                             let bd = c.BundleDetails.FirstOrDefault()
                             select new APIContribution.Contribution
                                 {
+                                    ContributionId = c.ContributionId,
                                     PeopleId = c.PeopleId ?? 0,
                                     Name = c.Person.Name,
                                     Date = c.ContributionDate.FormatDate(),
