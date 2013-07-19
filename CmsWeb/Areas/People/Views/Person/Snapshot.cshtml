@@ -13,14 +13,14 @@
             <span id="contactline">@Model.Email &bull; @Model.Cell &bull; @Model.HomePhone</span>
         </li>
         <li class="badges">
-            <span id="campus" class="edit-inline-label label label-info" data-value="@Model.basic.Campus.Value" data-pk="@Model.PeopleId" title="Campus">@Html.DisplayFor(m => m.basic.Campus)</span>
-            <span id="position" class="edit-inline-label label label-info" data-value="@Model.basic.FamilyPosition.Value" data-pk="@Model.PeopleId" title="Family Position">@Html.DisplayFor(m => m.basic.FamilyPosition)</span>
+            @Html.DisplayFor(m => m.basic.Campus, "InlineCode")
+            @Html.DisplayFor(m => m.basic.FamilyPosition, "InlineCode")
             <span class="label label-success">@Model.member.MemberStatus</span>
             @foreach (var status in Model.StatusFlags)
             {
                 if (Model.member.MemberStatus != status)
                 {
-                <span class="label label-success">@status</span>
+                    <span class="label label-success">@status</span>
                 }
             }
             @if (Model.basic.DoNotVisitFlag)

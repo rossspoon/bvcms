@@ -5,33 +5,47 @@
 }
 <div class="sidebar_title group">
     <h2>Related Families</h2>
-    <div class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="/SearchAdd2/Dialog/RelatedFamily/@Model.PeopleId" class="searchadd">Add Related Family</a></li>
-        </ul>
-    </div>
+    @if (Model.Person.CanUserEditAll)
+    {
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/SearchAdd2/Dialog/RelatedFamily/@Model.PeopleId" class="searchadd">Add Related Family</a></li>
+            </ul>
+        </div>
+    }
 </div>
 <div class="sidebar_content">
     <ul id="family_related" class="unstyled">
         @foreach (var f in fm.RelatedFamilies())
         {
             <li class="relation-item">
-                <div class="btn-group">
-                    <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-cog"></i>
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="editfamily" href="#">Edit</a></li>
-                        <li><a href="/Person2/DeleteRelation/@Model.PeopleId/@f.Id1/@f.Id2" class="delete-relation">Delete</a></li>
-                    </ul>
-                </div>
-                <p><a href="/Person2/@f.PeopleId">@f.Name</a>
-                    <span class="summary relation-description" id="rf-@f.Id1-@f.Id2" data-value="@f.Description" data-toggle="manual" data-pk="@f.Id1/@f.Id2" title="Description of Relationship">
-                        @f.Description
-                    </span>
-                </p>
+                @if (Model.Person.CanUserEditAll)
+                {
+                    <div class="btn-group">
+                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-cog"></i>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="editfamily" href="#">Edit</a></li>
+                            <li><a href="/Person2/DeleteRelation/@Model.PeopleId/@f.Id1/@f.Id2" class="delete-relation">Delete</a></li>
+                        </ul>
+                    </div>
+                    <p>
+                        <a href="/Person2/@f.PeopleId">@f.Name</a>
+                        <span class="summary relation-description" id="rf-@f.Id1-@f.Id2" data-value="@f.Description" data-toggle="manual" data-pk="@f.Id1/@f.Id2" title="Description of Relationship">
+                            @f.Description
+                        </span>
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        <a href="/Person2/@f.PeopleId">@f.Name</a>
+                        <span class="summary relation-description" title="Description of Relationship">@f.Description </span>
+                    </p>
+                }
             </li>
         }
     </ul>
