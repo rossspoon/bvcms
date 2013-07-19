@@ -22,7 +22,11 @@
 }
     <tr>
         <td>Date of Birth</td>
-        <td>@Model.birthday.FormatDate("not given") <span>@Model.age</span>
+        <td>@Model.dob 
+            @if (Model.DateValid())
+            {
+                <span>@Model.age</span>
+            }
             <div>@Html.ValidationMessageFor(m => m.dob)</div></td>
     </tr>
     <tr>

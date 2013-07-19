@@ -218,7 +218,13 @@ namespace UtilityExtensions
                 return "mailto:{0} <{1}>".Fmt(name, addr);
             return "mailto:" + addr;
         }
+
         public static string FormatBirthday(int? y, int? m, int? d)
+        {
+            return FormatBirthday(y, m, d, "");
+        }
+
+        public static string FormatBirthday(int? y, int? m, int? d, string def)
         {
             try
             {
@@ -237,7 +243,7 @@ namespace UtilityExtensions
             {
                 return "bad date {0}/{1}/{2}".Fmt(m ?? 0, d ?? 0, y ?? 0);
             }
-            return "";
+            return def;
         }
         public static string FormatDate(this DateTime? dt)
         {
@@ -470,6 +476,13 @@ namespace UtilityExtensions
                 return t.Substring(0, 5);
             return t;
         }
+
+        public static bool DateValid(string dt)
+        {
+            DateTime dt2;
+            return DateValid(dt, out dt2);
+        }
+
         public static bool DateValid(string dt, out DateTime dt2)
         {
             dt2 = DateTime.MinValue;
