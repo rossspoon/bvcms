@@ -874,7 +874,6 @@
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenSearch.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenPeople.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\DisplayTemplates\DisplayPeople.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates\HiddenAddress.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\CellPhone.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\CellPhone.cshtml" />
     <Content Include="Scripts\jQuery\main.js">
@@ -958,7 +957,6 @@
     <Content Include="Areas\People\Views\Person\DeletedPerson.cshtml" />
     <Content Include="Areas\People\Views\Address\Saved.cshtml" />
     <Content Include="Areas\Main\Views\Organization\DialogAddMES.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates\Address2.cshtml" />
     <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
     <Content Include="Areas\Main\Views\Reports\WeeklyDecisions.cshtml" />
     <Content Include="Areas\Main\Views\Reports\Decisions.cshtml" />

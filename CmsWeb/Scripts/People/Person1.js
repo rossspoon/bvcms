@@ -96,7 +96,7 @@
         });
     };
     $.SetRelationEditable();
-    $('#position').editable({
+    $('#FamilyPosition').editable({
         source: [{
             value: 10,
             text: "Primary Adult"
@@ -114,14 +114,11 @@
 //            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
 //        }
     });
-    $('#campus').editable({
+    $('#Campus').editable({
         source: "/Person2/Campuses",
         type: "select",
         url: "/Person2/PostData",
-        name: "campus",
-        success: function (data) {
-//            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
-        }
+        name: "campus"
     });
 
     $('a.deloptout').live("click", function (ev) {
