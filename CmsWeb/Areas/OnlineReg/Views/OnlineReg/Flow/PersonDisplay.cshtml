@@ -23,7 +23,7 @@
     <tr>
         <td>Date of Birth</td>
         <td>@Model.dob 
-            @if (Model.DateValid())
+            @if (Model.LoggedIn)
             {
                 <span>@Model.age</span>
             }
