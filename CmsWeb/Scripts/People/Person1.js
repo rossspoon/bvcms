@@ -96,7 +96,7 @@
         });
     };
     $.SetRelationEditable();
-    $('#FamilyPostion').editable({
+    $('#FamilyPosition').editable({
         source: [{
             value: 10,
             text: "Primary Adult"

@@ -175,6 +175,7 @@ namespace CmsData.API
                     orderby c.ContributionDate
                     select new ContributionInfo
                     {
+                        ContributionId = c.ContributionId,
                         ContributionAmount = c.ContributionAmount,
                         ContributionDate = c.ContributionDate,
                         Fund = c.ContributionFund.FundName,
@@ -264,6 +265,7 @@ namespace CmsData.API
                     orderby c.ContributionDate
                     select new ContributionInfo
                     {
+                        ContributionId = c.ContributionId,
                         ContributionDate = c.ContributionDate,
                         Fund = c.ContributionFund.FundName,
                         Description = c.ContributionDesc
@@ -289,6 +291,7 @@ namespace CmsData.API
         [Serializable]
         public class Contribution
         {
+            public int ContributionId { get; set; }
             public int PeopleId { get; set; }
             public string Name { get; set; }
             public string Date { get; set; }
