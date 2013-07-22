@@ -243,6 +243,14 @@ namespace CmsWeb.Controllers
 
             smtp.Send(response);
 
+            if (DbUtil.AdminMail.Length > 0)
+            {
+                var toAdmin = new MailMessage("support@bvcms.com", DbUtil.AdminMail, subject, Util.UserFullName + " submitted a support request to BVCMS:<br><br>" + request);
+                toAdmin.IsBodyHtml = true;
+
+                smtp.Send(toAdmin);
+            }
+
             return Content("OK");
         }
 

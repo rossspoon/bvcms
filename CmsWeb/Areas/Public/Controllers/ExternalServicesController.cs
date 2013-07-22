@@ -122,11 +122,14 @@ namespace CmsWeb.Areas.Public.Controllers
                 email.ReplyToList.Add("support@bvcms.com");
                 email.IsBodyHtml = true;
                 smtp.Send(email);
+
+                var requestOrigin = "https://" + host + ".bvcms.com";
+                return Redirect(requestOrigin);
             }
-
-            var requestOrigin = "https://" + host + ".bvcms.com";
-
-            return Redirect( requestOrigin );
+            else
+            {
+                return Content("This support request has already been claimed");
+            }
         }
     }
 }
