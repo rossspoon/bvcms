@@ -128,7 +128,7 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             else
             {
-                return Content("This support request has already been claimed");
+                return Content("This support request has already been claimed by " + supportPerson);
             }
         }
     }
