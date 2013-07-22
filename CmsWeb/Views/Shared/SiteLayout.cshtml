@@ -1,7 +1,7 @@
 ﻿@{
     var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
     var bkcolor = DbUtil.Db.Setting("HeaderBackground", "#e4e2d5");
-    var newsupport = DbUtil.Db.UserPreference("UseNewSupport", "false") == "true";
+    var newsupport = DbUtil.Db.Setting("UseNewSupport", "false") == "true";
 }
 <!DOCTYPE html>
 <html>

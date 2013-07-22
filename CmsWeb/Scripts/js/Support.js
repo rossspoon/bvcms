@@ -1,7 +1,7 @@
 ﻿var mustSearch = 1;
 
 $(function () {
-    $(document).on("click", "#supportfeedback", null, supportOpen);
+    $(document).on("click", "#supportfeedback,#emailsupport", null, supportOpen);
     $(document).on("keyup", "#gsc-i-id1", null, searchRequested);
     $(document).on("click", ".gsc-search-button", null, searchDone);
     $(document).on("click", "#showSupportForm", null, supportShowForm);
