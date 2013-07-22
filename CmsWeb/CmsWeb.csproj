@@ -1082,8 +1082,6 @@
     </Content>
     <Content Include="Docs\ForDave.md" />
     <Content Include="Docs\vvv.md" />
-    <Content Include="Docs\_site\ForDave.md" />
-    <Content Include="Docs\_site\vvv.md" />
     <None Include="Properties\PublishProfiles\production.pubxml" />
     <None Include="Scripts\Bootstrap\bootstrap-bundle.js.bundle" />
     <Content Include="Scripts\Bootstrap\bootstrap-bundle.min.js.map">
