@@ -66,6 +66,7 @@ namespace CmsWeb.Models
 		}
 
 		public bool ShowPageSize { get; set; }
+		public bool AllowSort { get; set; }
 		public int? pagesize;
 		private readonly int[] pagesizes = { 10, 25, 50, 100, 200 };
 
@@ -121,6 +122,35 @@ namespace CmsWeb.Models
 			}
 		}
 
+        internal void SetWithNoSort(string url, int? page, int ? size)
+        {
+            AllowSort = false;
+            URL = url;
+            if(page.HasValue)
+                Page = page.Value;
+            if(size.HasValue)
+                PageSize = size.Value;
+        }
+        internal void SetWithNoPageSize(string url, int? page, string sort, string dir)
+        {
+            ShowPageSize = false;
+            URL = url;
+            if(page.HasValue)
+                Page = page.Value;
+            if (sort.HasValue())
+                Sort = sort;
+            if (dir.HasValue())
+                Direction = dir;
+        }
+        internal void SetWithPageOnly(string url, int? page)
+        {
+            ShowPageSize = false;
+            AllowSort = false;
+            URL = url;
+            if(page.HasValue)
+                Page = page.Value;
+        }
+        // All
         internal void Set(string url, int? page, int? size, string sort, string dir)
         {
             URL = url;
@@ -148,8 +178,17 @@ namespace CmsWeb.Models
         }
         public HtmlString PageLink(string label, int? page, int? size = null)
         {
-            return new HtmlString("<a href='{0}/{1}/{2}/{3}/{4}' class='ajax'>{5}</a>"
-                .Fmt(URL, page ?? 1, size ?? PageSize, Sort ?? "na", Direction == "asc" ? "desc" : "asc", label));
+            if(ShowPageSize && AllowSort)
+                return new HtmlString("<a href='{0}/{2}/{3}/{4}/{5}' class='ajax'>{1}</a>"
+                    .Fmt(URL, label, page ?? 1, size ?? PageSize, Sort ?? "na", Direction == "asc" ? "desc" : "asc"));
+            if (ShowPageSize)
+                return new HtmlString("<a href='{0}/{2}/{3}' class='ajax'>{1}</a>"
+                    .Fmt(URL, label, page ?? 1, size ?? PageSize));
+            if (AllowSort)
+                return new HtmlString("<a href='{0}/{2}/{3}/{4}' class='ajax'>{1}</a>"
+                    .Fmt(URL, label, page ?? 1, Sort ?? "na", Direction == "asc" ? "desc" : "asc"));
+            return new HtmlString("<a href='{0}/{2}' class='ajax'>{1}</a>"
+                .Fmt(URL, label, page ?? 1));
         }
         public HtmlString PageSizeItem(string label, int? page, int? size = null, bool? disable = null)
         {

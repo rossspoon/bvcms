@@ -1,18 +1,24 @@
 ﻿$(function () {
-    $(".ckbox").click(function (ev) {
-        $.post("/OrgMemberDialog2/CheckBoxChanged/" + $(this).attr("id"), {
+    $(".ckbox").live("click", function (ev) {
+        $.post($(this).attr("href"), {
             ck: $(this).is(":checked")
         });
         return true;
     });
-    $("body").on("click", 'a.delete', function (ev) {
+    $("a.delete").live("click", function (ev) {
         if (confirm("are you sure?"))
             $.post($(this).attr("href"), null, function (ret) {
                 self.parent.RebindMemberGrids($("#from").val());
             });
         return false;
     });
-    $("body").on('click', 'a.move', function (ev) {
+    $('#orgsearch').live("keydown", function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            $("#orgsearchbtn").click();
+        }
+    });
+    $("a.move").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (confirm("are you sure?"))

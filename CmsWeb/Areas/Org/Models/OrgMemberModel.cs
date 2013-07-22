@@ -9,6 +9,7 @@ using CmsData;
 using System.Web.Mvc;
 using CmsData.Registration;
 using CmsWeb.Code;
+using CmsWeb.Models.OrganizationPage;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using CmsData.Codes;
@@ -17,11 +18,13 @@ namespace CmsWeb.Areas.Org.Models
 {
     public class OrgMemberModel
     {
-        private CmsData.OrganizationMember om;
+        public CmsData.OrganizationMember om;
+        public CmsData.Organization Organization;
+        public List<OrgMemMemTag> OrgMemMemTags;
         private int? _orgId;
         private int? _peopleId;
 
-        public void Populate()
+        private void Populate()
         {
             var i = (from mm in DbUtil.Db.OrganizationMembers
                      where mm.OrganizationId == _orgId && mm.PeopleId == _peopleId
@@ -30,17 +33,22 @@ namespace CmsWeb.Areas.Org.Models
                              mm,
                              mm.Person.Name,
                              mm.Organization.OrganizationName,
-                             mm.Organization.RegSetting
+                             mm.Organization.RegSetting,
+                             mm.Organization,
+                             mm.OrgMemMemTags
                          }).SingleOrDefault();
             if (i == null)
                 throw new Exception("missing OrgMember at oid={0}, pid={0}".Fmt(_orgId, _peopleId));
             om = i.mm;
             Name = i.Name;
             OrgName = i.OrganizationName;
+            Organization = i.Organization;
+            OrgMemMemTags = i.OrgMemMemTags.ToList();
             MemberType = new CodeInfo(om.MemberTypeId, "MemberType");
             AttendStr = om.AttendStr;
             Setting = new Settings(i.RegSetting, DbUtil.Db, _orgId.Value);
         }
+
 
         public int? OrgId
         {

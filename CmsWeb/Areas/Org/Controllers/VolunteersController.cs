@@ -10,6 +10,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using AttributeRouting;
+using AttributeRouting.Web.Mvc;
 using UtilityExtensions;
 using System.Web.Routing;
 using CmsWeb;
@@ -21,6 +23,7 @@ using System.Text;
 
 namespace CmsWeb.Areas.Org.Controllers
 {
+    [RouteArea("Org", AreaUrl = "Volunteer")]
 	public class VolunteersController : CmsStaffController
 	{
 		[AcceptVerbs(HttpVerbs.Post)]
@@ -49,6 +52,7 @@ namespace CmsWeb.Areas.Org.Controllers
 			public string sg2 {get; set;}
 		}
 
+        [GET("Volunteer/Calendar/{id}")]
 		public ActionResult Calendar(int id, string sg1, string sg2, bool? SortByWeek)
 		{
 			var m = new VolunteerCommitmentsModel(id);

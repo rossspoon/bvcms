@@ -27,7 +27,7 @@
     <div class="modal-body">
         <a class="helplink pull-right" target="_blank" href='@Model.HelpLink("NewFamily")'>help</a>
         <fieldset class="display">
-            @Html.EditorFor(m => Model.List[n], "EditPerson")
+            @Html.EditorFor(m => Model.List[n], "Person")
         </fieldset>
         @if (potentialDuplicate)
         {
