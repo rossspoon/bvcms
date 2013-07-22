@@ -335,6 +335,7 @@
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
+    <Compile Include="Areas\Org\Models\OrgMemberMoveModel.cs" />
     <Compile Include="Areas\Org\Models\OrgMemberModel.cs" />
     <Compile Include="Areas\Org\Models\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Org\OrgAreaRegistration.cs" />
@@ -873,7 +874,6 @@
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenMeta.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenSearch.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenPeople.cshtml" />
-    <Content Include="Areas\Search\Views\SearchAdd\DisplayTemplates\DisplayPeople.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\CellPhone.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\CellPhone.cshtml" />
     <Content Include="Scripts\jQuery\main.js">
@@ -948,8 +948,8 @@
     <Content Include="Scripts\Moment\moment-bundle.min.js">
       <DependentUpon>moment-bundle.js.bundle</DependentUpon>
     </Content>
-    <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\EditAddress.cshtml" />
-    <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\EditPerson.cshtml" />
+    <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\Address.cshtml" />
+    <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\Person.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\ResultsFamily.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\SearchFamily.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\NewAddress.cshtml" />
@@ -1080,6 +1080,10 @@
     <Content Include="Scripts\Bootstrap\bootstrap-editable.min.js.map">
       <DependentUpon>bootstrap-editable.js</DependentUpon>
     </Content>
+    <Content Include="Docs\ForDave.md" />
+    <Content Include="Docs\vvv.md" />
+    <Content Include="Docs\_site\ForDave.md" />
+    <Content Include="Docs\_site\vvv.md" />
     <None Include="Properties\PublishProfiles\production.pubxml" />
     <None Include="Scripts\Bootstrap\bootstrap-bundle.js.bundle" />
     <Content Include="Scripts\Bootstrap\bootstrap-bundle.min.js.map">
@@ -2330,7 +2334,7 @@
     </Content>
     <Content Include="Areas\Search\Views\SearchAdd\List.cshtml">
     </Content>
-    <Content Include="Areas\Search\Views\SearchAdd\DisplayTemplates\PersonDisplay.cshtml">
+    <Content Include="Areas\Search\Views\SearchAdd\DisplayTemplates\Person.cshtml">
     </Content>
     <Content Include="Areas\Search\Views\SearchAdd\Results.cshtml">
     </Content>

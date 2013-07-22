@@ -19,7 +19,7 @@
                 }
             }
             @Html.EditorFor(m => Model.List[n], "HiddenPerson")
-            @Html.EditorFor(m => Model.List[n], "EditAddress")
+            @Html.EditorFor(m => Model.List[n], "Address")
         </fieldset>
         @{ var p = Model.List[n]; }
         @Html.Raw(p.AddressInfo.Error)
