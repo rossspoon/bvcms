@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Data.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
@@ -37,7 +38,42 @@ namespace CmsWeb.Models
         public string middle { get; set; }
         public string last { get; set; }
         public string suffix { get; set; }
-        public string dob { get; set; }
+        //public string dob { get; set; }
+        internal int? bmon, byear, bday;
+        public string dob
+        {
+            get
+            { return Util.FormatBirthday(byear, bmon, bday, "not given"); }
+            set
+            {
+                bday = null;
+                bmon = null;
+                byear = null;
+                DateTime dt;
+                if (DateTime.TryParse(value, out dt))
+                {
+                    bday = dt.Day;
+                    bmon = dt.Month;
+                    if (Regex.IsMatch(value, @"\d+/\d+/\d+"))
+                        byear = dt.Year;
+                }
+                else
+                {
+                    int n;
+                    if (int.TryParse(value, out n))
+                        if (n >= 1 && n <= 12)
+                            bmon = n;
+                        else
+                            byear = n;
+                }
+            }
+        }
+
+        public bool DateValid()
+        {
+            return bmon.HasValue && byear.HasValue && bday.HasValue;
+        }
+
         public string phone { get; set; }
         public string homephone { get; set; }
         public string address { get; set; }
