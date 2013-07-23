@@ -17,6 +17,38 @@
 	             $("#templateID").val($(this).attr("template"));
 	             $("#selectTemplate").submit();
 	         });
+
+	         $(document).on("change", "input[draft]", null, checkChanged);
+
+	         $("#draftDelete").click(function (e) {
+	             if (confirm("Are you sure you want to delete " + $("input[draft]:checked").length + " draft(s)?")) {
+	                 $("#savedDrafts").submit();
+	             }
+	         });
+
+	         $("#draftAll").click(function (e) {
+	             $("input[draft]").prop("checked", true);
+	             checkChanged();
+	         });
+
+	         $("#draftNone").click(function (e) {
+	             $("input[draft]").prop("checked", false);
+	             checkChanged();
+	         });
+
+	         function checkChanged() {
+	             if ($("input[draft]:checked").length > 0) {
+	                 $("#draftDelete").button( "option", "disabled", false);
+	                 $("#draftDelete").val("Delete " + $("input[draft]:checked").length + " Draft(s)");
+	             } else {
+	                 $("#draftDelete").button( "option", "disabled", true);
+	                 $("#draftDelete").val("Delete 0 Draft(s)");
+	             }
+	         }
+
+	         $(".bt").button();
+
+	         checkChanged();
 	     });
 	</script>
 }
@@ -121,12 +153,21 @@
     }
 	<td class="top" style="text-align:center;">
         <b>My Drafts</b>
-        <hr />                    		
+        <hr />
+        @if( sdMine.Count > 0 ) {
+        <input type="button" class="bt" id="draftAll" value="Select All" /><text> &nbsp; </text>
+        <input type="button" class="bt" id="draftNone" value="Clear All" /><text> &nbsp; </text>
+        <input type="button" class="bt" id="draftDelete" value="Delete Selected" />
+        }
+        <form id="savedDrafts" action="/Email/ContentDeleteDrafts">
+        @Html.Hidden("parents", @Model.wantparents)
+        @Html.Hidden("queryid", @Model.queryid)
 		<table width="100%">
 		    @foreach (var t in sdMine)
             {
                 <tr>
 			        <td style="padding:3px !important; text-align:left; vertical-align:top;">
+                        <input draft="yes" type="checkbox" name="draftID" value="@t.id" />
                         <a href="#" bvtemplate template="@t.id">@t.name</a>
                     </td>
                     <td style="padding:3px !important; text-align:right; vertical-align:top;">
@@ -176,7 +217,8 @@
 		            </td>
 	            </tr>
             }
-
+        </table>
+        </form>
 	</td>
 </tr>
 </table>

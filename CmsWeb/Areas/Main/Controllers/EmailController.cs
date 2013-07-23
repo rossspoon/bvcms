@@ -100,6 +100,13 @@ namespace CmsWeb.Areas.Main.Controllers
 			return View("Compose", m);
 		}
 
+        public ActionResult ContentDeleteDrafts( int queryid, bool parents, string[] draftID)
+        {
+            string deleteList = String.Join(",", draftID);
+            DbUtil.Db.ExecuteCommand("DELETE FROM dbo.Content WHERE Id IN(" + deleteList + ")", "");
+            return RedirectToAction("Index", new { id = queryid, parents = parents });
+        }
+
 		[HttpPost]
 		[ValidateInput(false)]
 		public ActionResult QueueEmails(MassEmailer m)
