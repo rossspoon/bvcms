@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,7 @@ using UtilityExtensions;
 using CmsData;
 using Elmah;
 using System.Threading;
+using Dapper;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -99,6 +101,16 @@ namespace CmsWeb.Areas.Main.Controllers
 			ViewBag.templateID = content.Id;
 			return View("Compose", m);
 		}
+
+        public ActionResult ContentDeleteDrafts( int queryid, bool parents, int[] draftId)
+        {
+            using (var cn = new SqlConnection(Util.ConnectionString))
+            {
+                cn.Open();
+                cn.Execute("delete from dbo.Content where id in @ids", new {ids = draftId});
+            }
+            return RedirectToAction("Index", new { id = queryid, parents });
+        }
 
 		[HttpPost]
 		[ValidateInput(false)]

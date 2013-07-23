@@ -67,6 +67,7 @@
                 }
             }
 
+            $(".bt").button();
             checkChanged();
         });
     </script>
@@ -141,10 +142,10 @@
 		</table>
 	</div>
 	<div id="t4"> <!-- Saved Drafts -->
-        <input type="button" id="draftAll" value="Select All" /> &nbsp; 
-        <input type="button" id="draftNone" value="Clear All" />
+        <input type="button" class="bt" id="draftAll" value="Select All" /> &nbsp; 
+        <input type="button" class="bt" id="draftNone" value="Clear All" />
         - Actions:
-        <input type="button" id="draftDelete" value="Delete Selected" />
+        <input type="button" class="bt" id="draftDelete" value="Delete Selected" />
         <br />
         <br />
         <form id="savedDrafts" action="/Display/ContentDeleteDrafts">

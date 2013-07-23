@@ -77,6 +77,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var subject = "";
             var host = "";
             var who = "";
+            var claimedby = "";
             var claimedID = 0;
             var supportPerson = HomeController.SupportPeople[supportPersonID];
 
@@ -93,6 +94,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 host = (string)reader["Host"];
                 who = (string)reader["Who"];
                 claimedID = (int)reader["SupportPersonID"];
+                claimedby = (string)reader["SupportPerson"];
             }
             reader.Close();
 
@@ -118,15 +120,15 @@ namespace CmsWeb.Areas.Public.Controllers
 
                 var smtp = Util.Smtp();
                 var email = new MailMessage(from, to, subject, body);
-                email.ReplyToList.Add(who);
                 email.ReplyToList.Add("support@bvcms.com");
                 email.IsBodyHtml = true;
                 smtp.Send(email);
+
+                var requestOrigin = "https://" + host + ".bvcms.com";
+                return Redirect(requestOrigin);
             }
-
-            var requestOrigin = "https://" + host + ".bvcms.com";
-
-            return Redirect( requestOrigin );
+            ViewBag.Message = "This support request has already been claimed by " + claimedby;
+            return View();
         }
     }
 }
