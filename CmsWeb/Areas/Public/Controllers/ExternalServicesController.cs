@@ -130,5 +130,25 @@ namespace CmsWeb.Areas.Public.Controllers
             ViewBag.Message = "This support request has already been claimed by " + claimedby;
             return View();
         }
+
+        [ValidateInput(false)]
+        public ActionResult ct(string l)
+        {
+            var link = (from e in DbUtil.Db.EmailLinks
+                        where e.Hash == l
+                        select e).SingleOrDefault();
+
+            if (link != null)
+            {
+                link.Count += 1;
+                DbUtil.Db.SubmitChanges();
+
+                return Redirect( link.Link );
+            }
+            else
+            {
+                return Redirect( "http://www.bvcms.com" );
+            }
+        }
     }
 }

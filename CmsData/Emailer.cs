@@ -11,6 +11,10 @@ using System.Linq;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
+using HtmlAgilityPack;
 
 namespace CmsData
 {
@@ -186,8 +190,11 @@ namespace CmsData
                 PublicX = publicViewable,
             };
             EmailQueues.InsertOnSubmit(emailqueue);
-
             SubmitChanges();
+
+            emailqueue.Body = createClickTracking( emailqueue.Id, body );
+            SubmitChanges();
+
             if (body.Contains("http://publiclink", ignoreCase: true))
             {
                 var link = Util.URLCombine(CmsHost, "/Manage/Emails/View/" + emailqueue.Id);
@@ -380,6 +387,47 @@ namespace CmsData
                     host + " " + subj, body,
                     Util.SendErrorsTo(), id, null);
             }
+        }
+
+        private static string CLICK_TRACK = "https://{0}.bvcms.com/ExternalServices/ct?l={1}";
+
+        private static string createClickTracking( int emailID, string input )
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml( input );
+
+            using (MD5 md5Hash = MD5.Create())
+            {
+                foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
+                {
+                    HtmlAttribute att = link.Attributes["href"];
+                    if( IsSpecialLink( att.Value ) ) continue;
+
+                    var hash = hashMD5Base64(md5Hash, att.Value + DateTime.Now.ToString("o"));
+
+                    var emailLink = new EmailLink();
+                    emailLink.Created = DateTime.Now;
+                    emailLink.EmailID = emailID;
+                    emailLink.Hash = hash;
+                    emailLink.Link = att.Value;
+                    DbUtil.Db.EmailLinks.InsertOnSubmit(emailLink);
+                    DbUtil.Db.SubmitChanges();
+
+                    att.Value = CLICK_TRACK.Fmt(Util.Host, HttpUtility.UrlEncode(hash));
+
+                    //System.Diagnostics.Debug.WriteLine(att.Value);
+                    //System.Diagnostics.Debug.WriteLine("Unhashed: " + att.Value + DateTime.Now.ToString("o"));
+                    //System.Diagnostics.Debug.WriteLine("Hashed: " + hashMD5Base64( md5Hash, att.Value + DateTime.Now.ToString("o") ) );
+                }
+            }
+
+            return doc.DocumentNode.OuterHtml;
+        }
+
+        private static string hashMD5Base64(MD5 md5Hash, string input)
+        {
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return Convert.ToBase64String(data, 0, data.Length);
         }
     }
 }

@@ -12,6 +12,13 @@ namespace CmsData
 {
     public partial class CMSDataContext
     {
+        private static List<string> SPECIAL_FORMATS = new List<string>() { "http://votelink", "http://registerlink", "http://rsvplink", "http://volsublink", "http://volreqlink" };
+
+        public static bool IsSpecialLink(string link)
+        {
+            return SPECIAL_FORMATS.Contains(link);
+        }
+
         public List<MailAddress> DoReplacements(ref string text, Person p, EmailQueueTo emailqueueto)
         {
             if (text == null)
