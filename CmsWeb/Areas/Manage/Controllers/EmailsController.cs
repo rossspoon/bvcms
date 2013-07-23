@@ -47,6 +47,12 @@ namespace CmsWeb.Areas.Manage.Controllers
 			return Content("not authorized");
 		}
 
+        public ActionResult Tracking(int id)
+        {
+            ViewBag.emailID = id;
+            return View();
+        }
+
 		[Authorize(Roles = "Developer")]
 		public ActionResult Requeue(int id)
 		{
