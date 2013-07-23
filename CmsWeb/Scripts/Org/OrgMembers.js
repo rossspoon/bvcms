@@ -14,7 +14,7 @@
     }
     $(".bt").button();
     $("select").css("width", "100%");
-    $("#refresh").click($.RefreshPage);
+    $("#form").delegate("#refresh", "click", $.RefreshPage);
     $("#form").delegate('#ProgId', "change", $.RefreshPage);
     $("#form").delegate('#DivId', "change", $.RefreshPage);
     $("#form").delegate('#SourceId', "change", $.RefreshPage);

@@ -1083,6 +1083,7 @@
     </Content>
     <Content Include="Docs\vvv.md" />
     <Content Include="Docs\test.md" />
+    <Content Include="Docs\ideas.md" />
     <None Include="Properties\PublishProfiles\production.pubxml" />
     <None Include="Scripts\Bootstrap\bootstrap-bundle.js.bundle" />
     <Content Include="Scripts\Bootstrap\bootstrap-bundle.min.js.map">
