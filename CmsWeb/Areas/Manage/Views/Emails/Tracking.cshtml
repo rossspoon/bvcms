@@ -13,15 +13,15 @@
 <h2>Tracked Links</h2>
 <table class="grid" style="width:100%">
 <thead>
-<tr><th>Created</th><th>Link</th><th style="text-align:center">Count</th><th>Hash</th></tr>
+<tr><th style="text-align:center">Created</th><th style="text-align:center">Count</th><th>Link</th><th>Hash</th></tr>
 </thead>
 <tbody>
 @foreach(var link in links)
 {
     <tr>
-        <td>@link.Created.Value.ToString("g")</td>
-        <td><a href="@link.Link">@link.Link</a></td>
+        <td style="text-align:center; width:1%; white-space:nowrap;">@link.Created.Value.ToString("g")</td>
         <td style="text-align:center">@link.Count</td>
+        <td><a href="@link.Link">@link.Link</a></td>
         <td>@link.Hash</td>
     </tr>    
 }

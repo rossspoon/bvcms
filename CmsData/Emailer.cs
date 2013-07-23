@@ -395,6 +395,7 @@ namespace CmsData
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml( input );
+            int linkIndex = 0;
 
             using (MD5 md5Hash = MD5.Create())
             {
@@ -403,7 +404,7 @@ namespace CmsData
                     HtmlAttribute att = link.Attributes["href"];
                     if( IsSpecialLink( att.Value ) ) continue;
 
-                    var hash = hashMD5Base64(md5Hash, att.Value + DateTime.Now.ToString("o"));
+                    var hash = hashMD5Base64(md5Hash, att.Value + DateTime.Now.ToString("o") + linkIndex );
 
                     var emailLink = new EmailLink();
                     emailLink.Created = DateTime.Now;
@@ -414,6 +415,8 @@ namespace CmsData
                     DbUtil.Db.SubmitChanges();
 
                     att.Value = CLICK_TRACK.Fmt(Util.Host, HttpUtility.UrlEncode(hash));
+
+                    linkIndex++;
 
                     //System.Diagnostics.Debug.WriteLine(att.Value);
                     //System.Diagnostics.Debug.WriteLine("Unhashed: " + att.Value + DateTime.Now.ToString("o"));
