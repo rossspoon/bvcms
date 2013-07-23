@@ -247,51 +247,23 @@ namespace CmsWeb.Models
              * we need to notify them */
             if (person.EmailAddress.HasValue() || person.EmailAddress2.HasValue())
             {
-                var c = DbUtil.Content("DiffEmailMessage");
-                if (c == null)
-                {
-                    c = new Content();
-                    c.Body = @"Hi {name},
-<p>You registered for {org} using a different email address than the one we have on record.
-It is important that you call the church <strong>{phone}</strong> to update our records
-so that you will receive future important notices regarding this registration.</p>";
-                    c.Title = "{org}, different email address than one on record";
-                }
-                var msg = c.Body.Replace("{name}", person.Name, ignoreCase: true);
+                var msg = DbUtil.Db.ContentHtml("DiffEmailMessage", Resource1.DiffEmailMessage);
+                msg = msg.Replace("{name}", person.Name, ignoreCase: true);
                 msg = msg.Replace("{first}", person.PreferredName, ignoreCase: true);
                 msg = msg.Replace("{org}", orgname, ignoreCase: true);
                 msg = msg.Replace("{phone}", phone.FmtFone(), ignoreCase: true);
-                var subj = c.Title.Replace("{org}", orgname, ignoreCase: true);
-                DbUtil.Db.Email(fromemail,
-                    person, Util.ToMailAddressList(regemail),
-                    subj, msg, false);
+                var subj = "{0}, different email address than one on record".Fmt(orgname);
+                DbUtil.Db.Email(fromemail, person, Util.ToMailAddressList(regemail), subj, msg, false);
             }
             else
             {
-                var c = DbUtil.Content("NoEmailMessage");
-                if (c == null)
-                {
-                    c = new Content();
-                    c.Body = @"Hi {name},
-<p>You registered for {org}, and we found your record, 
-but there was no email address on your existing record in our database.
-If you would like for us to update your record with this email address or another,
-Please contact the church at <strong>{phone}</strong> to let us know.
-It is important that we have your email address so that
-you will receive future important notices regarding this registration.
-But we won't add that to your record without your permission.
-
-Thank you</p>";
-                    c.Title = "{org}, no email on your record";
-                }
-                var msg = c.Body.Replace("{name}", person.Name);
+                var msg = DbUtil.Db.ContentHtml("NoEmailMessage", Resource1.NoEmailMessage);
+                msg = msg.Replace("{name}", person.Name);
                 msg = msg.Replace("{first}", person.PreferredName, ignoreCase: true);
                 msg = msg.Replace("{org}", orgname, ignoreCase: true);
                 msg = msg.Replace("{phone}", phone.FmtFone(), ignoreCase: true);
-                var subj = c.Title.Replace("{org}", orgname, ignoreCase: true);
-                DbUtil.Db.Email(fromemail,
-                    person, Util.ToMailAddressList(regemail),
-                    subj, msg, false);
+                var subj = "{0}, no email on your record".Fmt(orgname);
+                DbUtil.Db.Email(fromemail, person, Util.ToMailAddressList(regemail), subj, msg, false);
             }
         }
         private static string trim(string s)
