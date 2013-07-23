@@ -966,6 +966,7 @@
     <Content Include="Areas\People\Views\Person\AttendanceGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\DoNotContact.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\DoNotContact.cshtml" />
+    <Content Include="Areas\Public\Views\ExternalServices\BVCMSSupportLink.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
