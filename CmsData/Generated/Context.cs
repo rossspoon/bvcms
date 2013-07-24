@@ -214,6 +214,10 @@ namespace CmsData
         partial void UpdateDuplicatesRun(DuplicatesRun instance);
         partial void DeleteDuplicatesRun(DuplicatesRun instance);
         
+        partial void InsertEmailLink(EmailLink instance);
+        partial void UpdateEmailLink(EmailLink instance);
+        partial void DeleteEmailLink(EmailLink instance);
+        
         partial void InsertEmailLog(EmailLog instance);
         partial void UpdateEmailLog(EmailLog instance);
         partial void DeleteEmailLog(EmailLog instance);
@@ -947,6 +951,12 @@ namespace CmsData
 		public Table< DuplicatesRun> DuplicatesRuns
 		{
 			get	{ return this.GetTable< DuplicatesRun>(); }
+
+		}
+
+		public Table< EmailLink> EmailLinks
+		{
+			get	{ return this.GetTable< EmailLink>(); }
 
 		}
 

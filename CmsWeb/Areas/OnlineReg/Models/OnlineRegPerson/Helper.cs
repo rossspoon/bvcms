@@ -244,7 +244,8 @@ namespace CmsWeb.Models
                 }
             }
             if (!phone.HasValue())
-                phone = DbUtil.Db.Setting("ChurchPhone", "Need ChurchPhone in setting");
+                phone = DbUtil.Db.Setting("ChurchPhone", "(sorry, no phone # in settings)");
+
             /* so now we have a different email address than the one on record
              * we need to notify them */
             if (person.EmailAddress.HasValue() || person.EmailAddress2.HasValue())
@@ -253,7 +254,7 @@ namespace CmsWeb.Models
                 msg = msg.Replace("{name}", person.Name, ignoreCase: true);
                 msg = msg.Replace("{first}", person.PreferredName, ignoreCase: true);
                 msg = msg.Replace("{org}", orgname, ignoreCase: true);
-                msg = msg.Replace("{phone}", phone.HasValue() ? phone.FmtFone() : DbUtil.Db.Setting("ChurchPhone", "Need a church phone in setting"), ignoreCase: true);
+                msg = msg.Replace("{phone}", phone, ignoreCase: true);
                 var subj = "{0}, different email address than one on record".Fmt(orgname);
                 DbUtil.Db.Email(fromemail, person, Util.ToMailAddressList(regemail), subj, msg, false);
             }

@@ -967,6 +967,7 @@
     <Content Include="Areas\People\Views\Person\EditorTemplates\DoNotContact.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\DoNotContact.cshtml" />
     <Content Include="Areas\Public\Views\ExternalServices\BVCMSSupportLink.cshtml" />
+    <Content Include="Areas\Manage\Views\Emails\Tracking.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
