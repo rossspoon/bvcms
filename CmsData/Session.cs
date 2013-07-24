@@ -107,7 +107,7 @@ namespace CmsData
             get
             {
                 var pid = Util.UserPeopleId;
-                var a = CurrentTag.Split(':');
+                var a = CurrentTag.Split('!');
                 if (a.Length > 1)
                     pid = a[0].ToInt2();
                 return pid;
@@ -118,7 +118,7 @@ namespace CmsData
             get
             {
                 string tag = CurrentTag;
-                var a = tag.Split(':');
+                var a = tag.Split('!');
                 if (a.Length == 2)
                     return a[1];
                 return tag;

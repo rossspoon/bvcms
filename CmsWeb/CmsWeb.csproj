@@ -924,8 +924,9 @@
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
     <Content Include="Scripts\js\Support.js" />
-    <Content Include="Scripts\js\Tags.min.js">
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.min.js">
       <DependentUpon>Tags.js</DependentUpon>
+      <Link>Scripts\js\Tags.min.js</Link>
     </Content>
     <Content Include="Scripts\js\TestAPI.min.js">
       <DependentUpon>TestAPI.js</DependentUpon>
@@ -1046,8 +1047,9 @@
     <Content Include="Scripts\js\RegSettings.min.js.map">
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\js\Tags.min.js.map">
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.min.js.map">
       <DependentUpon>Tags.js</DependentUpon>
+      <Link>Scripts\js\Tags.min.js.map</Link>
     </Content>
     <Content Include="Scripts\js\TestAPI.min.js.map">
       <DependentUpon>TestAPI.js</DependentUpon>
@@ -1872,7 +1874,9 @@
     <Content Include="Scripts\js\RegSettings.js" />
     <Content Include="Scripts\Search\SavedQuery.js" />
     <Content Include="Scripts\Dialog\SearchUsers.js" />
-    <Content Include="Scripts\js\Tags.js" />
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.js">
+      <Link>Scripts\js\Tags.js</Link>
+    </Content>
     <Content Include="Scripts\OnlineReg\OnlineRegPayment.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Global.asax" />
