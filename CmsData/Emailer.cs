@@ -397,24 +397,26 @@ namespace CmsData
 
         private static string createClickTracking( int emailID, string input )
         {
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
             doc.LoadHtml( input );
             int linkIndex = 0;
 
-            using (MD5 md5Hash = MD5.Create())
+            using (var md5Hash = MD5.Create())
             {
                 foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
                 {
-                    HtmlAttribute att = link.Attributes["href"];
+                    var att = link.Attributes["href"];
                     if( IsSpecialLink( att.Value ) ) continue;
 
                     var hash = hashMD5Base64(md5Hash, att.Value + DateTime.Now.ToString("o") + linkIndex );
 
-                    var emailLink = new EmailLink();
-                    emailLink.Created = DateTime.Now;
-                    emailLink.EmailID = emailID;
-                    emailLink.Hash = hash;
-                    emailLink.Link = att.Value;
+                    var emailLink = new EmailLink
+                        {
+                            Created = DateTime.Now,
+                            EmailID = emailID,
+                            Hash = hash,
+                            Link = att.Value
+                        };
                     DbUtil.Db.EmailLinks.InsertOnSubmit(emailLink);
                     DbUtil.Db.SubmitChanges();
 
