@@ -192,8 +192,12 @@ namespace CmsData
             EmailQueues.InsertOnSubmit(emailqueue);
             SubmitChanges();
 
-            emailqueue.Body = createClickTracking( emailqueue.Id, body );
-            SubmitChanges();
+            if (body.Contains("{tracklinks}", true))
+            {
+                body = body.Replace("{tracklinks}", "", ignoreCase: true);
+                emailqueue.Body = createClickTracking(emailqueue.Id, body);
+                SubmitChanges();
+            }
 
             if (body.Contains("http://publiclink", ignoreCase: true))
             {
