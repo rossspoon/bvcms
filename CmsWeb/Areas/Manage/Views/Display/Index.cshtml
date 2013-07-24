@@ -158,7 +158,7 @@
 		        <tr>
 			        <td>
 				        <input draft="yes" type="checkbox" name="draftID" value="@item.id" />
-                        <b>@Html.ActionLink(item.name, "ContentEdit", new { id = item.id })</b><br />
+                        <b>@Html.ActionLink(item.name.HasValue() ? item.name : "notnamed", "ContentEdit", new { id = item.id })</b><br />
                         <span style="padding-left:3em; font-size:0.8em">
                         @item.created.FormatDate()
                         - @item.owner
