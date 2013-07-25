@@ -64,6 +64,9 @@
 		<th>Age </th>
 		<th class="left"><a href='#' class="sortable">Request</a></th>
 		<th class="left" width="25%"><a href="#" class="sortable">Groups</a></th>
+        @if( Model.isRecreationTeam ) {
+            <th class="center">Score</th>
+        }
 	</tr>
 	</thead>
 	<tbody>

@@ -22,12 +22,24 @@ namespace CmsWeb.Models
         public bool notgroupactive { get; set; }
         public string sort { get; set; }
         public int tagfilter { get; set; }
+        public bool isRecreationTeam { get; set; }
+        public string OrgName { get; set; }
 
+        public OrgGroupsModel( int id )
+        {
+            orgid = id;
+
+            var org = DbUtil.Db.LoadOrganizationById(orgid);
+            isRecreationTeam = org.IsRecreationTeam;
+            OrgName = org.OrganizationName;
+        }
+
+        /*
         public string OrgName
         {
             get { return DbUtil.Db.LoadOrganizationById(orgid).OrganizationName; }
         }
-        
+        // */
 
         public int memtype { get; set; }
 
@@ -151,6 +163,7 @@ namespace CmsWeb.Models
                          ischecked = ck,
                          Gender = p.Gender.Description,
                          Request = m.Request,
+                         Score = m.Score,
                          Groups = from mt in m.OrgMemMemTags
                                   let ck2 = mt.MemberTag.Name.StartsWith(ingroup)
                                   orderby ck2 descending, mt.MemberTag.Name
@@ -201,6 +214,7 @@ namespace CmsWeb.Models
             public string MemberStatus { get; set; }
             public string Gender { get; set; }
             public string Request { get; set; }
+            public int Score { get; set; }
             public IEnumerable<GroupInfo> Groups { get; set; }
             public HtmlString GroupsDisplay
             {

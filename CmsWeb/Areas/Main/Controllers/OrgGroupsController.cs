@@ -13,10 +13,7 @@ namespace CmsWeb.Areas.Main.Controllers
     {
         public ActionResult Index(int id)
         {
-            var m = new OrgGroupsModel
-            {
-                orgid = id
-            };
+            var m = new OrgGroupsModel( id );
             return View(m);
         }
         [HttpPost]
@@ -106,6 +103,23 @@ namespace CmsWeb.Areas.Main.Controllers
                 ViewData["groupid"] = m.groupid.ToString();
             }
             return View("Form", m);
+        }
+
+        public ActionResult UpdateScore(string id, int value)
+        {
+            string[] split = id.Split('-');
+            int orgID = split[0].ToInt();
+            int peopleID = split[1].ToInt();
+
+            var member = (from e in DbUtil.Db.OrganizationMembers
+                          where e.OrganizationId == orgID
+                          where e.PeopleId == peopleID
+                          select e).SingleOrDefault();
+
+            member.Score = value;
+            DbUtil.Db.SubmitChanges();
+
+            return Content(value.ToString());
         }
     }
 }

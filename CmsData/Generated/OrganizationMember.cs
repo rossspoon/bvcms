@@ -65,6 +65,8 @@ namespace CmsData
 		
 		private int? _TranId;
 		
+		private int _Score;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -155,6 +157,9 @@ namespace CmsData
 		
 		partial void OnTranIdChanging(int? value);
 		partial void OnTranIdChanged();
+		
+		partial void OnScoreChanging(int value);
+		partial void OnScoreChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -384,7 +389,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendStr", UpdateCheck=UpdateCheck.Never, Storage="_AttendStr", DbType="varchar(200)")]
+		[Column(Name="AttendStr", UpdateCheck=UpdateCheck.Never, Storage="_AttendStr", DbType="nvarchar(200)")]
 		public string AttendStr
 		{
 			get { return this._AttendStr; }
@@ -472,7 +477,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="UserData", UpdateCheck=UpdateCheck.Never, Storage="_UserData", DbType="varchar")]
+		[Column(Name="UserData", UpdateCheck=UpdateCheck.Never, Storage="_UserData", DbType="nvarchar")]
 		public string UserData
 		{
 			get { return this._UserData; }
@@ -516,7 +521,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Request", UpdateCheck=UpdateCheck.Never, Storage="_Request", DbType="varchar(140)")]
+		[Column(Name="Request", UpdateCheck=UpdateCheck.Never, Storage="_Request", DbType="nvarchar(140)")]
 		public string Request
 		{
 			get { return this._Request; }
@@ -538,7 +543,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_ShirtSize", DbType="varchar(20)")]
+		[Column(Name="ShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_ShirtSize", DbType="nvarchar(20)")]
 		public string ShirtSize
 		{
 			get { return this._ShirtSize; }
@@ -626,7 +631,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RegisterEmail", UpdateCheck=UpdateCheck.Never, Storage="_RegisterEmail", DbType="varchar(80)")]
+		[Column(Name="RegisterEmail", UpdateCheck=UpdateCheck.Never, Storage="_RegisterEmail", DbType="nvarchar(80)")]
 		public string RegisterEmail
 		{
 			get { return this._RegisterEmail; }
@@ -670,7 +675,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PayLink", UpdateCheck=UpdateCheck.Never, Storage="_PayLink", DbType="varchar(100)")]
+		[Column(Name="PayLink", UpdateCheck=UpdateCheck.Never, Storage="_PayLink", DbType="nvarchar(100)")]
 		public string PayLink
 		{
 			get { return this._PayLink; }
@@ -710,6 +715,28 @@ namespace CmsData
 					this._TranId = value;
 					this.SendPropertyChanged("TranId");
 					this.OnTranIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Score", UpdateCheck=UpdateCheck.Never, Storage="_Score", DbType="int NOT NULL")]
+		public int Score
+		{
+			get { return this._Score; }
+
+			set
+			{
+				if (this._Score != value)
+				{
+				
+                    this.OnScoreChanging(value);
+					this.SendPropertyChanging();
+					this._Score = value;
+					this.SendPropertyChanged("Score");
+					this.OnScoreChanged();
 				}
 
 			}

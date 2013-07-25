@@ -11,6 +11,17 @@
     {
         width: 98%;
     }
+
+    #scoreTracker {
+        position:fixed;
+        top:-1px;
+        right:225px;
+        width:200px;
+        background-color: #F8F8F8;
+        border: 1px solid #808183;
+        border-radius: 0 0 10px 10px;
+        padding: 1%;
+    }
 </style>
 }
 @section scripts
@@ -20,5 +31,29 @@
 <form id="groupsform" action="/OrgGroups/Update" method="post">
 @Html.Partial("Form", Model)
 </form>
-
-
+@if( Model.isRecreationTeam ) {
+<div id="scoreTracker" style="display:none;">
+    <div style="text-align:center;">
+        <b>Team Score</b>
+        <hr />
+    </div>
+    <table>
+        <tr>
+            <td width="40%" class="right"><span id="playerCount">0</span></td>
+            <td> &nbsp; Players</td>
+        </tr>
+        <tr>
+            <td class="right"><span id="lastScore">0</span></td>
+            <td> &nbsp; Last Score</td>
+        </tr>
+        <tr>
+            <td class="right"><span id="avgScore">0</span></td>
+            <td> &nbsp; Average Score</td>
+        </tr>
+        <tr>
+            <td class="right"><span id="totalScore">0</span></td>
+            <td> &nbsp; Total Score</td>
+        </tr>
+    </table>
+</div>
+}

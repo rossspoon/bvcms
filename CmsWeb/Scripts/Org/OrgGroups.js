@@ -48,6 +48,7 @@
 
     $("body").on("click", '#SelectAll', function () {
         $("input[name='list']").attr('checked', $(this).attr('checked'));
+        checkChanged();
     });
     $("body").on('click', 'a.display', function (ev) {
         ev.preventDefault();
@@ -106,6 +107,7 @@
     $("body").on("click", "input[name = 'list']", function (e) {
         if (!lastChecked) {
             lastChecked = this;
+            checkChanged();
             return;
         }
         if (e.shiftKey) {
@@ -114,7 +116,55 @@
             $("input[name = 'list']").slice(Math.min(start, end), Math.max(start, end) + 1).attr('checked', lastChecked.checked);
         }
         lastChecked = this;
+        checkChanged();
     });
 
-});
+    $(".clickEdit").editable("/OrgGroups/UpdateScore", {
+        indicator: "<img src='/images/loading.gif'>",
+        width: 40,
+        height: 22,
+        tooltip: "Click to edit...",
+        select : true,
+        callback: updateScore
+    });
 
+    var scoreTrackerShowing = false;
+
+    function updateScore(value, settings) {
+        var checkID = $(this).attr("peopleID");
+        $("#" + checkID).attr("score", value);
+        checkChanged();
+    }
+
+    if ($("#scoreTracker") !== undefined) {
+        $("#scoreTracker").draggable({ axis: "x" });
+    }
+
+    function checkChanged() {
+        // Check to see if tracker is enabled, if not we don't need this other stuff
+        if ($("#scoreTracker") === undefined) return;
+
+        var checkedList = $("input[name='list']:checked");
+        if (checkedList.length > 0) {
+
+            var totalScore = 0;
+            for (var iX = 0; iX < checkedList.length; iX++) totalScore += Number($(checkedList[iX]).attr("score"));
+
+            $("#playerCount").html(checkedList.length);
+            $("#lastScore").html($(lastChecked).attr("score"));
+            $("#avgScore").html(Number(totalScore / checkedList.length).toFixed(3));
+            $("#totalScore").html(totalScore);
+
+
+            if (!scoreTrackerShowing) {
+                scoreTrackerShowing = true;
+                $("#scoreTracker").slideDown(200);
+            }
+        } else {
+            scoreTrackerShowing = false;
+            $("#scoreTracker").slideUp(200);
+        }
+    }
+
+    checkChanged();
+});
