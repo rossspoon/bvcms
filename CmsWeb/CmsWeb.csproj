@@ -165,9 +165,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NotFoundMvc">
-      <HintPath>..\packages\NotFoundMvc.1.0.0\lib\net40\NotFoundMvc.dll</HintPath>
-    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI.1.2.5\lib\net40\NPOI.dll</HintPath>
     </Reference>

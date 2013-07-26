@@ -18,52 +18,52 @@ namespace CmsWeb.Areas.Manage.Controllers
 {
     public class AccountController : CmsControllerNoHttps
     {
-		[MyRequireHttps]
+        [MyRequireHttps]
         [HttpPost]
         public ActionResult KeepAlive()
         {
             return Content("alive");
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         [HttpPost]
         public ActionResult CKEditorUpload(string CKEditorFuncNum)
         {
             var m = new AccountModel();
-			string baseurl = null;
-			if (Request.Files.Count == 0)
-				return Content("");
-			var file = Request.Files[0];
-			var fn = "{0}.{1:yyMMddHHmm}.{2}".Fmt(DbUtil.Db.Host, DateTime.Now, 
-				m.CleanFileName(Path.GetFileName(file.FileName)));
-			var error = string.Empty;
-			var rackspacecdn = ConfigurationManager.AppSettings["RackspaceUrlCDN"];
+            string baseurl = null;
+            if (Request.Files.Count == 0)
+                return Content("");
+            var file = Request.Files[0];
+            var fn = "{0}.{1:yyMMddHHmm}.{2}".Fmt(DbUtil.Db.Host, DateTime.Now,
+                m.CleanFileName(Path.GetFileName(file.FileName)));
+            var error = string.Empty;
+            var rackspacecdn = ConfigurationManager.AppSettings["RackspaceUrlCDN"];
 
-			if (rackspacecdn.HasValue())
-			{
-				baseurl = rackspacecdn;
-				var username = ConfigurationManager.AppSettings["RackspaceUser"];
-				var key = ConfigurationManager.AppSettings["RackspaceKey"];
+            if (rackspacecdn.HasValue())
+            {
+                baseurl = rackspacecdn;
+                var username = ConfigurationManager.AppSettings["RackspaceUser"];
+                var key = ConfigurationManager.AppSettings["RackspaceKey"];
                 var cloudIdentity = new CloudIdentity() { APIKey = key, Username = username };
                 var cloudFilesProvider = new CloudFilesProvider(cloudIdentity);
                 cloudFilesProvider.CreateObject("AllFiles", file.InputStream, fn);
-			}
-			else // local server
-			{
-				baseurl = "{0}://{1}/Upload/".Fmt(Request.Url.Scheme, Request.Url.Authority);
-				try
-				{
-					string path = Server.MapPath("/Upload/");
-					path += fn;
+            }
+            else // local server
+            {
+                baseurl = "{0}://{1}/Upload/".Fmt(Request.Url.Scheme, Request.Url.Authority);
+                try
+                {
+                    string path = Server.MapPath("/Upload/");
+                    path += fn;
 
-					path = m.GetNewFileName(path);
-					file.SaveAs(path);
-				}
-				catch (Exception ex)
-				{
-					error = ex.Message;
-					baseurl = string.Empty;
-				}
-			}
+                    path = m.GetNewFileName(path);
+                    file.SaveAs(path);
+                }
+                catch (Exception ex)
+                {
+                    error = ex.Message;
+                    baseurl = string.Empty;
+                }
+            }
             return Content(string.Format(
 "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction( {0}, '{1}', '{2}' );</script>",
 CKEditorFuncNum, baseurl + fn, error));
@@ -73,7 +73,7 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             var y = 2;
             var z = 0;
-            var x = 2/z;
+            var x = 2 / z;
             return Content("error");
         }
 
@@ -82,17 +82,27 @@ CKEditorFuncNum, baseurl + fn, error));
             ViewBag.Message = e;
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult LogOn()
         {
-		    if (!DbUtil.DatabaseExists())
-		        return Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
+            if (!DbUtil.DatabaseExists())
+                return Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
 
-		    if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
-                    return Content("Site is disabled, contact {0} for help".Fmt(Util.SendErrorsTo()[0].Address));
+            if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
+                return Content("Site is disabled, contact {0} for help".Fmt(Util.SendErrorsTo()[0].Address));
 
             if (!User.Identity.IsAuthenticated)
             {
+#if DEBUG
+                var username = WebConfigurationManager.AppSettings["DebugUser"];
+                if (username.HasValue())
+                {
+                    AccountModel.SetUserInfo(username, Session);
+                    FormsAuthentication.SetAuthCookie(username, false);
+                    Util.FormsBasedAuthentication = true;
+                    return Redirect("/");
+                }
+#endif
                 string user = AccountModel.GetValidToken(Request.QueryString["otltoken"]);
                 if (user.HasValue())
                 {
@@ -107,7 +117,7 @@ CKEditorFuncNum, baseurl + fn, error));
             }
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         [HttpPost]
         public ActionResult LogOn(string userName, string password, string returnUrl)
         {
@@ -138,14 +148,14 @@ CKEditorFuncNum, baseurl + fn, error));
                 return Redirect(returnUrl);
             return Redirect("/");
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-			Session.Abandon();
+            Session.Abandon();
             return Redirect("/");
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult ForgotUsername(string email)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -183,7 +193,7 @@ The bvCMS Team</p>
             return RedirectToAction("RequestUsername");
 
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult ForgotPassword(string username)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -197,53 +207,53 @@ The bvCMS Team</p>
 
             return RedirectToAction("RequestPassword");
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult CreateAccount(string id)
         {
             if (!id.HasValue())
-				return Content("invalid URL"); 
+                return Content("invalid URL");
 
             var pid = AccountModel.GetValidToken(id).ToInt();
             var p = DbUtil.Db.LoadPersonById(pid);
             if (p == null)
                 return View("LinkUsed");
-		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
-		    if ((p.Age ?? 16) < minage)
+            var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+            if ((p.Age ?? 16) < minage)
                 return Content("must be Adult ({0} or older)".Fmt(minage));
             var user = MembershipService.CreateUser(DbUtil.Db, pid);
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);
 
-        	ViewBag.user = user.Username;
-			ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
-			ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
-			ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
-			ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+            ViewBag.user = user.Username;
+            ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
+            ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+            ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+            ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
 
             Util.FormsBasedAuthentication = true;
             return View("SetPassword");
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult RequestPassword()
         {
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult RequestUsername()
         {
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         [Authorize]
         public ActionResult ChangePassword()
         {
             ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
-        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
-        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
-        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+            ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+            ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+            ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         [HttpGet]
         public ActionResult SetPassword(Guid? id)
         {
@@ -253,29 +263,29 @@ The bvCMS Team</p>
             if (user == null || (user.ResetPasswordExpires.HasValue && user.ResetPasswordExpires < DateTime.Now))
                 return View("LinkUsed");
             user.ResetPasswordCode = null;
-			user.IsLockedOut = false;
-			user.FailedPasswordAttemptCount = 0;
+            user.IsLockedOut = false;
+            user.FailedPasswordAttemptCount = 0;
             DbUtil.Db.SubmitChanges();
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);
             ViewBag.user = user.Username;
             ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
-        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
-        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
-        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+            ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+            ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+            ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
             Util.FormsBasedAuthentication = true;
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         [HttpPost]
         [Authorize]
         public ActionResult SetPassword(string newPassword, string confirmPassword)
         {
             ViewBag.user = User.Identity.Name;
             ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
-        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
-        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
-        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+            ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+            ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+            ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
 
             if (!ValidateChangePassword("na", newPassword, confirmPassword))
                 return View();
@@ -294,16 +304,16 @@ The bvCMS Team</p>
             }
             return View();
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
             ViewBag.user = User.Identity.Name;
             ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
-        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
-        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
-        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+            ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+            ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+            ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
 
             if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
                 return View();
@@ -324,12 +334,12 @@ The bvCMS Team</p>
                 return View();
             }
         }
-		[MyRequireHttps]
+        [MyRequireHttps]
         public ActionResult ChangePasswordSuccess()
         {
-        	var rd = DbUtil.Db.Setting("RedirectAfterPasswordChange", "");
-			if (rd.HasValue())
-				return Redirect(rd);
+            var rd = DbUtil.Db.Setting("RedirectAfterPasswordChange", "");
+            if (rd.HasValue())
+                return Redirect(rd);
             return View();
         }
         private bool ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)
