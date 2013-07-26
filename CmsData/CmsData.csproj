@@ -338,6 +338,7 @@
     <Compile Include="Generated\ActivityOld.cs" />
     <Compile Include="Generated\BuildingAccessType.cs" />
     <Compile Include="Generated\CheckInAccessType.cs" />
+    <Compile Include="Generated\EmailLink.cs" />
     <Compile Include="Generated\Functions\CheckinFamilyMember.cs" />
     <Compile Include="Generated\Functions\CheckinMatch.cs" />
     <Compile Include="Generated\Functions\ConsecutiveAbsent.cs" />

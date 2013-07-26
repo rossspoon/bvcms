@@ -408,7 +408,7 @@ namespace CmsWeb.Code
             if (UserPeopleId == Util.UserPeopleId)
                 DbUtil.Db.TagCurrent(); // make sure the current tag exists
             else
-                ownerstring = UserPeopleId + ":";
+                ownerstring = UserPeopleId + "!";
 
             var q1 = from t in DbUtil.Db.Tags
                      where t.PeopleId == UserPeopleId
@@ -429,8 +429,8 @@ namespace CmsWeb.Code
                      select new CodeValueItem
                      {
                          Id = t.Id,
-                         Code = t.Id + "," + t.PeopleId + ":" + t.Name,
-                         Value = op.Name + ":" + t.Name
+                         Code = t.Id + "," + t.PeopleId + "!" + t.Name,
+                         Value = op.Name + "!" + t.Name
                      };
             var list = q1.ToList();
             list.AddRange(q2);

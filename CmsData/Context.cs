@@ -585,7 +585,7 @@ namespace CmsData
 			var tag = FetchTag(tagname, OwnerId, tagtypeid);
 			if (tag == null)
 			{
-				tag = new Tag { Name = tagname, PeopleId = OwnerId, TypeId = tagtypeid };
+				tag = new Tag { Name = tagname.Replace('!','*'), PeopleId = OwnerId, TypeId = tagtypeid };
 				Tags.InsertOnSubmit(tag);
 				SubmitChanges();
 			}

@@ -39,8 +39,10 @@
                         </div>
                         @if (access)
                         {
-                            <strong>Active Tag:</strong>
-                            <div id="activetag">@Util2.CurrentTagName</div>
+                            <div>
+                                <strong>Active Tag:</strong>
+                                <span id="activetag">@Util2.CurrentTagName</span>
+                            </div>
                             <input id="SearchText" class="trigger-dropdown" type="text" default="Search" value="Search" />
                             <div id="SearchResults" style="text-align: left;"></div>
                         }

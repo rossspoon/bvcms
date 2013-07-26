@@ -165,9 +165,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NotFoundMvc">
-      <HintPath>..\packages\NotFoundMvc.1.0.0\lib\net40\NotFoundMvc.dll</HintPath>
-    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI.1.2.5\lib\net40\NPOI.dll</HintPath>
     </Reference>
@@ -924,8 +921,9 @@
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
     <Content Include="Scripts\js\Support.js" />
-    <Content Include="Scripts\js\Tags.min.js">
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.min.js">
       <DependentUpon>Tags.js</DependentUpon>
+      <Link>Scripts\js\Tags.min.js</Link>
     </Content>
     <Content Include="Scripts\js\TestAPI.min.js">
       <DependentUpon>TestAPI.js</DependentUpon>
@@ -967,6 +965,7 @@
     <Content Include="Areas\People\Views\Person\EditorTemplates\DoNotContact.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\DoNotContact.cshtml" />
     <Content Include="Areas\Public\Views\ExternalServices\BVCMSSupportLink.cshtml" />
+    <Content Include="Areas\Manage\Views\Emails\Tracking.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
@@ -1045,8 +1044,9 @@
     <Content Include="Scripts\js\RegSettings.min.js.map">
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\js\Tags.min.js.map">
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.min.js.map">
       <DependentUpon>Tags.js</DependentUpon>
+      <Link>Scripts\js\Tags.min.js.map</Link>
     </Content>
     <Content Include="Scripts\js\TestAPI.min.js.map">
       <DependentUpon>TestAPI.js</DependentUpon>
@@ -1083,6 +1083,7 @@
     </Content>
     <Content Include="Docs\vvv.md" />
     <Content Include="Docs\test.md" />
+    <Content Include="Docs\ideas.md" />
     <None Include="Properties\PublishProfiles\production.pubxml" />
     <None Include="Scripts\Bootstrap\bootstrap-bundle.js.bundle" />
     <Content Include="Scripts\Bootstrap\bootstrap-bundle.min.js.map">
@@ -1870,7 +1871,9 @@
     <Content Include="Scripts\js\RegSettings.js" />
     <Content Include="Scripts\Search\SavedQuery.js" />
     <Content Include="Scripts\Dialog\SearchUsers.js" />
-    <Content Include="Scripts\js\Tags.js" />
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.js">
+      <Link>Scripts\js\Tags.js</Link>
+    </Content>
     <Content Include="Scripts\OnlineReg\OnlineRegPayment.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Global.asax" />

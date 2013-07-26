@@ -1,0 +1,28 @@
+﻿@using CmsData;
+@{
+    ViewBag.Title = "Tracking";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+    int emailID = ViewBag.emailID;
+    
+    var links = from e in DbUtil.Db.EmailLinks
+                where e.EmailID == emailID
+                select e;
+}
+<a href="/Manage/Emails/Details/@emailID">Back to Details</a><br />
+<br />
+<h2>Tracked Links</h2>
+<table class="grid">
+<thead>
+<tr><th style="text-align:center">Created</th><th style="text-align:center">Count</th><th>Link</th></tr>
+</thead>
+<tbody>
+@foreach(var link in links)
+{
+    <tr>
+        <td style="text-align:center;">@link.Created.Value.ToString("g")</td>
+        <td style="text-align:center">@link.Count</td>
+        <td><a href="@link.Link">@link.Link</a></td>
+    </tr>    
+}
+</tbody>
+</table>

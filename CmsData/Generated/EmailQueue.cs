@@ -46,6 +46,8 @@ namespace CmsData
 		private string _Error;
 		
    		
+   		private EntitySet< EmailLink> _EmailLinks;
+		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
    		private EntitySet< EmailResponse> _EmailResponses;
@@ -105,6 +107,8 @@ namespace CmsData
     #endregion
 		public EmailQueue()
 		{
+			
+			this._EmailLinks = new EntitySet< EmailLink>(new Action< EmailLink>(this.attach_EmailLinks), new Action< EmailLink>(this.detach_EmailLinks)); 
 			
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
 			
@@ -434,6 +438,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_EmailLinks_EmailQueue", Storage="_EmailLinks", OtherKey="EmailID")]
+   		public EntitySet< EmailLink> EmailLinks
+   		{
+   		    get { return this._EmailLinks; }
+
+			set	{ this._EmailLinks.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_EmailQueueTo_EmailQueue", Storage="_EmailQueueTos", OtherKey="Id")]
    		public EntitySet< EmailQueueTo> EmailQueueTos
    		{
@@ -517,6 +531,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_EmailLinks(EmailLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.EmailQueue = this;
+		}
+
+		private void detach_EmailLinks(EmailLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.EmailQueue = null;
+		}
+
+		
 		private void attach_EmailQueueTos(EmailQueueTo entity)
 		{
 			this.SendPropertyChanging();

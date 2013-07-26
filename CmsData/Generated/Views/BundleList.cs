@@ -20,17 +20,9 @@ namespace CmsData.View
 		
 		private string _HeaderType;
 		
-		private DateTime? _PostingDate;
-		
 		private DateTime? _DepositDate;
 		
 		private decimal? _TotalBundle;
-		
-		private decimal? _TotalItems;
-		
-		private int? _ItemCount;
-		
-		private decimal? _TotalNonTaxDed;
 		
 		private int? _FundId;
 		
@@ -38,7 +30,15 @@ namespace CmsData.View
 		
 		private string _Status;
 		
-		private int _Open;
+		private int? _Open;
+		
+		private DateTime? _PostingDate;
+		
+		private decimal? _TotalItems;
+		
+		private int? _ItemCount;
+		
+		private decimal? _TotalNonTaxDed;
 		
 		
 		public BundleList()
@@ -81,23 +81,6 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PostingDate", Storage="_PostingDate", DbType="datetime")]
-		public DateTime? PostingDate
-		{
-			get
-			{
-				return this._PostingDate;
-			}
-
-			set
-			{
-				if (this._PostingDate != value)
-					this._PostingDate = value;
-			}
-
-		}
-
-		
 		[Column(Name="DepositDate", Storage="_DepositDate", DbType="datetime")]
 		public DateTime? DepositDate
 		{
@@ -115,7 +98,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="TotalBundle", Storage="_TotalBundle", DbType="Decimal(38,2)")]
+		[Column(Name="TotalBundle", Storage="_TotalBundle", DbType="Decimal(12,2)")]
 		public decimal? TotalBundle
 		{
 			get
@@ -127,57 +110,6 @@ namespace CmsData.View
 			{
 				if (this._TotalBundle != value)
 					this._TotalBundle = value;
-			}
-
-		}
-
-		
-		[Column(Name="TotalItems", Storage="_TotalItems", DbType="Decimal(38,2)")]
-		public decimal? TotalItems
-		{
-			get
-			{
-				return this._TotalItems;
-			}
-
-			set
-			{
-				if (this._TotalItems != value)
-					this._TotalItems = value;
-			}
-
-		}
-
-		
-		[Column(Name="ItemCount", Storage="_ItemCount", DbType="int")]
-		public int? ItemCount
-		{
-			get
-			{
-				return this._ItemCount;
-			}
-
-			set
-			{
-				if (this._ItemCount != value)
-					this._ItemCount = value;
-			}
-
-		}
-
-		
-		[Column(Name="TotalNonTaxDed", Storage="_TotalNonTaxDed", DbType="Decimal(38,2)")]
-		public decimal? TotalNonTaxDed
-		{
-			get
-			{
-				return this._TotalNonTaxDed;
-			}
-
-			set
-			{
-				if (this._TotalNonTaxDed != value)
-					this._TotalNonTaxDed = value;
 			}
 
 		}
@@ -234,8 +166,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="open", Storage="_Open", DbType="int NOT NULL")]
-		public int Open
+		[Column(Name="open", Storage="_Open", DbType="int")]
+		public int? Open
 		{
 			get
 			{
@@ -246,6 +178,74 @@ namespace CmsData.View
 			{
 				if (this._Open != value)
 					this._Open = value;
+			}
+
+		}
+
+		
+		[Column(Name="PostingDate", Storage="_PostingDate", DbType="datetime")]
+		public DateTime? PostingDate
+		{
+			get
+			{
+				return this._PostingDate;
+			}
+
+			set
+			{
+				if (this._PostingDate != value)
+					this._PostingDate = value;
+			}
+
+		}
+
+		
+		[Column(Name="TotalItems", Storage="_TotalItems", DbType="Decimal(38,2)")]
+		public decimal? TotalItems
+		{
+			get
+			{
+				return this._TotalItems;
+			}
+
+			set
+			{
+				if (this._TotalItems != value)
+					this._TotalItems = value;
+			}
+
+		}
+
+		
+		[Column(Name="ItemCount", Storage="_ItemCount", DbType="int")]
+		public int? ItemCount
+		{
+			get
+			{
+				return this._ItemCount;
+			}
+
+			set
+			{
+				if (this._ItemCount != value)
+					this._ItemCount = value;
+			}
+
+		}
+
+		
+		[Column(Name="TotalNonTaxDed", Storage="_TotalNonTaxDed", DbType="Decimal(38,2)")]
+		public decimal? TotalNonTaxDed
+		{
+			get
+			{
+				return this._TotalNonTaxDed;
+			}
+
+			set
+			{
+				if (this._TotalNonTaxDed != value)
+					this._TotalNonTaxDed = value;
 			}
 
 		}

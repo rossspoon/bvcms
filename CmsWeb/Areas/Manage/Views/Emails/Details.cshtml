@@ -41,6 +41,7 @@
                                        }))
     </td></tr>
 <tr><td>Unique Opens</td><td>@Model.queue.EmailResponses.Select(er => er.PeopleId).Distinct().Count()</td></tr>
+<tr><td>Link Tracking</td><td><a href="/Manage/Emails/Tracking/@Model.id">See Details</a></td></tr>
 <tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDateTm()</td></tr>
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
 <tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm() 

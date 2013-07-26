@@ -129,11 +129,11 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $("#tagname").keypress(function (ev) {
-        if (ev.which != 58) //no : character
-            return true;
-        return false;
-    });
+//    $("#tagname").keypress(function (ev) {
+//        if (ev.which != 58) //no : character
+//            return true;
+//        return false;
+//    });
 });
 function UpdateSelectedUsers(r) {
     $.post("/Tags/UpdateShared", null, function (ret) {

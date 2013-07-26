@@ -102,6 +102,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			return View("Compose", m);
 		}
 
+        [HttpPost]
         public ActionResult ContentDeleteDrafts( int queryid, bool parents, int[] draftId)
         {
             using (var cn = new SqlConnection(Util.ConnectionString))
