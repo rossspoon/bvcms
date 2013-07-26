@@ -2,6 +2,7 @@
 @Html.Hidden("orgid")
 @Html.Hidden("newgid")
 @Html.Hidden("sort")
+@Html.Hidden("isRecreationTeam")
 <table id="ManageGroups" cellspacing="5" class="roundbox">
     <tr><td colspan="3">
         <h2><a href="/Organization/Index/@Model.orgid">Manage Groups for @Model.OrgName</a></h2></td></tr>
@@ -65,7 +66,7 @@
 		<th class="left"><a href='#' class="sortable">Request</a></th>
 		<th class="left" width="25%"><a href="#" class="sortable">Groups</a></th>
         @if( Model.isRecreationTeam ) {
-            <th class="center">Score</th>
+            <th class="center"><a href='#' class="sortable">Score</a></th>
         }
 	</tr>
 	</thead>

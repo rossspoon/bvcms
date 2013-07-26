@@ -3,6 +3,15 @@
         $("table.grid td.tip").tooltip({ showBody: "|" });
         $('table.grid > tbody > tr:even').addClass('alt');
         $(".bt").button();
+
+        $(".clickEdit").editable("/OrgGroups/UpdateScore", {
+            indicator: "<img src='/images/loading.gif'>",
+            width: 40,
+            height: 22,
+            tooltip: "Click to edit...",
+            select: true,
+            callback: updateScore
+        });
     }
     $.fmtTable();
     $(".helptip").tooltip({ showBody: "|" });
@@ -119,15 +128,6 @@
         checkChanged();
     });
 
-    $(".clickEdit").editable("/OrgGroups/UpdateScore", {
-        indicator: "<img src='/images/loading.gif'>",
-        width: 40,
-        height: 22,
-        tooltip: "Click to edit...",
-        select : true,
-        callback: updateScore
-    });
-
     var scoreTrackerShowing = false;
 
     function updateScore(value, settings) {
@@ -147,6 +147,9 @@
         var checkedList = $("input[name='list']:checked");
         if (checkedList.length > 0) {
 
+            if (checkedList.length == 2) $("#swapPlayers").show();
+            else $("#swapPlayers").hide();
+
             var totalScore = 0;
             for (var iX = 0; iX < checkedList.length; iX++) totalScore += Number($(checkedList[iX]).attr("score"));
 
@@ -165,6 +168,17 @@
             $("#scoreTracker").slideUp(200);
         }
     }
+
+    $("body").on("click", "#swapPlayers", function (e) {
+        $(this).hide();
+        var checkedList = $("input[name='list']:checked");
+        if (checkedList.length == 2) {
+            var swapFirst = $(checkedList[0]).attr("swap");
+            var swapSecond = $(checkedList[1]).attr("swap");
+
+            $.ajax({ type: "POST", url: "/OrgGroups/SwapPlayers", data: { pOne: swapFirst, pTwo: swapSecond }, success: $.loadTable });
+        }
+    });
 
     checkChanged();
 });

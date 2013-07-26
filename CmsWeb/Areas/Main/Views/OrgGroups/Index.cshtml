@@ -32,28 +32,29 @@
 @Html.Partial("Form", Model)
 </form>
 @if( Model.isRecreationTeam ) {
-<div id="scoreTracker" style="display:none;">
-    <div style="text-align:center;">
+<div id="scoreTracker" style="display:none; text-align:center;">
+    <div>
         <b>Team Score</b>
         <hr />
     </div>
     <table>
         <tr>
             <td width="40%" class="right"><span id="playerCount">0</span></td>
-            <td> &nbsp; Players</td>
+            <td class="left"> &nbsp; Players</td>
         </tr>
         <tr>
             <td class="right"><span id="lastScore">0</span></td>
-            <td> &nbsp; Last Score</td>
+            <td class="left"> &nbsp; Last Score</td>
         </tr>
         <tr>
             <td class="right"><span id="avgScore">0</span></td>
-            <td> &nbsp; Average Score</td>
+            <td class="left"> &nbsp; Average Score</td>
         </tr>
         <tr>
             <td class="right"><span id="totalScore">0</span></td>
-            <td> &nbsp; Total Score</td>
+            <td class="left"> &nbsp; Total Score</td>
         </tr>
     </table>
+    <input id="swapPlayers" type="button" class="bt" style="margin-top:7px; display:none;" value="Swap Players" />
 </div>
 }

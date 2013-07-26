@@ -121,5 +121,51 @@ namespace CmsWeb.Areas.Main.Controllers
 
             return Content(value.ToString());
         }
+
+        public ActionResult SwapPlayers(string pOne, string pTwo)
+        {
+            string[] splitOne = pOne.Split('-');
+            int orgIDOne = splitOne[0].ToInt();
+            int peopleIDOne = splitOne[1].ToInt();
+
+            string[] splitTwo = pTwo.Split('-');
+            int orgIDTwo = splitTwo[0].ToInt();
+            int peopleIDTwo = splitTwo[1].ToInt();
+
+            var playerOne = (from e in DbUtil.Db.OrganizationMembers
+                          where e.OrganizationId == orgIDOne
+                          where e.PeopleId == peopleIDOne
+                          select e).SingleOrDefault();
+
+            var playerTwo = (from e in DbUtil.Db.OrganizationMembers
+                             where e.OrganizationId == orgIDTwo
+                             where e.PeopleId == peopleIDTwo
+                             select e).SingleOrDefault();
+
+
+            var pOneTag = playerOne.OrgMemMemTags.FirstOrDefault();
+            var pTwoTag = playerTwo.OrgMemMemTags.FirstOrDefault();
+
+            var pOneNew = new OrgMemMemTag();
+            var pTwoNew = new OrgMemMemTag();
+
+            pOneNew.PeopleId = pOneTag.PeopleId;
+            pOneNew.OrgId = pTwoTag.OrgId;
+            pOneNew.MemberTagId = pTwoTag.MemberTagId;
+
+            pTwoNew.PeopleId = pTwoTag.PeopleId;
+            pTwoNew.OrgId = pOneTag.OrgId;
+            pTwoNew.MemberTagId = pOneTag.MemberTagId;
+
+            DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pOneTag);
+            DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pTwoTag);
+            DbUtil.Db.SubmitChanges();
+
+            DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pOneNew);
+            DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pTwoNew);
+            DbUtil.Db.SubmitChanges();
+
+            return Content("Complete");
+        }
     }
 }

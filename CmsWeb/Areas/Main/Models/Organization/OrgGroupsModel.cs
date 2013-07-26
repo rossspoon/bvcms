@@ -25,6 +25,8 @@ namespace CmsWeb.Models
         public bool isRecreationTeam { get; set; }
         public string OrgName { get; set; }
 
+        public OrgGroupsModel() { }
+
         public OrgGroupsModel( int id )
         {
             orgid = id;
@@ -122,6 +124,12 @@ namespace CmsWeb.Models
                     q = from m in q
                          let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
                         orderby !ck, m.Request == null ? 2 : 1, m.Request
+                        select m;
+                    break;
+                case "Score":
+                    q = from m in q
+                        let ck = m.OrgMemMemTags.Any(g => g.MemberTagId == groupid.ToInt())
+                        orderby !ck, m.Score descending
                         select m;
                     break;
                 case "Name":

@@ -12,7 +12,7 @@
 	<tr @om.IsInGroup()>
 		<td>
             @if( Model.isRecreationTeam ) {
-                <input id="@om.PeopleId" name="list" type="checkbox" value="@om.PeopleId" score="@om.Score" />
+                <input id="@om.PeopleId" name="list" type="checkbox" value="@om.PeopleId" score="@om.Score" swap="@(Model.orgid)-@(om.PeopleId)" />
             } else {
                 <input name="list" type="checkbox" value="@om.PeopleId" />
             }
