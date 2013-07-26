@@ -307,6 +307,14 @@ namespace CmsWeb.Models
             public bool isOrg { get; set; }
             public int id { get; set; }
         }
+        public class SearchInfo2
+        {
+            public string order { get; set; }
+            public string line1 { get; set; }
+            public string line2 { get; set; }
+            public bool isOrg { get; set; }
+            public int id { get; set; }
+        }
         public static IEnumerable<SearchInfo> Names(string text)
         {
             string First, Last;
@@ -407,6 +415,111 @@ namespace CmsWeb.Models
                 new SearchInfo() { id = -2, line1 = "Advanced Search" }, 
                 new SearchInfo() { id = -3, line1 = "Organization Search" }, 
             });
+            return list;
+        }
+        public static IEnumerable<SearchInfo2> Names2(string text)
+        {
+            string First, Last;
+            var qp = DbUtil.Db.People.AsQueryable();
+            var qo = from o in DbUtil.Db.Organizations
+                     where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
+                     select o;
+            if (Util2.OrgLeadersOnly)
+                qp = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
+
+            qp = from p in qp
+                 where p.DeceasedDate == null
+                 select p;
+
+            Util.NameSplit(text, out First, out Last);
+
+            var hasfirst = First.HasValue();
+            if (text.AllDigits())
+            {
+                string phone = null;
+                if (text.HasValue() && text.AllDigits() && text.Length == 7)
+                    phone = text;
+                if (phone.HasValue())
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where
+                             p.PeopleId == id
+                             || p.CellPhone.Contains(phone)
+                             || p.Family.HomePhone.Contains(phone)
+                             || p.WorkPhone.Contains(phone)
+                         select p;
+                    qo = from o in qo
+                         where o.OrganizationId == id
+                         select o;
+                }
+                else
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where p.PeopleId == id
+                         select p;
+                    qo = from o in qo
+                         where o.OrganizationId == id
+                         select o;
+                }
+            }
+            else
+            {
+                qp = from p in qp
+                     where
+                         (
+                             (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                              || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+                             &&
+                             (!hasfirst || p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) ||
+                              p.MiddleName.StartsWith(First)
+                              || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+                         )
+                     select p;
+
+                qo = from o in qo
+                     where o.OrganizationName.Contains(text) || o.LeaderName.Contains(text)
+                     select o;
+            }
+
+            var rp = from p in qp
+                     let age = p.Age.HasValue ? " (" + p.Age + ")" : ""
+                     orderby p.Name2
+                     select new SearchInfo2()
+                                {
+                                    id = p.PeopleId,
+                                    line1 = p.Name2 + age,
+                                    line2 = p.PrimaryAddress ?? "",
+                                    isOrg = false,
+                                };
+            var ro = from o in qo
+                     orderby o.OrganizationName
+                     select new SearchInfo2()
+                                {
+                                    id = o.OrganizationId,
+                                    line1 = o.OrganizationName,
+                                    line2 = o.Division.Name,
+                                    isOrg = true
+                                };
+
+            var list = new List<SearchInfo2>();
+            list.AddRange(rp.Take(6));
+            if (list.Count > 0)
+                list.Add(new SearchInfo2() { id = 0, line1 = "separater1" });
+            var roTake = ro.Take(4).ToList();
+            list.AddRange(roTake);
+            if (roTake.Count > 0)
+                list.Add(new SearchInfo2() { id = 0, line1 = "separater2" });
+            list.AddRange(new List<SearchInfo2>() 
+            { 
+                new SearchInfo2() { id = -1, line1 = "People Search"  }, 
+                new SearchInfo2() { id = -2, line1 = "Advanced Search" }, 
+                new SearchInfo2() { id = -3, line1 = "Organization Search" }, 
+            });
+            var n = 1;
+            foreach (var i in list)
+                i.order = (n++).ToString("000#");
             return list;
         }
     }

@@ -185,6 +185,11 @@ namespace CmsWeb.Controllers
             var q = HomeModel.Names(term).ToList();
             return Json(q, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult Names2(string query)
+        {
+            var q = HomeModel.Names2(query).ToList();
+            return Json(q, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult TestRegs()
         {
             foreach (var o in DbUtil.Db.Organizations)
