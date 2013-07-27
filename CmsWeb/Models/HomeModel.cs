@@ -506,11 +506,11 @@ namespace CmsWeb.Models
             var list = new List<SearchInfo2>();
             list.AddRange(rp.Take(6));
             if (list.Count > 0)
-                list.Add(new SearchInfo2() { id = 0, line1 = "separater1" });
+                list.Add(new SearchInfo2() { id = 0, line1 = "separator1" });
             var roTake = ro.Take(4).ToList();
             list.AddRange(roTake);
             if (roTake.Count > 0)
-                list.Add(new SearchInfo2() { id = 0, line1 = "separater2" });
+                list.Add(new SearchInfo2() { id = 0, line1 = "separator2" });
             list.AddRange(new List<SearchInfo2>() 
             { 
                 new SearchInfo2() { id = -1, line1 = "People Search"  }, 
