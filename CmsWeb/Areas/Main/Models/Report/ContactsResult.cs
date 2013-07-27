@@ -74,7 +74,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                         orderby p.Name2
                         select p;
                 foreach (var p in q)
-                    AddRow(p);
+                    t.AddCell(NewCell(p));
+                t.SplitLate = false;
+                t.SplitRows = true;
                 if (t.Rows.Count > 1)
                     doc.Add(t);
                 else
@@ -127,7 +129,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             c.AddElement(t3);
             t.AddCell(c);
         }
-        private void AddRow(Person p)
+        private PdfPCell NewCell(Person p)
         {
             if (t.Rows.Count % 2 == 0)
                 t.DefaultCell.BackgroundColor = new GrayColor(240);
@@ -181,8 +183,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
             c = new PdfPCell(t.DefaultCell);
             c.Padding = 0;
+            t3.SplitLate = false; 
+            t3.SplitRows = true;
             c.AddElement(t3);
-            t.AddCell(c);
+            return c;
         }
         private void AddLine(StringBuilder sb, string value)
         {
@@ -282,7 +286,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                 string ctype = cts.Single(ct => ct.Id == pc.contact.ContactTypeId).Value;
                 string comments = null;
                 if (pc.contact.Comments.HasValue())
+                {
                     comments = pc.contact.Comments.Replace("\r\n\r\n", "\r\n");
+                    var lines = Regex.Split(comments, "\r\n");
+                    comments = string.Join("\r\n", lines.Take(6));
+                    if (lines.Length > 6)
+                        comments += "... (see rest of comment online)";
+                }
                 string s = "{0:d}: {1} by {2}\n{3}".Fmt(
                         pc.contact.ContactDate, ctype, cname, comments);
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, s, font));
