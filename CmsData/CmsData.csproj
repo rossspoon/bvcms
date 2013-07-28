@@ -356,6 +356,7 @@
     <Compile Include="Generated\Views\BundleList.cs" />
     <Compile Include="Generated\Views\OrganizationLeader.cs" />
     <Compile Include="Generated\Views\OrganizationStructure.cs" />
+    <Compile Include="Generated\Views\PreviousMemberCount.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
     <Compile Include="Classes\QuickBooks\QBDHelper.cs" />
     <Compile Include="Classes\QuickBooks\QBOHelper.cs" />

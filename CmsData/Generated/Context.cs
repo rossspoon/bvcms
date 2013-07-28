@@ -1659,6 +1659,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.PreviousMemberCount> ViewPreviousMemberCounts
+	    {
+		    get { return this.GetTable< View.PreviousMemberCount>(); }
+
+	    }
+
 	    public Table< View.RandNumber> ViewRandNumbers
 	    {
 		    get { return this.GetTable< View.RandNumber>(); }
@@ -2377,6 +2383,18 @@ namespace CmsData
     #endregion
 	#region Scalar Functions
 		
+		[Function(Name="dbo.OrganizationPrevMemberCount", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? OrganizationPrevMemberCount(
+            [Parameter(Name = "oid", DbType="int")] int? oid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.AttendItem", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? AttendItem(

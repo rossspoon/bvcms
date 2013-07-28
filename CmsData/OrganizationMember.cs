@@ -18,7 +18,12 @@ namespace CmsData
 	{
 		private const string STR_MeetingsToUpdate = "MeetingsToUpdate";
 
-		public EnrollmentTransaction Drop(CMSDataContext Db, bool addToHistory)
+	    public EnrollmentTransaction Drop(CMSDataContext Db, bool addToHistory)
+	    {
+	        return Drop(Db, Util.Now, addToHistory);
+	    }
+
+	    public EnrollmentTransaction Drop(CMSDataContext Db, DateTime dropdate, bool addToHistory)
 		{
 			Db.SubmitChanges();
 			int ntries = 2;
@@ -41,7 +46,7 @@ namespace CmsData
 										PeopleId = PeopleId,
 										MemberTypeId = MemberTypeId,
 										OrganizationName = Organization.OrganizationName,
-										TransactionDate = Util.Now,
+										TransactionDate = dropdate,
 										TransactionTypeId = 5,
 										// drop
 										CreatedBy = Util.UserId1,

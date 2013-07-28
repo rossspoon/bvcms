@@ -6,6 +6,7 @@
         <td><a href="/Organization/Index/@o.Id">@o.OrganizationName</a></td>
         <td><a href="/Person/Index/@o.LeaderId">@o.LeaderName</a></td>
         <td class="right">@o.MemberCount</td>
+        <td class="right"><span class="smallfont">@o.PrevMemberCount</span></td>
         <td>@o.Schedule</td>
         <td><span id='ck-@o.Id' class='yesno'>@(o.AllowSelfCheckIn ? "yes" : "no")</span></td>
         <td><span id='bs-@o.Id' class='bday'>@o.BDayStart</span></td>
