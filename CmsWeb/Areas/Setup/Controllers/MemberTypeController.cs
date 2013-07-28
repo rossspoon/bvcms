@@ -50,6 +50,13 @@ namespace CmsWeb.Areas.Setup.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/Setup/MemberType/");
         }
+        [HttpPost]
+        public ActionResult Move(int fromid, int toid)
+        {
+            DbUtil.Db.ExecuteCommand("UPDATE dbo.OrganizationMembers SET MemberTypeId = {0} WHERE MemberTypeId = {1}", toid, fromid);
+            DbUtil.Db.ExecuteCommand("UPDATE dbo.EnrollmentTransactions SET MemberTypeId = {0} WHERE MemberTypeId = {1}", toid, fromid);
+            return Redirect("/Setup/MemberType/");
+        }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Edit(string id, string value)
