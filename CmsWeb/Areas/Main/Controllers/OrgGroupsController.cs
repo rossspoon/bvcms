@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
+using System.IO;
+using LumenWorks.Framework.IO.Csv;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -120,6 +122,28 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
 
             return Content(value.ToString());
+        }
+
+        public ActionResult UploadScores(string data, int orgID)
+        {
+            var csv = new CsvReader(new StringReader(data), false, '\t');
+            var list = csv.ToList();
+            var peopleID = 0;
+
+            foreach (var score in list)
+            {
+                peopleID = score[0].ToInt();
+
+                var player = (from e in DbUtil.Db.OrganizationMembers
+                              where e.OrganizationId == orgID
+                              where e.PeopleId == peopleID
+                              select e).SingleOrDefault();
+
+                player.Score = score[1].ToInt();
+                DbUtil.Db.SubmitChanges();
+            }
+
+            return Content("OK");
         }
 
         public ActionResult SwapPlayers(string pOne, string pTwo)

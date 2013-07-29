@@ -53,6 +53,10 @@
 </table>
 <input type="submit" class="bt" id="AssignSelectedToTargetGroup" value="Assign Selected to Target Group" />
 <input type="submit" class="bt" id="RemoveSelectedFromTargetGroup" value="Remove Selected from Target Group" />
+@if (Model.isRecreationTeam)
+{
+    <input type="submit" class="bt" id="scoreUploadButton" value="Upload Player Scores" />
+}
 <div>
 <div><input id="SelectAll" type="checkbox" /> Select All</div>
 <table class="grid">

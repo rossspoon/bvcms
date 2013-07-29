@@ -12,6 +12,8 @@
             select: true,
             callback: updateScore
         });
+
+        checkChanged();
     }
     $.fmtTable();
     $(".helptip").tooltip({ showBody: "|" });
@@ -180,5 +182,18 @@
         }
     });
 
-    checkChanged();
+    $("body").on("click", "#scoreUploadButton", function (e) {
+        $("#scoreUploadDialog").dialog({ width: "auto", title: "Upload Player Scores", modal: true, close: function () { $("#scoreUploadData").val(""); } });
+    });
+
+    $("body").on("click", "#scoreUploadSubmit", function (e) {
+        var post = $("#scoreUploadForm").serialize();
+
+        $.ajax({ type: "POST", url: "/OrgGroups/UploadScores", data: post, success: $.loadTable });
+        $("#scoreUploadDialog").dialog("close");
+    });
+    
+    $("body").on("click", "#scoreUploadDismiss", function (e) {
+        $("#scoreUploadDialog").dialog("close");
+    });
 });

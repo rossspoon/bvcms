@@ -57,4 +57,24 @@
     </table>
     <input id="swapPlayers" type="button" class="bt" style="margin-top:7px; display:none;" value="Swap Players" />
 </div>
+<div id="scoreUploadDialog" style="display:none;">
+    <form id="scoreUploadForm">
+        <input type="hidden" name="orgID" value="@Model.orgid" />
+        <table>
+            <tr>
+                <td colspan="2">
+                    <textarea id="scoreUploadData" name="data" cols="80" rows="30"></textarea><br />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" class="bt" id="scoreUploadSubmit" value="Upload" />
+                </td>
+                <td class="right">
+                    <input type="button" class="bt" id="scoreUploadDismiss" value="Cancel" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 }
