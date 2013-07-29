@@ -65,6 +65,8 @@ namespace CmsData
 		
 		private int? _TranId;
 		
+		private int _Score;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -155,6 +157,9 @@ namespace CmsData
 		
 		partial void OnTranIdChanging(int? value);
 		partial void OnTranIdChanged();
+		
+		partial void OnScoreChanging(int value);
+		partial void OnScoreChanged();
 		
     #endregion
 		public OrganizationMember()
@@ -710,6 +715,28 @@ namespace CmsData
 					this._TranId = value;
 					this.SendPropertyChanged("TranId");
 					this.OnTranIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Score", UpdateCheck=UpdateCheck.Never, Storage="_Score", DbType="int NOT NULL")]
+		public int Score
+		{
+			get { return this._Score; }
+
+			set
+			{
+				if (this._Score != value)
+				{
+				
+                    this.OnScoreChanging(value);
+					this.SendPropertyChanging();
+					this._Score = value;
+					this.SendPropertyChanged("Score");
+					this.OnScoreChanged();
 				}
 
 			}
