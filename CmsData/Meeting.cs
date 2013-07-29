@@ -59,7 +59,7 @@ namespace CmsData
 				return null;
 			return oev.Data;
 		}
-		public static Meeting FetchOrCreateMeeting(CMSDataContext Db, int OrgId, DateTime dt)
+		public static Meeting FetchOrCreateMeeting(CMSDataContext Db, int OrgId, DateTime dt, bool? noautoabsents = null)
 		{
 			var meeting = (from m in Db.Meetings
 						   where m.OrganizationId == OrgId && m.MeetingDate == dt
@@ -78,7 +78,8 @@ namespace CmsData
 					CreatedDate = Util.Now,
 					CreatedBy = Util.UserId1,
 					GroupMeetingFlag = false,
-					AttendCreditId = acr ?? 1
+					AttendCreditId = acr ?? 1,
+                    NoAutoAbsents = noautoabsents
 				};
 				Db.Meetings.InsertOnSubmit(meeting);
 				Db.SubmitChanges();
