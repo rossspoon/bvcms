@@ -34,6 +34,13 @@
                     });
                 return false;
             });
+            $("#movemt").click(function(ev) {
+                ev.preventDefault();
+                var f = $(this).closest("form");
+                if (confirm("are you sure?")) {
+                    f.submit();
+                }
+            });
             $(".bt").button();
         });
     </script>
@@ -87,4 +94,17 @@
         New MemberTypeId: @Html.TextBox("id")
         <input type="submit" class="bt" value="Create" />
     </p>
-} 
+}
+<hr/>
+<p>Note: the following allows you to globally change one membertype for all organization members having that type, to a new type. 
+    The only purpose for this is to consolidate Organization MemberTypes.<br />
+    <b>THERE IS NO UNDO!</b> Please be careful.<br/>
+    You must enter the Id number, not the name of the membertype.
+</p>
+@using (Html.BeginForm("Move", "MemberType"))
+{
+     <p>
+         Change all Membertypes having Id: @Html.TextBox("fromid") to Id: @Html.TextBox("toid")
+         <input id="movemt" type="submit" class="bt" value="Move Membertypes" />
+     </p>
+}

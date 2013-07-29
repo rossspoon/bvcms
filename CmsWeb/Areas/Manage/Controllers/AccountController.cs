@@ -100,6 +100,9 @@ CKEditorFuncNum, baseurl + fn, error));
                     AccountModel.SetUserInfo(username, Session);
                     FormsAuthentication.SetAuthCookie(username, false);
                     Util.FormsBasedAuthentication = true;
+                    var returnUrl = Request.QueryString["returnUrl"];
+                    if (returnUrl.HasValue())
+                        return Redirect(returnUrl);
                     return Redirect("/");
                 }
 #endif

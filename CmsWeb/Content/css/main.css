@@ -109,3 +109,7 @@ table.expanding tr.oddrow > td {
     background-repeat: no-repeat;
     background-position: center top;
 }
+.typeahead a {
+    color: white;
+    text-decoration: none;
+}

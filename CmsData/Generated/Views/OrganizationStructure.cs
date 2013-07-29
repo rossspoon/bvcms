@@ -41,7 +41,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="Program", Storage="_Program", DbType="varchar(50)")]
+		[Column(Name="Program", Storage="_Program", DbType="nvarchar(50)")]
 		public string Program
 		{
 			get
@@ -58,7 +58,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Division", Storage="_Division", DbType="varchar(50)")]
+		[Column(Name="Division", Storage="_Division", DbType="nvarchar(50)")]
 		public string Division
 		{
 			get
@@ -75,7 +75,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="OrgStatus", Storage="_OrgStatus", DbType="varchar(50)")]
+		[Column(Name="OrgStatus", Storage="_OrgStatus", DbType="nvarchar(50)")]
 		public string OrgStatus
 		{
 			get
@@ -92,7 +92,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Organization", Storage="_Organization", DbType="varchar(100) NOT NULL")]
+		[Column(Name="Organization", Storage="_Organization", DbType="nvarchar(100) NOT NULL")]
 		public string Organization
 		{
 			get

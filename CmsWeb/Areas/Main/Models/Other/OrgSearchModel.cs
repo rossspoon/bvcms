@@ -64,6 +64,8 @@ namespace CmsWeb.Models
         public static IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query, int? TagProgramId, int? TagDiv)
         {
             var q = from o in query
+                    join v in DbUtil.Db.ViewPreviousMemberCounts on o.OrganizationId equals v.OrganizationId into j
+                    from v in j.DefaultIfEmpty()
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     select new OrganizationInfo
                     {
@@ -73,6 +75,7 @@ namespace CmsWeb.Models
                         LeaderName = o.LeaderName,
                         LeaderId = o.LeaderId,
                         MemberCount = o.MemberCount,
+                        PrevMemberCount = v.Prevcount ?? 0,
                         ClassFilled = o.ClassFilled ?? false,
                         RegClosed = o.RegistrationClosed ?? false,
                         RegTypeId = o.RegistrationTypeId,
@@ -232,7 +235,6 @@ namespace CmsWeb.Models
                 organizations = DbUtil.Db.Organizations.Where(o => oids.Contains(o.OrganizationId));
             }
 
-
             if (Name.HasValue())
             {
                 if (Name.AllDigits())
@@ -266,7 +268,7 @@ namespace CmsWeb.Models
                                 select o;
             if (ScheduleId == -1)
                 organizations = from o in organizations
-                                where o.OrgSchedules.Count() == 0
+                                where !o.OrgSchedules.Any()
                                 select o;
 
             if (StatusId > 0)
@@ -377,6 +379,7 @@ namespace CmsWeb.Models
                                 select o;
                         break;
                     case "Members":
+                    case "Curr":
                         query = from o in query
                                 orderby o.MemberCount, o.OrganizationName
                                 select o;
@@ -453,6 +456,7 @@ namespace CmsWeb.Models
                                 select o;
                         break;
                     case "Members":
+                    case "Curr":
                         query = from o in query
                                 orderby o.MemberCount descending,
                                 o.OrganizationName descending
@@ -689,6 +693,7 @@ namespace CmsWeb.Models
             public string LeaderName { get; set; }
             public int? LeaderId { get; set; }
             public int? MemberCount { get; set; }
+            public int PrevMemberCount { get; set; }
             public bool ClassFilled { get; set; }
             public bool RegClosed { get; set; }
             public int? RegTypeId { get; set; }

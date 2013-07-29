@@ -10,20 +10,18 @@ using System.ComponentModel;
 
 namespace CmsData.View
 {
-	[Table(Name="MasterOrgs")]
-	public partial class MasterOrg
+	[Table(Name="PreviousMemberCounts")]
+	public partial class PreviousMemberCount
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		
 		private int _OrganizationId;
 		
-		private int? _PickListOrgId;
-		
-		private string _OrganizationName;
+		private int? _Prevcount;
 		
 		
-		public MasterOrg()
+		public PreviousMemberCount()
 		{
 		}
 
@@ -46,35 +44,18 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PickListOrgId", Storage="_PickListOrgId", DbType="int")]
-		public int? PickListOrgId
+		[Column(Name="prevcount", Storage="_Prevcount", DbType="int")]
+		public int? Prevcount
 		{
 			get
 			{
-				return this._PickListOrgId;
+				return this._Prevcount;
 			}
 
 			set
 			{
-				if (this._PickListOrgId != value)
-					this._PickListOrgId = value;
-			}
-
-		}
-
-		
-		[Column(Name="OrganizationName", Storage="_OrganizationName", DbType="nvarchar(100) NOT NULL")]
-		public string OrganizationName
-		{
-			get
-			{
-				return this._OrganizationName;
-			}
-
-			set
-			{
-				if (this._OrganizationName != value)
-					this._OrganizationName = value;
+				if (this._Prevcount != value)
+					this._Prevcount = value;
 			}
 
 		}
