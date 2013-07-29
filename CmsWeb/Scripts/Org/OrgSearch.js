@@ -132,9 +132,14 @@
         ev.preventDefault();
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.block();
-        $.post('/OrgSearch/ApplyType/' + $("#TargetType").val(), q, function (ret) {
-            $.getTable();
+        $.post('/OrgSearch/ApplyType/' + $("#TargetType").val(), q, function(ret) {
+            if (ret !== "") {
+                if (ret === "ok")
+                    $.getTable();
+                else {
+                    $.growlUI("Apply Type", ret);
+                }
+            }
         });
         return false;
     });

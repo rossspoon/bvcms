@@ -83,10 +83,17 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         public ActionResult ApplyType(int id, OrgSearchModel m)
         {
-            foreach (var o in m.FetchOrgs())
-                o.OrganizationTypeId = id == -1 ? (int?)null : id;
+            int? t = (id == -1 ? (int?) null : id);
+            if (t == 0)
+                return Content("");
+            var ot = DbUtil.Db.OrganizationTypes.SingleOrDefault(tt => tt.Id == id);
+            if (t.HasValue || ot != null)
+                foreach (var o in m.FetchOrgs())
+                    o.OrganizationTypeId = t;
+            else
+                return Content("error: missing type");
             DbUtil.Db.SubmitChanges();
-            return View("Results", m);
+            return Content("ok");
         }
         [HttpPost]
         public ActionResult RenameDiv(int id, int divid, string name)
