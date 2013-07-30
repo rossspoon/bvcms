@@ -921,7 +921,7 @@
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
     <Content Include="Scripts\js\Support.js" />
-    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.min.js">
+    <Content Include="..\..\..\BellevueProject\Deploy\test\Files\Scripts\js\Tags.min.js"/>
     <Content Include="Scripts\js\Tags.min.js">
       <DependentUpon>Tags.js</DependentUpon>
       <Link>Scripts\js\Tags.min.js</Link>
