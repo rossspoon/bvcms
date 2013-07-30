@@ -281,8 +281,6 @@ namespace CmsWeb.Models
 
         public void createTeamGroups()
         {
-            List<MemberTag> teamList = new List<MemberTag>();
-
             var c = from e in DbUtil.Db.OrganizationMembers
                     where e.Score == 0
                     where e.OrganizationId == orgid
@@ -301,19 +299,24 @@ namespace CmsWeb.Models
                     OrgId = orgid
                 };
 
-                teamList.Add(group);
-
                 DbUtil.Db.MemberTags.InsertOnSubmit(group);
             }
 
             DbUtil.Db.SubmitChanges();
+
+            // Refresh the list
+            var teamList = (from e in DbUtil.Db.MemberTags
+                            where e.OrgId == orgid
+                            where e.Name.StartsWith( "TM:" )
+                            select e).ToList();
+
 
             var p = (from e in DbUtil.Db.OrganizationMembers
                      where e.Score != 0
                      where e.OrganizationId == orgid
                      select e).ToList();
 
-            var teams = c.Count();
+            var teams = teamList.Count();
             var players = p.Count();
             var perTeam = Math.Floor((double)players / teams);
             var passes = Math.Floor((double)perTeam / 2);
