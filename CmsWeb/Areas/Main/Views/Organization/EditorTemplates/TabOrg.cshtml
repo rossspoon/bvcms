@@ -76,6 +76,13 @@
             Phone Number:</span>
         @Html.TextBox("org.PhoneNumber")
     </li>
+    <li>
+        <span class="keyword big tip"
+              title="Recreation Team
+            |User to designate an orginazation as a recreation team">
+            Recreation Team:</span>
+        @Html.CheckBox("org.IsRecreationTeam")
+    </li>
 @if(User.IsInRole("Admin"))
 {
     <li>

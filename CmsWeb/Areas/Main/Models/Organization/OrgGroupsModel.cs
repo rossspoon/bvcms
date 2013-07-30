@@ -23,7 +23,6 @@ namespace CmsWeb.Models
         public string sort { get; set; }
         public int tagfilter { get; set; }
         public bool isRecreationTeam { get; set; }
-        public string OrgName { get; set; }
 
         public OrgGroupsModel() { }
 
@@ -33,15 +32,12 @@ namespace CmsWeb.Models
 
             var org = DbUtil.Db.LoadOrganizationById(orgid);
             isRecreationTeam = org.IsRecreationTeam;
-            OrgName = org.OrganizationName;
         }
 
-        /*
         public string OrgName
         {
             get { return DbUtil.Db.LoadOrganizationById(orgid).OrganizationName; }
         }
-        // */
 
         public int memtype { get; set; }
 
@@ -51,6 +47,40 @@ namespace CmsWeb.Models
             get { return list; }
             set { list = value; }
         }
+
+        public class GroupDetails
+        {
+            public int members { get; set; }
+            public int total { get; set; }
+            public double average { get; set; }
+        }
+
+        public GroupDetails GetGroupDetails( int id )
+        {
+            var d = from e in DbUtil.Db.OrgMemMemTags
+                    from om in DbUtil.Db.OrganizationMembers.DefaultIfEmpty()
+                    where e.MemberTagId == id
+                    where om.PeopleId == e.PeopleId
+                    where om.OrganizationId == e.OrgId
+                    group new { e, om } by e.MemberTagId into grp
+                    select new GroupDetails()
+                    {
+                        members = grp.Count( m => m.e.MemberTagId > 0 ),
+                        total = grp.Sum( t => t.om.Score ),
+                        average = grp.Average( a => a.om.Score )
+                    };
+
+            return d.SingleOrDefault();
+        }
+
+        public IEnumerable<MemberTag> GroupsList()
+        {
+            return from g in DbUtil.Db.MemberTags
+                   where g.OrgId == orgid
+                   orderby g.Name
+                   select g;
+        }
+
         public SelectList Groups()
         {
             var q = from g in DbUtil.Db.MemberTags
