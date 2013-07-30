@@ -149,6 +149,8 @@ namespace CmsData
 		
 		private int? _ConsecutiveAbsentsThreshold;
 		
+		private bool _IsRecreationTeam;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -393,6 +395,9 @@ namespace CmsData
 		
 		partial void OnConsecutiveAbsentsThresholdChanging(int? value);
 		partial void OnConsecutiveAbsentsThresholdChanged();
+		
+		partial void OnIsRecreationTeamChanging(bool value);
+		partial void OnIsRecreationTeamChanged();
 		
     #endregion
 		public Organization()
@@ -1909,6 +1914,28 @@ namespace CmsData
 					this._ConsecutiveAbsentsThreshold = value;
 					this.SendPropertyChanged("ConsecutiveAbsentsThreshold");
 					this.OnConsecutiveAbsentsThresholdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="IsRecreationTeam", UpdateCheck=UpdateCheck.Never, Storage="_IsRecreationTeam", DbType="bit NOT NULL")]
+		public bool IsRecreationTeam
+		{
+			get { return this._IsRecreationTeam; }
+
+			set
+			{
+				if (this._IsRecreationTeam != value)
+				{
+				
+                    this.OnIsRecreationTeamChanging(value);
+					this.SendPropertyChanging();
+					this._IsRecreationTeam = value;
+					this.SendPropertyChanged("IsRecreationTeam");
+					this.OnIsRecreationTeamChanged();
 				}
 
 			}

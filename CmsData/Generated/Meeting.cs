@@ -51,6 +51,8 @@ namespace CmsData
 		
 		private int? _ScheduleId;
 		
+		private bool? _NoAutoAbsents;
+		
    		
    		private EntitySet< Attend> _Attends;
 		
@@ -120,6 +122,9 @@ namespace CmsData
 		
 		partial void OnScheduleIdChanging(int? value);
 		partial void OnScheduleIdChanged();
+		
+		partial void OnNoAutoAbsentsChanging(bool? value);
+		partial void OnNoAutoAbsentsChanged();
 		
     #endregion
 		public Meeting()
@@ -515,6 +520,28 @@ namespace CmsData
 					this._ScheduleId = value;
 					this.SendPropertyChanged("ScheduleId");
 					this.OnScheduleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NoAutoAbsents", UpdateCheck=UpdateCheck.Never, Storage="_NoAutoAbsents", DbType="bit")]
+		public bool? NoAutoAbsents
+		{
+			get { return this._NoAutoAbsents; }
+
+			set
+			{
+				if (this._NoAutoAbsents != value)
+				{
+				
+                    this.OnNoAutoAbsentsChanging(value);
+					this.SendPropertyChanging();
+					this._NoAutoAbsents = value;
+					this.SendPropertyChanged("NoAutoAbsents");
+					this.OnNoAutoAbsentsChanged();
 				}
 
 			}

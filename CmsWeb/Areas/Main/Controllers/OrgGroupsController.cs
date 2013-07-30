@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
+using System.IO;
+using LumenWorks.Framework.IO.Csv;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -13,10 +15,7 @@ namespace CmsWeb.Areas.Main.Controllers
     {
         public ActionResult Index(int id)
         {
-            var m = new OrgGroupsModel
-            {
-                orgid = id
-            };
+            var m = new OrgGroupsModel( id );
             return View(m);
         }
         [HttpPost]
@@ -106,6 +105,91 @@ namespace CmsWeb.Areas.Main.Controllers
                 ViewData["groupid"] = m.groupid.ToString();
             }
             return View("Form", m);
+        }
+
+        public ActionResult UpdateScore(string id, int value)
+        {
+            string[] split = id.Split('-');
+            int orgID = split[0].ToInt();
+            int peopleID = split[1].ToInt();
+
+            var member = (from e in DbUtil.Db.OrganizationMembers
+                          where e.OrganizationId == orgID
+                          where e.PeopleId == peopleID
+                          select e).SingleOrDefault();
+
+            member.Score = value;
+            DbUtil.Db.SubmitChanges();
+
+            return Content(value.ToString());
+        }
+
+        public ActionResult UploadScores(string data, int orgID)
+        {
+            var csv = new CsvReader(new StringReader(data), false, '\t');
+            var list = csv.ToList();
+            var peopleID = 0;
+
+            foreach (var score in list)
+            {
+                peopleID = score[0].ToInt();
+
+                var player = (from e in DbUtil.Db.OrganizationMembers
+                              where e.OrganizationId == orgID
+                              where e.PeopleId == peopleID
+                              select e).SingleOrDefault();
+
+                player.Score = score[1].ToInt();
+                DbUtil.Db.SubmitChanges();
+            }
+
+            return Content("OK");
+        }
+
+        public ActionResult SwapPlayers(string pOne, string pTwo)
+        {
+            string[] splitOne = pOne.Split('-');
+            int orgIDOne = splitOne[0].ToInt();
+            int peopleIDOne = splitOne[1].ToInt();
+
+            string[] splitTwo = pTwo.Split('-');
+            int orgIDTwo = splitTwo[0].ToInt();
+            int peopleIDTwo = splitTwo[1].ToInt();
+
+            var playerOne = (from e in DbUtil.Db.OrganizationMembers
+                          where e.OrganizationId == orgIDOne
+                          where e.PeopleId == peopleIDOne
+                          select e).SingleOrDefault();
+
+            var playerTwo = (from e in DbUtil.Db.OrganizationMembers
+                             where e.OrganizationId == orgIDTwo
+                             where e.PeopleId == peopleIDTwo
+                             select e).SingleOrDefault();
+
+
+            var pOneTag = playerOne.OrgMemMemTags.FirstOrDefault();
+            var pTwoTag = playerTwo.OrgMemMemTags.FirstOrDefault();
+
+            var pOneNew = new OrgMemMemTag();
+            var pTwoNew = new OrgMemMemTag();
+
+            pOneNew.PeopleId = pOneTag.PeopleId;
+            pOneNew.OrgId = pTwoTag.OrgId;
+            pOneNew.MemberTagId = pTwoTag.MemberTagId;
+
+            pTwoNew.PeopleId = pTwoTag.PeopleId;
+            pTwoNew.OrgId = pOneTag.OrgId;
+            pTwoNew.MemberTagId = pOneTag.MemberTagId;
+
+            DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pOneTag);
+            DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pTwoTag);
+            DbUtil.Db.SubmitChanges();
+
+            DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pOneNew);
+            DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pTwoNew);
+            DbUtil.Db.SubmitChanges();
+
+            return Content("Complete");
         }
     }
 }

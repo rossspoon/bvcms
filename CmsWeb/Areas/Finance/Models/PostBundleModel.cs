@@ -411,6 +411,10 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "FbcFayetteville")
+                using (var csv = new CsvReader(new StringReader(text), true))
+                    return BatchProcessFbcFayetteville(csv, date, fundid);
+
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "Vanco")
                 using (var csv = new CsvReader(new StringReader(text), false, '\t'))
                     return BatchProcessVanco(csv, date, fundid);
@@ -445,6 +449,34 @@ namespace CmsWeb.Models
                     return BatchProcessServiceU(csv, date);
                 return BatchProcess(csv, date, fundid);
             }
+        }
+
+        private static int? BatchProcessFbcFayetteville(CsvReader csv, DateTime date, int? fundid)
+        {
+            var cols = csv.GetFieldHeaders();
+            BundleHeader bh = null;
+            var firstfund = FirstFundId();
+            var fund = fundid ?? firstfund;
+
+            while (csv.ReadNextRecord())
+            {
+                if (csv[6].StartsWith("Total Checks"))
+                    continue;
+                var routing = csv[4];
+                var account = csv[5];
+                var checkno = csv[6];
+                var amount = csv[7];
+
+                if (bh == null)
+                    bh = GetBundleHeader(date, DateTime.Now);
+
+                var bd = AddContributionDetail(date, fund, amount, checkno, routing, account);
+                bh.BundleDetails.Add(bd);
+            }
+            if (bh == null)
+                return null;
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
         }
         private static int? BatchProcessMagTek(string lines, DateTime date)
         {
