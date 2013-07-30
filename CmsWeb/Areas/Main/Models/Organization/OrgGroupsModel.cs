@@ -278,5 +278,111 @@ namespace CmsWeb.Models
                 }
             }
         }
+
+        public void createTeamGroups()
+        {
+            List<MemberTag> teamList = new List<MemberTag>();
+
+            var c = from e in DbUtil.Db.OrganizationMembers
+                    where e.Score == 0
+                    where e.OrganizationId == orgid
+                    select e;
+
+            foreach (var coach in c)
+            {
+                var name = "TM: " + coach.Person.Name;
+
+                var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Name == name && g.OrgId == orgid);
+                if (group != null) continue;
+
+                group = new MemberTag
+                {
+                    Name = name,
+                    OrgId = orgid
+                };
+
+                teamList.Add(group);
+
+                DbUtil.Db.MemberTags.InsertOnSubmit(group);
+            }
+
+            DbUtil.Db.SubmitChanges();
+
+            var p = (from e in DbUtil.Db.OrganizationMembers
+                     where e.Score != 0
+                     where e.OrganizationId == orgid
+                     select e).ToList();
+
+            var teams = c.Count();
+            var players = p.Count();
+            var perTeam = Math.Floor((double)players / teams);
+            var passes = Math.Floor((double)perTeam / 2);
+
+            for (int iX = 0; iX < passes; iX++)
+            {
+                foreach (var team in teamList)
+                {
+                    var tagTop = new OrgMemMemTag();
+                    var tagBot = new OrgMemMemTag();
+
+                    var top = p.OrderByDescending(t => t.Score).Take(1).SingleOrDefault();
+                    var bot = p.OrderBy(t => t.Score).Take(1).SingleOrDefault();
+
+                    tagTop.MemberTagId = team.Id;
+                    tagTop.OrgId = orgid;
+                    tagTop.PeopleId = top.PeopleId;
+
+                    tagBot.MemberTagId = team.Id;
+                    tagBot.OrgId = orgid;
+                    tagBot.PeopleId = bot.PeopleId;
+
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagTop);
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagBot);
+
+                    p.Remove(top);
+                    p.Remove(bot);
+                }
+            }
+
+            if (p.Count() > 0)
+            {
+                foreach (var team in teamList)
+                {
+                    var tagBot = new OrgMemMemTag();
+
+                    var bot = p.OrderBy(t => t.Score).Take(1).SingleOrDefault();
+                    if (bot == null) break;
+
+                    tagBot.MemberTagId = team.Id;
+                    tagBot.OrgId = orgid;
+                    tagBot.PeopleId = bot.PeopleId;
+
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagBot);
+
+                    p.Remove(bot);
+                }
+            }
+
+            if (p.Count() > 0)
+            {
+                foreach (var team in teamList)
+                {
+                    var tagBot = new OrgMemMemTag();
+
+                    var bot = p.OrderBy(t => t.Score).Take(1).SingleOrDefault();
+                    if (bot == null) break;
+
+                    tagBot.MemberTagId = team.Id;
+                    tagBot.OrgId = orgid;
+                    tagBot.PeopleId = bot.PeopleId;
+
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagBot);
+
+                    p.Remove(bot);
+                }
+            }
+
+            DbUtil.Db.SubmitChanges();
+        }
     }
 }

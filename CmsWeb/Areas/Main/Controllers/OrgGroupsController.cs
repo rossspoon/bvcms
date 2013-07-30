@@ -216,5 +216,13 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new OrgGroupsModel(id);
             return View(m);
         }
+
+        public ActionResult CreateTeams(int id)
+        {
+            var m = new OrgGroupsModel(id);
+            m.createTeamGroups();
+
+            return Content("Complete");
+        }
     }
 }
