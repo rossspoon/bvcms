@@ -15,22 +15,28 @@
 
         checkChanged();
     }
+
     $.fmtTable();
+
     $(".helptip").tooltip({ showBody: "|" });
+
     $.loadTable = function() {
         $.block();
         $.getTable($('#groupsform'));
         $.unblock();
     };
+
     $('body').on("click", '#filter', function (ev) {
         ev.preventDefault();
         $.loadTable();
     });
+
     $('body').on("click", 'a.sortable', function (ev) {
         ev.preventDefault();
         $('#sort').val($(this).text());
         $.loadTable();
     });
+
     $("#groupsform").delegate("#memtype", "change", $.loadTable);
 
     $("#SelectAll").click(function () {
@@ -157,7 +163,7 @@
 
             $("#playerCount").html(checkedList.length);
             $("#lastScore").html($(lastChecked).attr("score"));
-            $("#avgScore").html(Number(totalScore / checkedList.length).toFixed(3));
+            $("#avgScore").html(Number(totalScore / checkedList.length).toFixed(1));
             $("#totalScore").html(totalScore);
 
 
@@ -180,6 +186,15 @@
 
             $.ajax({ type: "POST", url: "/OrgGroups/SwapPlayers", data: { pOne: swapFirst, pTwo: swapSecond }, success: $.loadTable });
         }
+    });
+
+    $("body").on("click", "#createTeams", function (e) {
+        var acceptDelete = confirm("Are you sure you want to create all teams?");
+        if (!acceptDelete) return;
+
+        var orgid = $(this).attr("orgid");
+        $.block();
+        $.ajax({ type: "POST", url: "/OrgGroups/CreateTeams", data: { id: orgid }, success: function () { location.reload(); } });
     });
 
     $("body").on("click", "#scoreUploadButton", function (e) {
