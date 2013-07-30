@@ -284,10 +284,10 @@ namespace CmsWeb.Models
                     where pc != null
                     select new
                     {
-                        PeopleId = om.PeopleId,
+                        om.PeopleId,
                         Title = om.Person.TitleCode,
                         FirstName = om.Person.PreferredName,
-                        LastName = om.Person.LastName,
+                        om.Person.LastName,
                         Address = om.Person.PrimaryAddress,
                         Address2 = om.Person.PrimaryAddress2,
                         City = om.Person.PrimaryCity,
@@ -295,15 +295,18 @@ namespace CmsWeb.Models
                         Zip = om.Person.PrimaryZip.FmtZip(),
                         Email = om.Person.EmailAddress,
                         MemberType = om.MemberType.Description,
-                        Parent = om.Person.Family.HeadOfHousehold.Name,
-                        Parent2 = om.Person.Family.HeadOfHouseholdSpouse.Name,
                         Location = (ploc == null || ploc == "") ? pc.Organization.Location : ploc,
                         Leader = pt != null ? pt.Person.Name : pc.Organization.LeaderName,
                         OrgName = pc.Organization.OrganizationName,
                         Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
-						om.Person.HomePhone,
-						CellPhone1 = om.Person.Family.HeadOfHousehold.CellPhone,
-						CellPhone2 = om.Person.Family.HeadOfHouseholdSpouse.CellPhone,
+						HomePhone = om.Person.HomePhone.FmtFone(),
+						CellPhone = om.Person.CellPhone.FmtFone(),
+                        Parent1 = om.Person.Family.HeadOfHousehold.Name,
+						CellPhone1 = om.Person.Family.HeadOfHousehold.CellPhone.FmtFone(),
+                        Parent2 = om.Person.Family.HeadOfHouseholdSpouse.Name,
+						CellPhone2 = om.Person.Family.HeadOfHouseholdSpouse.CellPhone.FmtFone(),
+                        AttendPct = om.AttendPct.ToString2("N1"),
+                        om.AttendStr
 					};
             return q;
         }
