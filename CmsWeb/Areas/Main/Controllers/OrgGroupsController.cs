@@ -107,6 +107,21 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("Form", m);
         }
 
+        public ActionResult DeleteGroups(int id, int[] groups)
+        {
+            var groupList = DbUtil.Db.MemberTags.Where(t => groups.Contains( t.Id ));
+
+            foreach (var group in groupList)
+            {
+                DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(group.OrgMemMemTags);
+                DbUtil.Db.MemberTags.DeleteOnSubmit(group);
+            }
+
+            DbUtil.Db.SubmitChanges();
+
+            return Redirect("/OrgGroups/Management/" + id);
+        }
+
         public ActionResult UpdateScore(string id, int value)
         {
             string[] split = id.Split('-');
@@ -167,29 +182,39 @@ namespace CmsWeb.Areas.Main.Controllers
                              select e).SingleOrDefault();
 
 
-            var pOneTag = playerOne.OrgMemMemTags.FirstOrDefault();
-            var pTwoTag = playerTwo.OrgMemMemTags.FirstOrDefault();
+            var pOneTag = playerOne.OrgMemMemTags.Where(t1 => t1.MemberTag.Name.StartsWith("TM:")).FirstOrDefault();
+            var pTwoTag = playerTwo.OrgMemMemTags.Where(t2 => t2.MemberTag.Name.StartsWith("TM:")).FirstOrDefault();
 
-            var pOneNew = new OrgMemMemTag();
-            var pTwoNew = new OrgMemMemTag();
+            if (pTwoTag != null)
+            {
+                var pOneNew = new OrgMemMemTag();
+                pOneNew.PeopleId = peopleIDOne;
+                pOneNew.OrgId = pTwoTag.OrgId;
+                pOneNew.MemberTagId = pTwoTag.MemberTagId;
 
-            pOneNew.PeopleId = pOneTag.PeopleId;
-            pOneNew.OrgId = pTwoTag.OrgId;
-            pOneNew.MemberTagId = pTwoTag.MemberTagId;
+                DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pTwoTag);
+                DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pOneNew);
+            }
 
-            pTwoNew.PeopleId = pTwoTag.PeopleId;
-            pTwoNew.OrgId = pOneTag.OrgId;
-            pTwoNew.MemberTagId = pOneTag.MemberTagId;
+            if (pOneTag != null)
+            {
+                var pTwoNew = new OrgMemMemTag();
+                pTwoNew.PeopleId = peopleIDTwo;
+                pTwoNew.OrgId = pOneTag.OrgId;
+                pTwoNew.MemberTagId = pOneTag.MemberTagId;
 
-            DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pOneTag);
-            DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pTwoTag);
+                DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(pOneTag);
+                DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pTwoNew);
+            }
+            
             DbUtil.Db.SubmitChanges();
-
-            DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pOneNew);
-            DbUtil.Db.OrgMemMemTags.InsertOnSubmit(pTwoNew);
-            DbUtil.Db.SubmitChanges();
-
             return Content("Complete");
+        }
+
+        public ActionResult Management( int id )
+        {
+            var m = new OrgGroupsModel(id);
+            return View(m);
         }
     }
 }

@@ -918,6 +918,7 @@
     <Content Include="Scripts\js\RegSettings.min.js">
       <DependentUpon>RegSettings.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\js\Support.js" />
     <Content Include="Scripts\js\Tags.min.js">
       <DependentUpon>Tags.js</DependentUpon>
     </Content>
@@ -958,6 +959,7 @@
     <Content Include="Areas\People\Views\Person\PendingEnrollments.cshtml" />
     <Content Include="Areas\Manage\Views\CheckinLabels\Index.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid2.cshtml" />
+    <Content Include="Areas\Main\Views\OrgGroups\Management.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />

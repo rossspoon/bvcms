@@ -9,7 +9,8 @@
     <tr>
         <th class="right">Change Target Group:</th>
         <td colspan="2" class="wide100">@Html.DropDownList("groupidDD", Model.Groups(), new { @onchange = "groupid.value = this.value" })
-         <input type="hidden" name="groupid" id="groupid" value="@Model.groupid" /></td>
+         <input type="hidden" name="groupid" id="groupid" value="@Model.groupid" />
+        </td>
     </tr>
     <tr>
         <th class="right">New Group Name:</th>
@@ -17,9 +18,10 @@
     </tr>
     <tr>
         <th></th>
-        <td colspan="2"><a class="groupmanager bt" href="/OrgGroups/MakeNewGroup/@Model.orgid">Make New Group</a>
+        <td colspan="2"><a class="groupmanager bt" href="/OrgGroups/MakeNewGroup/@Model.orgid">New Group</a>
             <a class="groupmanager bt" href="/OrgGroups/RenameGroup/@Model.orgid">Rename Group</a>
             <a class="groupmanager bt" href="/OrgGroups/DeleteGroup/@Model.orgid">Delete Group</a>
+            <a class="bt" href="/OrgGroups/Management/@Model.orgid">Manage</a>
         </td>
     </tr>
     <tr><td colspan="2"><hr /></td></tr>
