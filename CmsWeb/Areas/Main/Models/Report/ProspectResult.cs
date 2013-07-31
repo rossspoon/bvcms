@@ -49,6 +49,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string CellPhone { get; set; }
             public string HomePhone { get; set; }
             public string WorkPhone { get; set; }
+            public string EMail { get; set; }
 
             public string MemberStatus { get; set; }
             public string Gender { get; set; }
@@ -77,6 +78,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public int PositionInFamilyId { get; set; }
             public string MemberStatus { get; set; }
             public int PeopleId { get; set; }
+            public string CellPhone { get; set; }
         }
         public class OrganizationView
         {
@@ -171,7 +173,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 						ph.Add("\n");
 						ph.AddLine(p.HomePhone.FmtFone("H"), font);
 						ph.AddLine(p.CellPhone.FmtFone("C"), font);
-						ph.AddLine(p.WorkPhone.FmtFone("W"), font);
+						ph.AddLine(p.EMail, font);
 						t1.AddCell(ph);
 						t.AddCell(t1);
 
@@ -209,17 +211,19 @@ namespace CmsWeb.Areas.Main.Models.Report
 
 						if (p.Family.Count() > 0)
 						{
-							t = new PdfPTable(4);
+							t = new PdfPTable(5);
 							t.SetNoBorder();
 							t.AddRow("Family Summary", bfont);
 							t.AddHeader("Name", bfont);
 							t.AddHeader("Age", bfont);
+                            t.AddHeader("Cell Phone", bfont);
 							t.AddHeader("Position in Family", bfont);
 							t.AddHeader("Member Status", bfont);
 							foreach (var fm in p.Family)
 							{
 								t.Add(fm.Name, font);
 								t.Add(fm.Age.ToString(), font);
+                                t.Add(fm.CellPhone.FmtFone(), font);
 								t.Add(fm.PositionInFamily, font);
 								t.Add(fm.MemberStatus, font);
 							}
@@ -346,6 +350,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                          CellPhone = p.CellPhone,
                          HomePhone = p.HomePhone,
                          WorkPhone = p.WorkPhone,
+                         EMail = p.EmailAddress,
 
                          Family = from m in p.Family.People
                                   where m.DeceasedDate == null
@@ -358,7 +363,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                                       Age = m.Age,
                                       Deceased = m.DeceasedDate != null,
                                       PositionInFamily = m.FamilyPosition.Description,
-                                      MemberStatus = m.MemberStatus.Description
+                                      MemberStatus = m.MemberStatus.Description,
+                                      CellPhone = m.CellPhone
                                   },
                          Memberships = from om in p.OrganizationMembers
                                        where dt > om.EnrollmentDate
