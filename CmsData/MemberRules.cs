@@ -240,15 +240,7 @@ namespace CmsData
         //            om.Drop(Db, addToHistory: true);
         //    }
         //}
-        private void DropMembership(CMSDataContext Db)
-        {
-            dropMembership(false, Db);
-        }
-        private void DeceasePerson(CMSDataContext Db)
-        {
-            dropMembership(true, Db);
-        }
-        private void dropMembership(bool Deceased, CMSDataContext Db)
+        public void DropMemberships(CMSDataContext Db)
         {
             if (MemberStatusId == MemberStatusCode.Member)
             {
@@ -282,9 +274,7 @@ namespace CmsData
             }
             EnvelopeOptionsId = EnvelopeOptionCode.None;
 
-            var list = OrganizationMembers.ToList();
-            foreach (var om in list)
-                om.Drop(Db, addToHistory: true);
+            DropAllMemberships(Db);
         }
     }
 }

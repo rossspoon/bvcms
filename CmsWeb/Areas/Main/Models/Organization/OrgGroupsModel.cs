@@ -23,7 +23,6 @@ namespace CmsWeb.Models
         public string sort { get; set; }
         public int tagfilter { get; set; }
         public bool isRecreationTeam { get; set; }
-        public string OrgName { get; set; }
 
         public OrgGroupsModel() { }
 
@@ -33,15 +32,12 @@ namespace CmsWeb.Models
 
             var org = DbUtil.Db.LoadOrganizationById(orgid);
             isRecreationTeam = org.IsRecreationTeam;
-            OrgName = org.OrganizationName;
         }
 
-        /*
         public string OrgName
         {
             get { return DbUtil.Db.LoadOrganizationById(orgid).OrganizationName; }
         }
-        // */
 
         public int memtype { get; set; }
 
@@ -51,6 +47,40 @@ namespace CmsWeb.Models
             get { return list; }
             set { list = value; }
         }
+
+        public class GroupDetails
+        {
+            public int members { get; set; }
+            public int total { get; set; }
+            public double average { get; set; }
+        }
+
+        public GroupDetails GetGroupDetails( int id )
+        {
+            var d = from e in DbUtil.Db.OrgMemMemTags
+                    from om in DbUtil.Db.OrganizationMembers.DefaultIfEmpty()
+                    where e.MemberTagId == id
+                    where om.PeopleId == e.PeopleId
+                    where om.OrganizationId == e.OrgId
+                    group new { e, om } by e.MemberTagId into grp
+                    select new GroupDetails()
+                    {
+                        members = grp.Count( m => m.e.MemberTagId > 0 ),
+                        total = grp.Sum( t => t.om.Score ),
+                        average = grp.Average( a => a.om.Score )
+                    };
+
+            return d.SingleOrDefault();
+        }
+
+        public IEnumerable<MemberTag> GroupsList()
+        {
+            return from g in DbUtil.Db.MemberTags
+                   where g.OrgId == orgid
+                   orderby g.Name
+                   select g;
+        }
+
         public SelectList Groups()
         {
             var q = from g in DbUtil.Db.MemberTags
@@ -247,6 +277,115 @@ namespace CmsWeb.Models
                         .Fmt(Name, PeopleId, CellPhone, WorkPhone, HomePhone, BirthDate, JoinDate, MemberStatus, Email);
                 }
             }
+        }
+
+        public void createTeamGroups()
+        {
+            var c = from e in DbUtil.Db.OrganizationMembers
+                    where e.Score == 0
+                    where e.OrganizationId == orgid
+                    select e;
+
+            foreach (var coach in c)
+            {
+                var name = "TM: " + coach.Person.Name;
+
+                var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Name == name && g.OrgId == orgid);
+                if (group != null) continue;
+
+                group = new MemberTag
+                {
+                    Name = name,
+                    OrgId = orgid
+                };
+
+                DbUtil.Db.MemberTags.InsertOnSubmit(group);
+            }
+
+            DbUtil.Db.SubmitChanges();
+
+            // Refresh the list
+            var teamList = (from e in DbUtil.Db.MemberTags
+                            where e.OrgId == orgid
+                            where e.Name.StartsWith( "TM:" )
+                            select e).ToList();
+
+
+            var p = (from e in DbUtil.Db.OrganizationMembers
+                     where e.Score != 0
+                     where e.OrganizationId == orgid
+                     select e).ToList();
+
+            var teams = teamList.Count();
+            var players = p.Count();
+            var perTeam = Math.Floor((double)players / teams);
+            var passes = Math.Floor((double)perTeam / 2);
+
+            for (int iX = 0; iX < passes; iX++)
+            {
+                foreach (var team in teamList)
+                {
+                    var tagTop = new OrgMemMemTag();
+                    var tagBot = new OrgMemMemTag();
+
+                    var top = p.OrderByDescending(t => t.Score).Take(1).SingleOrDefault();
+                    var bot = p.OrderBy(t => t.Score).Take(1).SingleOrDefault();
+
+                    tagTop.MemberTagId = team.Id;
+                    tagTop.OrgId = orgid;
+                    tagTop.PeopleId = top.PeopleId;
+
+                    tagBot.MemberTagId = team.Id;
+                    tagBot.OrgId = orgid;
+                    tagBot.PeopleId = bot.PeopleId;
+
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagTop);
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagBot);
+
+                    p.Remove(top);
+                    p.Remove(bot);
+                }
+            }
+
+            if (p.Count() > 0)
+            {
+                foreach (var team in teamList)
+                {
+                    var tagBot = new OrgMemMemTag();
+
+                    var bot = p.OrderBy(t => t.Score).Take(1).SingleOrDefault();
+                    if (bot == null) break;
+
+                    tagBot.MemberTagId = team.Id;
+                    tagBot.OrgId = orgid;
+                    tagBot.PeopleId = bot.PeopleId;
+
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagBot);
+
+                    p.Remove(bot);
+                }
+            }
+
+            if (p.Count() > 0)
+            {
+                foreach (var team in teamList)
+                {
+                    var tagBot = new OrgMemMemTag();
+
+                    var bot = p.OrderBy(t => t.Score).Take(1).SingleOrDefault();
+                    if (bot == null) break;
+
+                    tagBot.MemberTagId = team.Id;
+                    tagBot.OrgId = orgid;
+                    tagBot.PeopleId = bot.PeopleId;
+
+                    DbUtil.Db.OrgMemMemTags.InsertOnSubmit(tagBot);
+
+                    p.Remove(bot);
+                }
+            }
+
+            DbUtil.Db.SubmitChanges();
         }
     }
 }

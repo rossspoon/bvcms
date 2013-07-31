@@ -161,7 +161,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     switch (names[c].Trim())
                     {
                         case "Campus":
-                            if (a[c].AllDigits())
+                            if (a[c].TrimEnd().AllDigits())
                             {
                                 o.CampusId = a[c].ToInt();
                                 if (o.CampusId == 0)
@@ -198,7 +198,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                             o.BirthDayEnd = a[c].ToDate();
                             break;
                         case "EntryPoint":
-                            if (a[c].AllDigits())
+                            if (a[c].TrimEnd().AllDigits())
                             {
                                 var id = a[c].ToInt();
                                 if (id > 0)
@@ -206,7 +206,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                             }
                             break;
                         case "LeaderType":
-                            if (a[c].AllDigits())
+                            if (a[c].TrimEnd().AllDigits())
                             {
                                 var id = a[c].ToInt();
                                 if (id > 0)
@@ -448,6 +448,12 @@ namespace CmsWeb.Areas.Manage.Controllers
                 {
                     case "Member Status":
                         p.MemberStatusId = m.NewValue.ToInt();
+                        break;
+                    case "Drop All Memberships":
+                        p.DropMemberships(DbUtil.Db);
+                        break;
+                    case "Deceased Date":
+                        p.DeceasedDate = m.NewValue.ToDate();
                         break;
                     case "New Member Class":
                         p.NewMemberClassStatusId = m.NewValue.ToInt();

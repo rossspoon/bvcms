@@ -50,6 +50,8 @@ namespace CmsWeb.Models
                 "Background Check Date",
                 "New Member Status",
                 "Approval Codes",
+                "Drop All Memberships",
+                "Deceased Date",
             }.Select(x => new { value = x, text = x }),
                 "value", "text");
         }
