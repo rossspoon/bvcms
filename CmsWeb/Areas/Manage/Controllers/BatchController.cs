@@ -449,6 +449,12 @@ namespace CmsWeb.Areas.Manage.Controllers
                     case "Member Status":
                         p.MemberStatusId = m.NewValue.ToInt();
                         break;
+                    case "Drop All Memberships":
+                        p.DropMemberships(DbUtil.Db);
+                        break;
+                    case "Deceased Date":
+                        p.DeceasedDate = m.NewValue.ToDate();
+                        break;
                     case "New Member Class":
                         p.NewMemberClassStatusId = m.NewValue.ToInt();
                         break;
