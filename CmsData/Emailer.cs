@@ -403,7 +403,10 @@ namespace CmsData
 
             using (MD5 md5Hash = MD5.Create())
             {
-                foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
+                var linkList = doc.DocumentNode.SelectNodes("//a[@href]");
+                if (linkList == null) return doc.DocumentNode.OuterHtml;
+
+                foreach (HtmlNode link in linkList )
                 {
                     HtmlAttribute att = link.Attributes["href"];
                     if( IsSpecialLink( att.Value ) ) continue;
