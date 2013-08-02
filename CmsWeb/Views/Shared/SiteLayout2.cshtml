@@ -18,17 +18,19 @@
     @RenderSection("scripts", required: false)
     @Html.Partial("DatePickerDefaults2")
 </head>
-<body>
-    @Html.Partial("Notices")
-    @Html.Partial("NewHeader2")
-    <section id="main" class="container">
-        <section class="sixteen columns">
-            @RenderBody()
-        </section>
-    </section>
-    @Html.Partial("Footer")
-    @Html.Partial("Dialogs")
-    @RenderSection("PopupsPlaceholder", required: false)
-    <img src="/images/ajax-loader.gif" id="loading-indicator" style="display:none" />
-</body>
+    <body>
+        <div class="page-container">
+            @Html.Partial("Notices")
+            @Html.Partial("NewHeader2")
+            <section id="main" class="container">
+                <section class="sixteen columns">
+                    @RenderBody()
+                </section>
+            </section>
+            @Html.Partial("Footer")
+            @Html.Partial("Dialogs")
+            @RenderSection("PopupsPlaceholder", required: false)
+            <img src="/images/ajax-loader.gif" id="loading-indicator" style="display:none" />
+        </div>
+    </body>
 </html>

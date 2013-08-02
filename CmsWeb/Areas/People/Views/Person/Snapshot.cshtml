@@ -1,7 +1,9 @@
 ﻿@using CmsData
 @using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.PersonModel
-@* Dave: Need a new design for uploading a picture, or seeing larger version *@
+@{
+    var otheraddr = Model.OtherAddr.AddrCityStateZipLine();
+}
 <a id="Picture" href="/UploadPicture.aspx?id=@Model.PeopleId" title="Click to see larger version or upload new">
     <div class="portrait" style="background-image:url(@Model.Picture.SmallUrl);"></div>
 </a>
@@ -9,8 +11,13 @@
     <h2 id="nameline">@Model.Name</h2>
     <ul class="meta unstyled">
         <li class="role">
-            <span id="primaryaddressline">@Model.PrimaryAddr.AddrCityStateZipLine()</span><br />
-            <span id="contactline">@Model.Email &bull; @Model.Cell &bull; @Model.HomePhone</span>
+            <a href="#" class="popover-map" rel="popover">@Model.PrimaryAddr.AddrCityStateZipLine()</a>
+            <a href="/Address/Edit/@Model.PrimaryAddr.Name/@Model.PeopleId" class="editaddr editable-click">&nbsp;&nbsp;<i class="icon-pencil"></i></a>
+            @if (otheraddr.HasValue())
+            {
+                <br /><a href="#" class="popover-map" rel="popover">@otheraddr</a>
+            }
+            <br/><span id="contactline">@Model.Email &bull; @Model.Cell &bull; @Model.HomePhone</span>
         </li>
         <li class="badges">
             @Html.DisplayFor(m => m.basic.Campus, "InlineCode")

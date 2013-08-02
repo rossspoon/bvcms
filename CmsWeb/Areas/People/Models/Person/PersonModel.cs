@@ -33,6 +33,7 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public int AddressTypeId { get; set; }
         private AddressInfo _PrimaryAddr;
+        private AddressInfo _OtherAddr;
         private Picture picture;
         public CmsData.Person Person { get; set; }
 
@@ -46,6 +47,18 @@ namespace CmsWeb.Areas.People.Models.Person
                     else if (PersonalAddr.Preferred)
                         _PrimaryAddr = PersonalAddr;
                 return _PrimaryAddr;
+            }
+        }
+        public AddressInfo OtherAddr
+        {
+            get
+            {
+                if (_OtherAddr == null)
+                    if (FamilyAddr.Preferred)
+                        _OtherAddr = PersonalAddr;
+                    else if (PersonalAddr.Preferred)
+                        _OtherAddr = FamilyAddr;
+                return _OtherAddr;
             }
         }
         public AddressInfo FamilyAddr { get; set; }

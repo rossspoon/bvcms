@@ -1,8 +1,12 @@
-﻿@model CmsWeb.Areas.People.Models.AddressInfo
+﻿@using NPOI.SS.Formula.Functions
+@model CmsWeb.Areas.People.Models.AddressInfo
 <form id="addressForm" class="form-horizontal onecol ajax" action="/Address/Update" method="POST">
     <div class="modal-header">
         <a class="close" data-dismiss="modal">x</a>
-        <h3>@Model.Display</h3>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#" data-toggle="tab">@Model.Display Address</a></li>
+            <li><a id="otheraddress" href="#" class="ajax" data-toggle="tab" data-link="/Address/Edit/@Model.OtherName/@Model.PeopleId">Edit @Model.OtherDisplay Address</a></li>
+        </ul>
     </div>
     <div class="modal-body">
         <fieldset class="display">
