@@ -50,9 +50,10 @@
         });
         return false;
     });
-    $("a.delete-relation").live("click", function (ev) {
+    $("#deleterelation").live("click", function (ev) {
         ev.preventDefault();
-        var href = $(this).attr("href");
+        var p = $(this).closest("p");
+        var href = p.data("delete");
         bootbox.confirm("Are you sure you want to remove this relationship?", function (result) {
             if (result === true) {
                 $("#related-families-div").load(href, {});
@@ -60,27 +61,30 @@
         });
         return false;
     });
-    $("#contact a.editaddr").live("click", function (ev) {
+    $("a.editaddr").live("click", function (ev) {
         ev.preventDefault();
         $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
-            $(this).modal("show");
-            $(this).on('hidden', function () {
+            var modal = $(this);
+            modal.modal("show");
+            modal.on('hidden', function () {
                 $(this).remove();
             });
-            $(this).on("click", "a.close-saved-address", function () {
-                $.post($(this).attr("href"), {}, function(ret) {
-                    $("#contact").html(ret);
-                    $("#primaryaddressline").html($("#contact div.primaryaddressline").html());
+            modal.on("click", "a.close-saved-address", function () {
+                $.post($(this).attr("href"), {}, function (ret) {
+                    $("#snapshot").html(ret).ready($SetSnapshotEditable);
                 });
             });
         });
     });
-    $("a.editfamily").live("click", function (ev) {
+    $("#family_related a.edit").live("click", function (ev) {
         ev.stopPropagation();
         ev.preventDefault();
         $(this).closest('div.open').removeClass('open');
         $(this).closest("li.relation-item").find("span.relation-description").editable("toggle");
     });
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-success editable-submit"><i class="icon-ok icon-white"></i></button>' +
+        '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';
     $.SetRelationEditable = function () {
         $('span.relation-description').editable({
             type: "textarea",
@@ -93,33 +97,23 @@
                 });
                 return d.promise();
             }
+
+        });
+        $('span.relation-description').on('hidden', function (e, reason) {
+            if (reason === 'save' || reason === 'cancel') {
+                $.fn.editableform.buttons =
+                    '<button type="submit" class="btn btn-success editable-submit"><i class="icon-ok icon-white"></i></button>' +
+                    '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';
+            }
+        });
+        $('span.relation-description').on('shown', function (e, reason) {
+            $.fn.editableform.buttons =
+                 '<button type="submit" class="btn btn-success editable-submit"><i class="icon-ok icon-white"></i></button>' +
+                 '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>' +
+                 '<br><br><button id="deleterelation" type="button" class="btn btn-danger pull-right">delete</button>';
         });
     };
     $.SetRelationEditable();
-    $('#FamilyPosition').editable({
-        source: [{
-            value: 10,
-            text: "Primary Adult"
-        }, {
-            value: 20,
-            text: "Secondary Adult"
-        }, {
-            value: 30,
-            text: "Child"
-        }],
-        type: "select",
-        url: "/Person2/PostData",
-        name: "position"
-//        success: function (data) {
-//            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
-//        }
-    });
-    $('#Campus').editable({
-        source: "/Person2/Campuses",
-        type: "select",
-        url: "/Person2/PostData",
-        name: "campus"
-    });
 
     $('a.deloptout').live("click", function (ev) {
         ev.preventDefault();
@@ -151,11 +145,11 @@
             $(this).on('hidden', function () {
                 $(this).remove();
             });
-//            $(this).on("click", "a.close-saved-address", function () {
-//                $("#primaryaddress").html($("#primaryaddressnew").html());
-//                var target = $("#addressnew").data("target");
-//                $("#" + target).html($("#addressnew").html());
-//            });
+            //            $(this).on("click", "a.close-saved-address", function () {
+            //                $("#primaryaddress").html($("#primaryaddressnew").html());
+            //                var target = $("#addressnew").data("target");
+            //                $("#" + target).html($("#addressnew").html());
+            //            });
         });
     });
 
@@ -323,8 +317,67 @@
         var index = $('#vtab>ul>li').index($(this));
         $('#vtab>div').hide().eq(index).show();
     });
+    var getMap = function (opts) {
+        var src = "http://maps.googleapis.com/maps/api/staticmap?",
+            params = $.extend({
+                center: 'New York, NY',
+                size: '128x128',
+                sensor: false
+            }, opts),
+            query = [];
 
+        $.each(params, function (k, v) {
+            query.push(k + '=' + encodeURIComponent(v));
+        });
+
+        src += query.join('&');
+        return '<img src="' + src + '" /><br><a href="https://www.google.com/maps/?q=' + opts['center'] + '" rel="external" target="_blank">View in Google Maps</a>\
+      <br><a href="http://www.bing.com/maps/?q=' + opts['center'] + '" rel="external" target="_blank">View in Bing Maps</a>';
+    };
+    var $SetSnapshotEditable = function () {
+        $('[class="popover-map"]').each(function () {
+            var $this = $(this);
+            $this.data('html', true).data('content', getMap({ center: $this.text() }));
+            $this.popover();
+        });
+        $('#FamilyPosition').editable({
+            source: [{
+                value: 10,
+                text: "Primary Adult"
+            }, {
+                value: 20,
+                text: "Secondary Adult"
+            }, {
+                value: 30,
+                text: "Child"
+            }],
+            type: "select",
+            url: "/Person2/PostData",
+            name: "position"
+            //        success: function (data) {
+            //            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
+            //        }
+        });
+        $('#Campus').editable({
+            source: "/Person2/Campuses",
+            type: "select",
+            url: "/Person2/PostData",
+            name: "campus"
+        });
+    };
+    $SetSnapshotEditable();
+    $('body').on('click', function (e) {
+        $('[rel=popover]').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
 });
+
+
 
 function RebindMemberGrids() {
     $.updateTable($('#current-tab form'));

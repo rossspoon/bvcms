@@ -21,11 +21,10 @@
         <div class="span9">
             <div class="row-fluid">
                 <div class="span12" id="profile-header">
-                    @* Dave: I had to change this from span8 *@
-                    <div class="span9">
+                    <div id="snapshot" class="span8">
                         @Html.Partial("Snapshot", Model)
                     </div>
-                    <div class="span3" id="profile-actions">
+                    <div class="span4" id="profile-actions">
                         @Html.Partial("Toolbar", Model)
                     </div>
                 </div>
@@ -100,7 +99,6 @@
         </div>
         <div class="span3">
             <div id="sidebar">
-                @Html.Partial("Addresses", Model)
                 <div id="family-div">
                     @Html.Partial("FamilyGrid", Model)
                 </div>

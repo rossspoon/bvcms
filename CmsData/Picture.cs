@@ -16,5 +16,9 @@ namespace CmsData
         {
             get { return "/Person2/Image/2/{0}/{1}".Fmt(SmallId ?? -2, CreatedDate.HasValue ? CreatedDate.Value.Ticks : 0); }
         }
+        public string LargeUrl
+        {
+            get { return "/Person2/Image/2/{0}/{1}".Fmt(LargeId ?? -2, CreatedDate.HasValue ? CreatedDate.Value.Ticks : 0); }
+        }
     }
 }

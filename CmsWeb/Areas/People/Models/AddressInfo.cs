@@ -29,6 +29,29 @@ namespace CmsWeb.Areas.People.Models
         public CmsData.Person person { get; set; }
 
         public string Name { get; set; }
+        public string OtherName {
+            get
+            {
+                switch (Name)
+                {
+                    case "PersonalAddr": return "FamilyAddr";
+                    case "FamilyAddr": return "PersonalAddr";
+                }
+                return "";
+            }
+        }
+        public string OtherDisplay
+        {
+            get
+            {
+                switch (Name)
+                {
+                    case "PersonalAddr": return "Family";
+                    case "FamilyAddr": return "Personal";
+                }
+                return "Address";
+            }
+        }
         private bool? _CanUserEditAddress;
         public bool CanUserEditAddress
         {
@@ -98,7 +121,8 @@ namespace CmsWeb.Areas.People.Models
             sb.Append(Address1);
             if (Address2.HasValue())
                 sb.Append(", " + Address2);
-            sb.Append(", " + Util.FormatCSZ5(City, State.Value, Zip));
+            if(sb.Length > 0)
+                sb.Append(", " + Util.FormatCSZ5(City, State.Value, Zip));
             return sb.ToString();
         }
         public string MapAddrCityStateZip()
@@ -336,10 +360,10 @@ namespace CmsWeb.Areas.People.Models
         }
         public bool ValidateAddress(ModelStateDictionary modelState)
         {
-            if (!Address1.HasValue())
-                modelState.AddModelError(this.GetNameFor(m => m.Address1), "Street Address Required");
-            if ((!City.HasValue() || !State.Value.HasValue()) && !Zip.HasValue())
-                modelState.AddModelError(this.GetNameFor(m => m.Zip), "Require either Zip Code or City/State");
+//            if (!Address1.HasValue())
+//                modelState.AddModelError(this.GetNameFor(m => m.Address1), "Street Address Required");
+//            if ((!City.HasValue() || !State.Value.HasValue()) && !Zip.HasValue())
+//                modelState.AddModelError(this.GetNameFor(m => m.Zip), "Require either Zip Code or City/State");
 
             Addrok = modelState.IsValid;
             if (Addrok == false)

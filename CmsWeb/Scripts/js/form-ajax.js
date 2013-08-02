@@ -43,7 +43,9 @@
         var $this = $(this);
         var $form = $this.closest("form.ajax");
         var $modal = $form.closest("div.modal");
-        var url = $this[0].href;
+        var url = $this.data("link");
+        if (typeof url === 'undefined')
+            url = $this[0].href;
         var data = $form.serialize();
         $.ajax({
             type: 'POST',
