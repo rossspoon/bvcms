@@ -77,7 +77,8 @@ Open the Project
 1. At the top of the **Package Manager Console** you will see a notification telling you that some packages are missing, click **Restore** to begin downloading them
 1. It should show a progress bar and then disappear when done
 1. Edit **Web.config** under **CmsWeb** root directory
-	+ Change the word "Windows" to "Forms" on line 33
+	+ Verify that line 31 reads: `<authentication mode="Forms">`
+	+ Modify if necessary.
 1. Right-click on **CMSWeb** and select **Set as StartUp Project**
 1. Right-click on **CMSWeb** and select **Rebuild**. The project should compile successfully
 	+ There will be some warnings, you can ignore them
