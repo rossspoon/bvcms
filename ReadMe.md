@@ -55,8 +55,17 @@ Database Creation and Population
 	+ Open the **BuildCmsImageDb_SQLSchema.sql** file
 		+ Note: If your file extensions are hidden, you will not see the ".sql"
 1. Verify that **CMS\_bellevue\_img** is listed next to the **Execute** button as the active database and then click **Execute**
-
+1. Right-click on **Databases** and select **New Database**
+1. Enter **BlogData** in the database name and click **OK**
+1. Select **BlogData** in the database list
+1. Open the blog database schema file: **BuildLogData.sql**
+	+ File > Open > File
+	+ Navigate to the repository directory
+	+ Open the **BuildLogData.sql** file
+		+ Note: If your file extensions are hidden, you will not see the ".sql"
+1. Verify that **BlogData** is listed next to the **Execute** button as the active database and then click **Execute**
 Open the Project
+
 ---
 1. Start **VisualStudio 2012 for Web**
 1. Open **CmsWeb.sln** solution in the root of the repository
